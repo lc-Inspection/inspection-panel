@@ -2476,8 +2476,21 @@ async function pullFromSheets() {
       renderEditor();
       updateSidebar();
       updateKlasmanFilter();   // dashboard klasman filtresi dropdown'ı güncelle
-      renderDashboard();       // inspector kartlarını yeniden çiz
-      showSuccessMessage(`✅ ${count} klasman Google Sheets'ten çekildi!`);
+
+      // Performans verisini de Sheets'ten çek
+      try {
+        const perfData = await gsFetch('getPerformansRaw');
+        if (perfData.status === 'ok' && Array.isArray(perfData.performansData) && perfData.performansData.length > 0) {
+          performansData = perfData.performansData;
+          saveData();
+          console.log('✅ Performans verisi Sheets\'ten çekildi:', performansData.length, 'inspector');
+        }
+      } catch(perfErr) {
+        console.warn('Performans çekme hatası (önemsiz):', perfErr.message);
+      }
+
+      renderDashboard();       // inspector kartlarını performans verisiyle yeniden çiz
+      showSuccessMessage(`✅ ${count} klasman + performans verisi Sheets'ten güncellendi!`);
     } else {
       alert('❌ Geçersiz veri formatı döndü.\nApps Script doğru yapılandırıldı mı?');
     }
@@ -2530,6 +2543,32 @@ async function pushPerformansToSheets(liste) {
     console.log('✅ Performans verisi Sheets\'e gönderildi:', rows.length, 'inspector');
   } catch(err) {
     console.warn('Performans Sheets gönderme hatası:', err.message);
+  }
+}
+
+// ─────────────────────────────────────────────
+// PERFORMANS HAM VERİSİNİ SHEETS'E GÖNDER
+// Tam JSON — farklı bilgisayarlardan çekilebilir
+// ─────────────────────────────────────────────
+async function pushPerformansRawToSheets(liste) {
+  const url   = appConfig.sheetsWebAppUrl;
+  const token = appConfig.sheetsApiToken;
+  if (!url || !token) return;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        action: 'setPerformansRaw',
+        token: token,
+        performansData: liste,
+        savedAt: new Date().toISOString()
+      }),
+      mode: 'no-cors'
+    });
+    console.log('✅ Ham performans verisi Sheets\'e gönderildi:', liste.length, 'inspector');
+  } catch(err) {
+    console.warn('Ham performans push hatası:', err.message);
   }
 }
 
@@ -4119,6 +4158,7 @@ function performansHesapla(){
 
   // Google Sheets'e otomatik gönder (bağlantı ayarı yapılmışsa)
   pushPerformansToSheets(liste);
+  pushPerformansRawToSheets(liste); // tam JSON — diğer bilgisayarlardan çekilebilir
   
   const satirlar=liste.map((row,i)=>{
     const ini=row.ins.split(' ').map(w=>w[0]||'').slice(0,2).join('').toUpperCase();
