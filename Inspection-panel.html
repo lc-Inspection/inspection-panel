@@ -2064,34 +2064,69 @@ async function pushConfigToSheets() {
   } catch(e) { console.warn('Config push hatası:', e.message); }
 }
 
-// ─── JSONP YARDIMCISI ───
-// GitHub Pages → Google Apps Script GET isteklerinde CORS engeli var.
-// JSONP ile script tag üzerinden veri çekiyoruz.
-function jsonpFetch(url, params) {
+// ─── GOOGLE SHEETS VERİ ÇEKME YARDIMCISI ───
+// Yöntem 1: fetch + credentials:omit (Apps Script redirect sonrası CORS header döndürür)
+// Yöntem 2: JSONP fallback (script tag)
+async function jsonpFetch(url, params) {
+  // --- Yöntem 1: fetch credentials:omit ---
+  try {
+    const qs = new URLSearchParams(params);
+    const res = await fetch(url + '?' + qs.toString(), {
+      method: 'GET',
+      credentials: 'omit',
+      redirect: 'follow'
+    });
+    if (res.ok) {
+      const text = await res.text();
+      if (text && !text.trim().startsWith('<')) {
+        const parsed = JSON.parse(text);
+        console.log('✅ fetch/credentials:omit başarılı');
+        return parsed;
+      }
+    }
+  } catch(e1) {
+    console.warn('fetch yöntemi başarısız, JSONP deneniyor...', e1.message);
+  }
+
+  // --- Yöntem 2: JSONP ---
   return new Promise((resolve, reject) => {
     const cbName = '_lcwCb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-    const timeout = setTimeout(() => {
+    const timer = setTimeout(() => {
       delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-      reject(new Error('JSONP zaman aşımı (10 sn)'));
-    }, 10000);
+      if (sc && sc.parentNode) sc.parentNode.removeChild(sc);
+      reject(new Error(
+        'Bağlantı başarısız.\n\n' +
+        '🔧 Apps Script Kontrol Listesi:\n' +
+        '1. Dağıtım → "Erişimi olan: Herkes" seçili mi?\n' +
+        '2. En son sürüm dağıtıldı mı? (yeni dağıtım gerekebilir)\n' +
+        '3. Web App URL doğru mu?'
+      ));
+    }, 12000);
 
     window[cbName] = function(data) {
-      clearTimeout(timeout);
+      clearTimeout(timer);
       delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
+      if (sc && sc.parentNode) sc.parentNode.removeChild(sc);
+      console.log('✅ JSONP başarılı');
       resolve(data);
     };
 
+    const sc = document.createElement('script');
     const allParams = new URLSearchParams({ ...params, callback: cbName });
-    const script = document.createElement('script');
-    script.src = url + '?' + allParams.toString();
-    script.onerror = () => {
-      clearTimeout(timeout);
+    sc.src = url + '?' + allParams.toString();
+    sc.onerror = () => {
+      clearTimeout(timer);
       delete window[cbName];
-      reject(new Error('Script yüklenemedi — URL doğru mu?'));
+      reject(new Error(
+        'Apps Script\'e erişilemiyor.\n\n' +
+        '🔧 Kontrol Listesi:\n' +
+        '1. Dağıtım → "Erişimi olan: Herkes" seçili mi?\n' +
+        '2. Apps Script kodu güncellendiyse YENİ dağıtım gerekir\n' +
+        '3. Paneldeki URL ile dağıtım URL\'i aynı mı?\n' +
+        '4. Apps Script kodunda doGet fonksiyonu var mı?'
+      ));
     };
-    document.head.appendChild(script);
+    document.head.appendChild(sc);
   });
 }
 
