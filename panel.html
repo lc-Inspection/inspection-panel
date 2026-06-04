@@ -403,277 +403,187 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 .save-success.show { transform: translateX(0); }
 
 /* ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
-/* ─── SLIDESHOW STYLES (GELİŞTİRİLMİŞ) ─── */
+/* ─── SLIDESHOW STYLES — KURUMSAL MAVİ-BEYAZ ─── */
 /* ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
 
-/* ─── SLIDESHOW CONTAINER ─── */
+/* ─── ANA CONTAINER ─── */
 .slideshow-container {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+  background: linear-gradient(160deg, #0B2A52 0%, #0F3464 40%, #0B2A52 100%);
   border-radius: var(--r);
-  min-height: 600px;
+  min-height: 620px;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow2);
-  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 8px 40px rgba(11,42,82,.5);
+  border: 1px solid rgba(255,255,255,.08);
   display: flex;
 }
 
-/* ─── TAM EKRAN MODİ ─── */
 .slideshow-container.fullscreen-mode {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
+  inset: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
   border-radius: 0 !important;
   z-index: 9999 !important;
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
 }
 
-/* ─── SOL PANEL - AYIN EN İYİ İNSPECTÖRLERİ ─── */
+/* Arka plan geometrik desen */
+.slideshow-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 90%, rgba(33,150,243,.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 10%, rgba(33,150,243,.05) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(255,255,255,.02) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── SOL PANEL ─── */
 .slideshow-sidebar {
-  width: 320px;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(10px);
-  border-right: 1px solid rgba(255,255,255,0.1);
-  padding: 20px;
+  width: 300px;
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(255,255,255,.08);
+  padding: 24px 18px;
   overflow-y: auto;
   flex-shrink: 0;
+  z-index: 2;
 }
 
 .sidebar-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .sidebar-title {
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 700;
   color: #FFD700;
-  margin-bottom: 4px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .sidebar-subtitle {
-  font-size: 12px;
-  color: rgba(255,255,255,0.6);
+  font-size: 10px;
+  color: rgba(255,255,255,.45);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .top-inspector-card {
-  background: rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: all 0.3s ease;
+  background: rgba(255,255,255,.05);
+  border-radius: 10px;
+  padding: 13px 14px;
+  margin-bottom: 9px;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: all .2s;
   position: relative;
   overflow: hidden;
   cursor: pointer;
 }
-
 .top-inspector-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
+  top: 0; left: 0; right: 0;
+  height: 2px;
   background: linear-gradient(90deg, #FFD700, #FFA000);
-  border-radius: 12px 12px 0 0;
+  border-radius: 10px 10px 0 0;
 }
-
-.top-inspector-card:nth-child(2)::before { background: linear-gradient(90deg, #C0C0C0, #9E9E9E); }
-.top-inspector-card:nth-child(3)::before { background: linear-gradient(90deg, #CD7F32, #8D6E63); }
-
-.top-inspector-card:hover {
-  background: rgba(255,255,255,0.15);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-  border-color: rgba(255,255,255,0.3);
-}
+.top-inspector-card:nth-child(2)::before { background: linear-gradient(90deg,#C0C0C0,#9E9E9E); }
+.top-inspector-card:nth-child(3)::before { background: linear-gradient(90deg,#CD7F32,#8D6E63); }
+.top-inspector-card:hover { background: rgba(255,255,255,.1); transform: translateX(3px); }
 
 .top-inspector-rank {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
+  position: absolute; top: 10px; right: 10px;
+  width: 26px; height: 26px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
 }
+.rank-1 { background: linear-gradient(135deg,#FFD700,#FFA000); color:#000; }
+.rank-2 { background: linear-gradient(135deg,#C0C0C0,#9E9E9E); color:#000; }
+.rank-3 { background: linear-gradient(135deg,#CD7F32,#8D6E63); color:#fff; }
+.rank-other { background: rgba(255,255,255,.15); color:#fff; font-size:11px; }
 
-.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA000); color: #000; }
-.rank-2 { background: linear-gradient(135deg, #C0C0C0, #9E9E9E); color: #000; }
-.rank-3 { background: linear-gradient(135deg, #CD7F32, #8D6E63); color: #fff; }
-.rank-other { background: rgba(255,255,255,0.2); color: #fff; }
-
-.top-inspector-info {
-  padding-right: 40px;
-}
-
-.top-inspector-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-  margin-bottom: 4px;
-}
-
-.top-inspector-performance {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 6px;
-  font-family: 'DM Mono', monospace;
-}
-
-.top-inspector-details {
-  font-size: 10px;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.4;
-}
+.top-inspector-info { padding-right: 34px; }
+.top-inspector-name { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+.top-inspector-performance { font-size: 18px; font-weight: 700; font-family:'DM Mono',monospace; margin-bottom: 4px; }
+.top-inspector-details { font-size: 10px; color: rgba(255,255,255,.55); line-height: 1.5; }
 
 .top-inspector-badge {
-  display: inline-block;
-  font-size: 8px;
-  padding: 2px 6px;
-  border-radius: 10px;
-  margin-right: 4px;
-  margin-top: 4px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  display: inline-block; font-size: 8px; padding: 2px 6px;
+  border-radius: 9px; margin-right: 3px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .4px;
 }
+.badge-excellent { background: #00897B; color:#fff; }
+.badge-good { background: #1565C0; color:#fff; }
+.badge-average { background: #E65100; color:#fff; }
+.badge-poor { background: #B71C1C; color:#fff; }
 
-.badge-excellent { background: var(--green); color: white; }
-.badge-good { background: var(--blue3); color: white; }
-.badge-average { background: var(--amber); color: white; }
-.badge-poor { background: var(--red); color: white; }
-
-/* ─── SLIDESHOW MAIN AREA ─── */
+/* ─── MAIN WRAPPER ─── */
 .slideshow-main-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
   position: relative;
+  z-index: 2;
 }
 
-/* ─── SLIDESHOW HEADER ─── */
+/* ─── HEADER ─── */
 .slideshow-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
-  background: rgba(255,255,255,.05);
-  border-bottom: 1px solid rgba(255,255,255,.1);
+  padding: 16px 28px;
+  background: rgba(0,0,0,.25);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,.07);
 }
 
-.slideshow-logo {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
+.slideshow-logo { display: flex; align-items: center; gap: 14px; }
 .slideshow-logo-icon {
-  width: 48px;
-  height: 48px;
-  background: var(--blue3);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
-  box-shadow: 0 4px 16px rgba(33,150,243,.4);
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, #1565C0, #2196F3);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff;
+  box-shadow: 0 4px 14px rgba(33,150,243,.4);
 }
+.slideshow-logo-text div:first-child { font-size: 17px; font-weight: 700; color: #fff; line-height: 1; }
+.slideshow-logo-text div:last-child { font-size: 11px; color: rgba(255,255,255,.55); font-weight: 500; margin-top: 2px; }
 
-.slideshow-logo-text div:first-child {
-  font-size: 20px;
-  font-weight: 700;
-  color: white;
-  line-height: 1;
-}
-
-.slideshow-logo-text div:last-child {
-  font-size: 12px;
-  color: rgba(255,255,255,.7);
-  font-weight: 500;
-  margin-top: 2px;
-}
-
-.slideshow-stats {
-  display: flex;
-  gap: 32px;
-}
-
-.slideshow-stat {
-  text-align: center;
-}
-
-.slideshow-stat-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: white;
-  font-family: 'DM Mono', monospace;
-  line-height: 1;
-}
-
-.slideshow-stat-label {
-  font-size: 11px;
-  color: rgba(255,255,255,.6);
-  text-transform: uppercase;
-  letter-spacing: .8px;
-  font-weight: 600;
-  margin-top: 4px;
-}
+.slideshow-stats { display: flex; gap: 28px; }
+.slideshow-stat { text-align: center; }
+.slideshow-stat-value { font-size: 20px; font-weight: 700; color: #fff; font-family:'DM Mono',monospace; line-height: 1; }
+.slideshow-stat-label { font-size: 10px; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .7px; font-weight: 600; margin-top: 3px; }
 
 /* ─── ANNOUNCEMENTS ─── */
 .slideshow-announcements {
-  background: var(--green);
-  padding: 12px 30px;
-  overflow: hidden;
-  position: relative;
+  background: linear-gradient(90deg, #0F3464, #1565C0, #0F3464);
+  background-size: 200% 100%;
+  padding: 10px 28px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  animation: shiftGrad 8s linear infinite;
 }
-
 .announcement-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  animation: slideInAnnouncement 0.5s ease;
+  display: flex; align-items: center; gap: 10px;
+  color: rgba(255,255,255,.9); font-size: 13px; font-weight: 600;
 }
+.announcement-icon { font-size: 16px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-4px)} 60%{transform:translateY(-2px)} }
+@keyframes slideInAnnouncement { from{transform:translateX(-100%);opacity:0} to{transform:none;opacity:1} }
+.announcement-item { animation: slideInAnnouncement .5s ease; }
 
-.announcement-icon {
-  font-size: 18px;
-  animation: bounce 2s infinite;
-}
-
-@keyframes slideInAnnouncement {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-5px); }
-  60% { transform: translateY(-3px); }
-}
-
-/* ─── MAIN SLIDESHOW ─── */
+/* ─── MAIN SLIDE AREA ─── */
 .slideshow-main {
   flex: 1;
   display: flex;
@@ -681,522 +591,172 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
   justify-content: center;
   position: relative;
   overflow: hidden;
-  min-height: 400px;
+  min-height: 380px;
 }
 
+/* ─── WELCOME SCREEN ─── */
 .slideshow-welcome {
   text-align: center;
-  color: white;
+  color: #fff;
   padding: 40px;
+  max-width: 640px;
 }
-
-.welcome-icon {
-  font-size: 64px;
-  margin-bottom: 20px;
-  animation: pulse 2s infinite;
-}
-
-.slideshow-welcome h2 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  color: white;
-}
-
-.slideshow-welcome p {
-  font-size: 16px;
-  color: rgba(255,255,255,.7);
-  margin-bottom: 32px;
-}
-
-.welcome-stats {
-  display: flex;
-  justify-content: center;
-  gap: 48px;
-  margin-bottom: 32px;
-}
-
-.welcome-stat {
-  text-align: center;
-}
-
-.welcome-stat-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--blue3);
-  font-family: 'DM Mono', monospace;
-  line-height: 1;
-}
-
-.welcome-stat-label {
-  font-size: 12px;
-  color: rgba(255,255,255,.6);
-  margin-top: 6px;
-}
-
+.welcome-icon { font-size: 56px; margin-bottom: 18px; }
+.slideshow-welcome h2 { font-size: 28px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+.slideshow-welcome p { font-size: 15px; color: rgba(255,255,255,.6); margin-bottom: 28px; }
+.welcome-stats { display: flex; justify-content: center; gap: 44px; margin-bottom: 28px; }
+.welcome-stat { text-align: center; }
+.welcome-stat-value { font-size: 26px; font-weight: 700; color: #42A5F5; font-family:'DM Mono',monospace; line-height:1; }
+.welcome-stat-label { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 5px; }
 .welcome-start-btn {
-  background: var(--green);
-  color: white;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(0,137,123,.3);
+  background: linear-gradient(135deg, #1565C0, #2196F3);
+  color: #fff; border: none; padding: 14px 36px;
+  border-radius: 10px; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+  box-shadow: 0 4px 18px rgba(33,150,243,.35);
 }
-
-.welcome-start-btn:hover {
-  background: #00695C;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,137,123,.4);
-}
+.welcome-start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(33,150,243,.5); }
 
 /* ─── INSPECTOR SLIDE ─── */
 .inspector-slide {
   display: none;
-  padding: 40px;
-  color: white;
-  text-align: center;
-  animation-duration: 0.8s;
+  padding: 32px 40px;
+  color: #fff;
+  width: 100%;
+  animation-duration: .6s;
   animation-fill-mode: both;
 }
+.inspector-slide.active { display: block; }
 
-.inspector-slide.active {
-  display: block;
-}
-
-.inspector-slide-header {
-  margin-bottom: 32px;
-}
-
-.inspector-slide-title {
-  font-size: 24px;
-  font-weight: 700;
-    color: white;
-  margin-bottom: 8px;
-}
-
-.inspector-slide-subtitle {
-  font-size: 14px;
-  color: rgba(255,255,255,0.7);
-  font-weight: 500;
-}
+.inspector-slide-header { margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,.07); padding-bottom: 14px; }
+.inspector-slide-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: 1.2px; }
+.inspector-slide-subtitle { font-size: 11px; color: rgba(255,255,255,.35); margin-top: 3px; }
 
 .inspector-slide-main {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  gap: 48px;
+  grid-template-columns: 220px 1fr 200px;
+  gap: 36px;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-/* ─── AVATAR SECTION ─── */
-.inspector-slide-avatar {
-  text-align: center;
-}
-
+/* Avatar */
+.inspector-slide-avatar { text-align: center; }
 .inspector-slide-avatar-circle {
-  width: 120px;
-  height: 120px;
+  width: 100px; height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue3), var(--blue4));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 36px;
-  font-weight: 700;
-  color: white;
-  margin: 0 auto 16px;
-  box-shadow: 0 8px 32px rgba(33,150,243,0.4);
-  border: 4px solid rgba(255,255,255,0.2);
+  background: linear-gradient(135deg, #1565C0, #42A5F5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 700; color: #fff;
+  margin: 0 auto 12px;
+  box-shadow: 0 6px 24px rgba(33,150,243,.35);
+  border: 3px solid rgba(255,255,255,.15);
 }
+.inspector-slide-name { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 5px; }
 
-.inspector-slide-name {
-  font-size: 24px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 8px;
-}
-
-/* ─── INFO SECTION ─── */
-.inspector-slide-info {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-
+/* Stats grid */
+.inspector-slide-info { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
 .inspector-slide-stat {
-  background: rgba(255,255,255,0.1);
-  padding: 24px;
-  border-radius: 16px;
+  background: rgba(255,255,255,.05);
+  padding: 18px 14px;
+  border-radius: 12px;
   text-align: center;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow: 0 4px 16px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.06);
 }
+.inspector-slide-stat-value { font-size: 22px; font-weight: 700; color: #fff; font-family:'DM Mono',monospace; line-height:1; margin-bottom: 6px; }
+.inspector-slide-stat-label { font-size: 10px; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .9px; font-weight: 600; }
 
-.inspector-slide-stat:hover {
-  background: rgba(255,255,255,0.15);
-  transform: translateY(-4px);
-}
-
-.inspector-slide-stat-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: white;
-  font-family: 'DM Mono', monospace;
-  line-height: 1;
-  margin-bottom: 8px;
-}
-
-.inspector-slide-stat-label {
-  font-size: 12px;
-  color: rgba(255,255,255,0.7);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-}
-
-/* ─── PERFORMANCE SECTION ─── */
-.inspector-slide-performance {
-  text-align: center;
-}
-
-.performance-circle {
-  position: relative;
-  width: 160px;
-  height: 160px;
-  margin: 0 auto 20px;
-}
-
-.performance-circle svg {
-  width: 160px;
-  height: 160px;
-  transform: rotate(-90deg);
-}
-
-.performance-circle-bg {
-  fill: none;
-  stroke: rgba(255,255,255,0.1);
-  stroke-width: 8;
-}
-
-.performance-circle-progress {
-  fill: none;
-  stroke-width: 8;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1s ease;
-}
-
-.performance-circle-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.performance-circle-value {
-  font-size: 32px;
-  font-weight: 700;
-  font-family: 'DM Mono', monospace;
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.performance-circle-label {
-  font-size: 12px;
-  color: rgba(255,255,255,0.7);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-}
-
+/* Performance circle */
+.inspector-slide-performance { text-align: center; }
+.performance-circle { position: relative; width: 150px; height: 150px; margin: 0 auto 14px; }
+.performance-circle svg { width: 150px; height: 150px; transform: rotate(-90deg); }
+.performance-circle-bg { fill: none; stroke: rgba(255,255,255,.08); stroke-width: 9; }
+.performance-circle-progress { fill: none; stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+.performance-circle-text { position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align: center; }
+.performance-circle-value { font-size: 28px; font-weight: 700; font-family:'DM Mono',monospace; line-height:1; margin-bottom:3px; }
+.performance-circle-label { font-size: 10px; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .8px; font-weight: 600; }
 .performance-level {
-  background: var(--green);
-  color: white;
-  padding: 8px 24px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  padding: 6px 18px; border-radius: 16px;
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .8px;
   display: inline-block;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
-/* ─── SLIDESHOW FOOTER ─── */
-.slideshow-footer {
-  background: rgba(0,0,0,0.3);
-  padding: 16px 30px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-.slideshow-progress {
-  background: rgba(255,255,255,0.1);
-  height: 4px;
-  border-radius: 2px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-
-.slideshow-progress-bar {
-  background: var(--green);
-  height: 100%;
-  width: 0%;
-  transition: width 0.1s linear;
-  border-radius: 2px;
-}
-
-.slideshow-footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: rgba(255,255,255,0.8);
-  font-size: 12px;
-}
-
-.slideshow-footer-center {
-  font-weight: 600;
-}
-
-/* ─── ANIMATIONS ─── */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-@keyframes slideInLeft {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes zoomIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes flipIn {
-  from { transform: rotateY(-90deg); opacity: 0; }
-  to { transform: rotateY(0); opacity: 1; }
-}
-
-/* ─── PERFORMANCE COLORS ─── */
-.perf-excellent .inspector-slide-stat-value,
-.perf-excellent .performance-circle-value {
-  color: #4CAF50;
-}
-
-.perf-excellent .performance-circle-progress {
-  stroke: #4CAF50;
-}
-
-.perf-excellent .performance-level {
-  background: #4CAF50;
-  color: white;
-}
-
-.perf-good .inspector-slide-stat-value,
-.perf-good .performance-circle-value {
-  color: #2196F3;
-}
-
-.perf-good .performance-circle-progress {
-  stroke: #2196F3;
-}
-
-.perf-good .performance-level {
-  background: #2196F3;
-  color: white;
-}
-
-.perf-average .inspector-slide-stat-value,
-.perf-average .performance-circle-value {
-  color: #FF9800;
-}
-
-.perf-average .performance-circle-progress {
-  stroke: #FF9800;
-}
-
-.perf-average .performance-level {
-  background: #FF9800;
-  color: white;
-}
-
-.perf-poor .inspector-slide-stat-value,
-.perf-poor .performance-circle-value {
-  color: var(--red);
-}
-
-.perf-poor .performance-circle-progress {
-  stroke: var(--red);
-}
-
-.perf-poor .performance-level {
-  background: var(--red);
-  color: white;
-}
-
-/* ──────────────────────────────────────────────────────── */
-/* GELİŞTİRİLMİŞ CANLI GÖSTERİM — EKSTRA STILLER          */
-/* ──────────────────────────────────────────────────────── */
-
-/* Gradient arka plan animasyonu */
-.slideshow-container {
-  background: linear-gradient(135deg, #0B1F3A 0%, #102848 40%, #0d2247 100%) !important;
-}
-
-.slideshow-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 20% 50%, rgba(33,150,243,.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 80% 20%, rgba(0,137,123,.06) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Countdown ring - slayt geçiş zamanlayıcısı */
-.countdown-ring-wrap {
-  position: absolute;
-  bottom: 68px;
-  right: 28px;
-  z-index: 10;
-  display: none;
-}
-.slideshow-container.running .countdown-ring-wrap { display: block; }
-
-.countdown-ring {
-  width: 44px;
-  height: 44px;
-}
-
-.countdown-ring circle {
-  fill: none;
-  stroke-width: 4;
-}
-.countdown-ring .ring-bg { stroke: rgba(255,255,255,.12); }
-.countdown-ring .ring-fill {
-  stroke: #4CAF50;
-  stroke-linecap: round;
-  transform-origin: center;
-  transform: rotate(-90deg);
-  transition: stroke-dashoffset 0.1s linear, stroke 0.3s;
-}
-.countdown-ring-num {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: rgba(255,255,255,.85);
-  font-family: 'DM Mono', monospace;
-}
-
-/* Inspector slayt → daha geniş istatistik kartlar */
-.inspector-slide-stat {
-  background: rgba(255,255,255,.07) !important;
-  border: 1px solid rgba(255,255,255,.12) !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.1);
-}
-
-/* Klasman breakdown alanı */
+/* Klasman rows */
 .slide-klasman-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 12px;
-  background: rgba(255,255,255,.06);
-  border-radius: 8px;
-  margin-bottom: 6px;
-  border: 1px solid rgba(255,255,255,.08);
-  transition: background .15s;
-}
-.slide-klasman-row:hover { background: rgba(255,255,255,.1); }
-.slide-klasman-name { font-size: 12px; color: rgba(255,255,255,.75); flex: 1; }
-.slide-klasman-adet { font-size: 11px; color: rgba(255,255,255,.5); }
-.slide-klasman-perf {
-  font-size: 13px; font-weight: 700;
-  font-family: 'DM Mono', monospace;
-  min-width: 50px; text-align: right;
-}
-.slide-klasman-bar {
-  width: 60px; height: 5px;
-  background: rgba(255,255,255,.1);
-  border-radius: 3px; overflow: hidden;
-}
-.slide-klasman-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width .6s ease;
-}
-
-/* Sidebar yenilenmiş kart */
-.top-inspector-card {
-  background: rgba(255,255,255,.07) !important;
-  border: 1px solid rgba(255,255,255,.1) !important;
-  backdrop-filter: blur(12px);
-}
-
-/* Duyuru şeridi gradient */
-.slideshow-announcements {
-  background: linear-gradient(90deg, #00695C 0%, #00897B 50%, #00695C 100%) !important;
-  background-size: 200% 100% !important;
-  animation: shiftGrad 6s linear infinite;
-}
-@keyframes shiftGrad {
-  0%   { background-position: 0% 0%; }
-  100% { background-position: 200% 0%; }
-}
-
-/* Floating particle effect */
-.slide-particles {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-.slide-particle {
-  position: absolute;
-  border-radius: 50%;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
   background: rgba(255,255,255,.04);
+  border-radius: 7px; margin-bottom: 5px;
+  border: 1px solid rgba(255,255,255,.07);
+}
+.slide-klasman-name { font-size: 11px; color: rgba(255,255,255,.7); flex: 1; }
+.slide-klasman-adet { font-size: 10px; color: rgba(255,255,255,.4); }
+.slide-klasman-bar { width: 50px; height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; overflow: hidden; }
+.slide-klasman-bar-fill { height: 100%; border-radius: 2px; transition: width .6s ease; }
+.slide-klasman-perf { font-size: 12px; font-weight: 700; font-family:'DM Mono',monospace; min-width: 44px; text-align: right; }
+
+/* Performance color classes */
+.perf-excellent .inspector-slide-stat-value, .perf-excellent .performance-circle-value { color: #4CAF50; }
+.perf-excellent .performance-circle-progress { stroke: #4CAF50; }
+.perf-excellent .performance-level { background: rgba(76,175,80,.2); color: #81C784; border: 1px solid rgba(76,175,80,.3); }
+.perf-good .inspector-slide-stat-value, .perf-good .performance-circle-value { color: #42A5F5; }
+.perf-good .performance-circle-progress { stroke: #42A5F5; }
+.perf-good .performance-level { background: rgba(33,150,243,.2); color: #90CAF9; border: 1px solid rgba(33,150,243,.3); }
+.perf-average .inspector-slide-stat-value, .perf-average .performance-circle-value { color: #FFB74D; }
+.perf-average .performance-circle-progress { stroke: #FFB74D; }
+.perf-average .performance-level { background: rgba(255,152,0,.2); color: #FFB74D; border: 1px solid rgba(255,152,0,.3); }
+.perf-poor .inspector-slide-stat-value, .perf-poor .performance-circle-value { color: #EF9A9A; }
+.perf-poor .performance-circle-progress { stroke: #EF5350; }
+.perf-poor .performance-level { background: rgba(198,40,40,.2); color: #EF9A9A; border: 1px solid rgba(198,40,40,.3); }
+
+/* ─── FOOTER ─── */
+.slideshow-footer {
+  background: rgba(0,0,0,.3);
+  padding: 10px 28px 14px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.slideshow-progress { background: rgba(255,255,255,.07); height: 3px; border-radius: 2px; margin-bottom: 10px; overflow: hidden; }
+.slideshow-progress-bar { background: linear-gradient(90deg, #1565C0, #42A5F5); height: 100%; width: 0%; transition: width .1s linear; }
+.slideshow-footer-content { display: flex; justify-content: space-between; align-items: center; color: rgba(255,255,255,.7); font-size: 12px; }
+.slideshow-footer-center { font-weight: 700; color: #fff; font-family:'DM Mono',monospace; background: rgba(255,255,255,.12); padding: 4px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,.15); font-size: 13px; }
+
+/* ─── COUNTDOWN RING ─── */
+.countdown-ring-wrap { position: absolute; bottom: 60px; right: 24px; z-index: 10; display: none; }
+.slideshow-container.running .countdown-ring-wrap { display: block; }
+.countdown-ring { width: 40px; height: 40px; }
+.countdown-ring circle { fill: none; stroke-width: 4; }
+.countdown-ring .ring-bg { stroke: rgba(255,255,255,.1); }
+.countdown-ring .ring-fill { stroke: #42A5F5; stroke-linecap: round; transform-origin: center; transform: rotate(-90deg); transition: stroke-dashoffset .1s linear, stroke .3s; }
+.countdown-ring-num { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: rgba(255,255,255,.8); font-family:'DM Mono',monospace; }
+
+/* ─── PARTICLES ─── */
+.slide-particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.slide-particle {
+  position: absolute; border-radius: 50%;
+  background: rgba(33,150,243,.04);
   animation: floatParticle linear infinite;
 }
 @keyframes floatParticle {
-  0%   { transform: translateY(100%) scale(0.5); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
+  0% { transform: translateY(100%) scale(.5); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
   100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
 }
 
-/* Slide slide-in efekti geliştirme */
-.inspector-slide.anim-slide  { animation: slideAnim .5s cubic-bezier(.22,1,.36,1); }
-.inspector-slide.anim-fade   { animation: fadeAnim .5s ease; }
-.inspector-slide.anim-zoom   { animation: zoomAnim .45s cubic-bezier(.34,1.56,.64,1); }
-.inspector-slide.anim-flip   { animation: flipAnim .5s ease; }
-
-@keyframes slideAnim { from { opacity:0; transform: translateX(60px) scale(.97); } to { opacity:1; transform:none; } }
-@keyframes fadeAnim  { from { opacity:0; } to { opacity:1; } }
-@keyframes zoomAnim  { from { opacity:0; transform:scale(.88); } to { opacity:1; transform:none; } }
-@keyframes flipAnim  { from { opacity:0; transform:rotateY(-25deg) scale(.95); } to { opacity:1; transform:none; } }
-
-/* Header geliştirme */
-.slideshow-header {
-  background: rgba(0,0,0,.25) !important;
-  backdrop-filter: blur(8px);
-}
+/* ─── ANIMATIONS ─── */
+.inspector-slide.anim-slide { animation: slideAnim .5s cubic-bezier(.22,1,.36,1); }
+.inspector-slide.anim-fade  { animation: fadeAnim .5s ease; }
+.inspector-slide.anim-zoom  { animation: zoomAnim .45s cubic-bezier(.34,1.56,.64,1); }
+.inspector-slide.anim-flip  { animation: flipAnim .5s ease; }
+@keyframes slideAnim { from{opacity:0;transform:translateX(80px) scale(.95)} to{opacity:1;transform:none} }
+@keyframes fadeAnim  { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:none} }
+@keyframes zoomAnim  { from{opacity:0;transform:scale(.82)} to{opacity:1;transform:none} }
+@keyframes flipAnim  { from{opacity:0;transform:rotateY(-30deg) scale(.93)} to{opacity:1;transform:none} }
+@keyframes shiftGrad { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.65} }
 
 /* ──────────────────────────────────────────────────────── */
 /* RESPONSIVE ─── */
@@ -1406,7 +966,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
     <div class="topbar-logo">LC</div>
     <div class="topbar-title">
       Inspection Performans
-      <small>LC Waikiki — Kalite Kontrol</small>
+      <small>Kalite Kontrol</small>
     </div>
   </div>
   <div class="topbar-right">
@@ -1760,7 +1320,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
             <label style="margin:0;font-size:11px;color:var(--muted);white-space:nowrap">Hedef %</label>
             <input type="number" id="inp-verimlilik" min="1" max="200" value="100"
               style="width:80px;font-size:13px;font-weight:600;text-align:center;border:1.5px solid var(--amber);border-radius:7px;padding:6px 8px"
-              onchange="performansHesapla()" oninput="performansHesapla()">
+              onchange="onHedefChange()" oninput="onHedefChange()">
           </div>
           <div style="font-size:11px;color:var(--muted2);flex:1;min-width:200px">
             Hedef verimlilik <strong>%100</strong> = tam kapasitede çalışma.
@@ -1787,33 +1347,41 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 
     <!-- ══════════ CANLI GÖSTERİM ══════════ -->
     <div id="page-canli" class="page">
-      <div class="ph">
-        <div class="ph-left">
-          <h1>🎬 Canlı Performans Gösterimi</h1>
-          <p>Inspector performanslarını büyük ekranda canlı olarak izleyin</p>
+      <!-- Kurumsal Başlık Çubuğu -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding:16px 22px;background:var(--white);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--shadow)">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#1565C0,#2196F3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;box-shadow:0 3px 12px rgba(33,150,243,.3)">LC</div>
+          <div>
+            <div style="font-size:17px;font-weight:700;color:var(--navy);letter-spacing:-.3px">Canlı Performans Gösterimi</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">Inspector performanslarını büyük ekranda yayınlayın · HD video export</div>
+          </div>
         </div>
-        <div class="ph-buttons">
-          <button class="btn" onclick="toggleFullscreen()">
-            🖥️ Tam Ekran
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn" onclick="toggleFullscreen()" style="gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            Tam Ekran
           </button>
-          <button class="btn btn-success" onclick="startVideoRecording()" id="video-rec-btn" title="Slayt gösterimini video olarak kaydet">
-            🎥 Video Oluştur
+          <button class="btn btn-success" onclick="startVideoRecording()" id="video-rec-btn" style="gap:6px" title="HD 1920×1080 video oluştur">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+            HD Video Oluştur
           </button>
-          <button class="btn btn-primary" onclick="toggleSlideshow()" id="slideshow-btn">
-            ▶️ Gösterimi Başlat
+          <button class="btn btn-primary" onclick="toggleSlideshow()" id="slideshow-btn" style="gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            Gösterimi Başlat
           </button>
         </div>
       </div>
 
       <!-- Kontrol Paneli -->
-      <div class="card" id="canli-controls">
+      <div class="card" id="canli-controls" style="margin-bottom:16px">
         <div class="card-header">
-          <h2>🎮 Kontrol Paneli</h2>
+          <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Yayın Ayarları</h2>
+          <div style="font-size:11px;color:var(--muted)">Gösterimi başlatmadan önce yapılandırın</div>
         </div>
         <div class="card-body">
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: end;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:end">
             <div>
-              <label>Slayt Süresi</label>
+              <label>⏱ Slayt Süresi</label>
               <select id="slide-duration" onchange="updateSlideDuration()">
                 <option value="3000">3 saniye</option>
                 <option value="5000" selected>5 saniye</option>
@@ -1823,7 +1391,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
               </select>
             </div>
             <div>
-              <label>Görüntüleme Modu</label>
+              <label>👁 Görüntüleme Modu</label>
               <select id="display-mode" onchange="updateDisplayMode()">
                 <option value="all">Tüm Inspectorler</option>
                 <option value="top5">En İyi 5</option>
@@ -1832,7 +1400,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
               </select>
             </div>
             <div>
-              <label>Animasyon Efekti</label>
+              <label>✨ Geçiş Efekti</label>
               <select id="animation-effect" onchange="updateAnimationEffect()">
                 <option value="slide" selected>Kaydırma</option>
                 <option value="fade">Solma</option>
@@ -1840,10 +1408,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
                 <option value="flip">Çevirme</option>
               </select>
             </div>
-            <div>
-              <button class="btn btn-warning" onclick="resetSlideshow()">
-                🔄 Sıfırla
-              </button>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-warning" onclick="resetSlideshow()" style="flex:1">↺ Sıfırla</button>
             </div>
           </div>
         </div>
@@ -1886,7 +1452,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
             <div class="slideshow-logo">
               <div class="slideshow-logo-icon">LC</div>
               <div class="slideshow-logo-text">
-                <div>LC Waikiki</div>
+                <div>INSPECTION</div>
                 <div>Inspection Performance</div>
               </div>
             </div>
@@ -1931,7 +1497,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
                 </div>
               </div>
               <button class="welcome-start-btn" onclick="toggleSlideshow()">
-                ▶️ Gösterimi Başlat
+                ▶ Gösterimi Başlat
               </button>
             </div>
           </div>
@@ -1946,7 +1512,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
                 <span id="slide-counter">Gösterim başlatılmadı</span>
               </div>
               <div class="slideshow-footer-center">
-                <span id="slide-title">LC Waikiki Inspection Performance Dashboard</span>
+                <span id="slide-title"> Inspection Performance Dashboard</span>
               </div>
               <div class="slideshow-footer-right">
                 <span id="slide-date">--</span>
@@ -2184,6 +1750,7 @@ async function autoFetchOnStartup() {
   saveData();
   updateSidebar();
   renderDashboard();
+  renderPerfTabloFromData();
   renderTopInspectors();
   showStartupBanner(`✅ Sheets senkronizasyonu tamamlandı (${klasmanlar.length} klasman, ${performansData.length} inspector)`, 'success');
   console.log('✅ Otomatik yükleme tamamlandı');
@@ -2726,7 +2293,7 @@ SHEET_NAME = 'Klasmanlar'      ← Sekme adı (değiştirmeye gerek yok)</div>
           <ol style="font-size:11px;color:var(--muted);line-height:2;padding-left:18px">
             <li>Apps Script editöründe: <strong>Dağıt → Yeni Dağıtım</strong></li>
             <li>Tür: <strong>Web uygulaması</strong></li>
-            <li>Açıklama: <em>LC Waikiki Klasman Sync v1</em></li>
+            <li>Açıklama: <em> Klasman Sync v1</em></li>
             <li>Farklı çalıştır: <strong>Ben (hesabınız)</strong></li>
             <li>Erişimi olan: <strong>Herkes</strong></li>
             <li><strong>Dağıt</strong>'a tıklayın → Google hesabı izni isteyecek, onaylayın</li>
@@ -3096,6 +2663,9 @@ function showPage(id, navEl){
     renderDashboard();
   } else if(id === 'canli') {
     initCanliPage();
+  } else if(id === 'performans') {
+    renderPerfTabloFromData();
+    autoFetchPerfIfNeeded();
   }
 }
 
@@ -3104,6 +2674,14 @@ function getPerformanceClass(performans) {
   if (performans >= 85) return 'perf-good';
   if (performans >= 70) return 'perf-average';
   return 'perf-poor';
+}
+
+// Gösterim için kullanılacak performans değeri:
+// Eğer verimlilikPerf varsa (Düz. Performans) onu, yoksa genelHizPerf'i döner
+function getDispPerf(inspector) {
+  return (inspector.verimlilikPerf !== null && inspector.verimlilikPerf !== undefined)
+    ? inspector.verimlilikPerf
+    : (inspector.genelHizPerf ?? 0);
 }
 
 function getProgressColor(performans) {
@@ -3135,22 +2713,27 @@ function formatNumber(num) {
 // ────────────────────────────
 function updateSummaryStats(inspectors) {
   const total = inspectors.length;
-  const excellent = inspectors.filter(i => (i.genelHizPerf ?? 0) >= 95).length;
+  // Özet istatistikler için Düz. Performans (verimlilikPerf) kullan
+  const getPerfVal = (i) => i.verimlilikPerf !== null && i.verimlilikPerf !== undefined
+    ? i.verimlilikPerf
+    : (i.genelHizPerf ?? 0);
+
+  const excellent = inspectors.filter(i => getPerfVal(i) >= 95).length;
   const good = inspectors.filter(i => {
-    const p = i.genelHizPerf ?? 0;
+    const p = getPerfVal(i);
     return p >= 85 && p < 95;
   }).length;
   const average = inspectors.filter(i => {
-    const p = i.genelHizPerf ?? 0;
+    const p = getPerfVal(i);
     return p >= 70 && p < 85;
   }).length;
-  const poor = inspectors.filter(i => (i.genelHizPerf ?? 0) < 70).length;
+  const poor = inspectors.filter(i => getPerfVal(i) < 70).length;
 
   const validPerformances = inspectors.filter(i => 
-    i.genelHizPerf !== null && i.genelHizPerf !== undefined
+    i.verimlilikPerf !== null && i.verimlilikPerf !== undefined || i.genelHizPerf !== null && i.genelHizPerf !== undefined
   );
   const avgPerformans = validPerformances.length > 0 
-    ? Math.round(validPerformances.reduce((sum, i) => sum + i.genelHizPerf, 0) / validPerformances.length)
+    ? Math.round(validPerformances.reduce((sum, i) => sum + getPerfVal(i), 0) / validPerformances.length)
     : 0;
 
   const avgWorkingDays = total > 0 
@@ -3170,6 +2753,27 @@ function updateSummaryStats(inspectors) {
 }
 
 // ────────────────────────────
+// HEDEF VERİMLİLİK DEĞİŞİNCE
+// ────────────────────────────
+function onHedefChange() {
+  // Veri varsa tablo + kartları yeniden çiz; yoksa sadece tabloyu yenile
+  if (performansData && performansData.length > 0) {
+    // verimlilikPerf değerlerini güncelle
+    const hedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+    performansData.forEach(row => {
+      row.verimlilikPerf = row.genelHizPerf !== null && row.genelHizPerf !== undefined
+        ? Math.round(row.genelHizPerf * (100 / hedef))
+        : null;
+    });
+    renderDashboard();
+    renderPerfTabloFromData();
+    updateSidebar();
+  }
+  // Tabloda da güncelle (Excel yüklüyse)
+  if (excelRows && excelRows.length > 0) performansHesapla();
+}
+
+// ────────────────────────────
 // DASHBOARD
 // ────────────────────────────
 function renderDashboard() {
@@ -3186,9 +2790,14 @@ function renderDashboard() {
     return;
   }
 
+  const hedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
   const inspectors = performansData.map(inspector => ({
     ...inspector,
-    performans: inspector.genelHizPerf ?? 0
+    performans: inspector.verimlilikPerf !== null && inspector.verimlilikPerf !== undefined
+      ? inspector.verimlilikPerf
+      : (inspector.genelHizPerf !== null && inspector.genelHizPerf !== undefined
+          ? Math.round((inspector.genelHizPerf) * (100 / hedef))
+          : 0)
   }));
 
   filteredInspectors = inspectors;
@@ -3220,9 +2829,14 @@ function filterInspectors() {
   const searchTerm = document.getElementById('inspector-search').value.toLowerCase();
   const sortOrder = document.getElementById('sort-order').value;
 
+  const hedefF = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
   let filtered = [...performansData.map(inspector => ({
     ...inspector,
-    performans: inspector.genelHizPerf ?? 0
+    performans: inspector.verimlilikPerf !== null && inspector.verimlilikPerf !== undefined
+      ? inspector.verimlilikPerf
+      : (inspector.genelHizPerf !== null && inspector.genelHizPerf !== undefined
+          ? Math.round(inspector.genelHizPerf * (100 / hedefF))
+          : 0)
   }))];
 
   if (perfFilter) {
@@ -3296,10 +2910,18 @@ function renderInspectorCards() {
   const endIndex = startIndex + DASHBOARD_PER_PAGE;
   const currentPageInspectors = filteredInspectors.slice(startIndex, endIndex);
 
+  // Hedef verimlilik değerini oku
+  const currentHedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+
   const cards = currentPageInspectors.map(inspector => {
-    const performansVal = inspector.genelHizPerf ?? 0;
+    // Düz. Performans = Ham Performans × (100 / Hedef%) — kartlarda bu gösterilir
+    const hamPerf = inspector.genelHizPerf;
+    const duzPerf = hamPerf !== null && hamPerf !== undefined
+      ? Math.round(hamPerf * (100 / currentHedef))
+      : null;
+    const performansVal = duzPerf ?? 0;
     const performansClass = getPerformanceClass(performansVal);
-    const performansText = performansVal !== null && performansVal !== undefined ? performansVal + '%' : '—';
+    const performansText = duzPerf !== null ? duzPerf + '%' : '—';
     const progressAngle = Math.min(360, (performansVal / 100) * 360);
     const progressColor = getProgressColor(performansVal);
     
@@ -3356,7 +2978,8 @@ function renderInspectorCards() {
             <div class="circular-progress" style="--progress-angle: ${progressAngle}deg; --progress-color: ${progressColor};">
               <div class="circular-progress-text ${performansClass}">${performansText}</div>
             </div>
-            <div style="font-size:9px;color:var(--muted2);margin-top:4px;font-weight:600">📅 Performans</div>
+            <div style="font-size:9px;color:var(--muted2);margin-top:4px;font-weight:600">⚡ Düz. Performans</div>
+            <div style="font-size:8px;color:var(--amber);margin-top:1px;font-weight:600">Hedef %${currentHedef}</div>
             <div style="font-size:8px;color:var(--muted2);margin-top:1px">${performansSeviyesi}</div>
           </div>
         </div>
@@ -4119,6 +3742,291 @@ function fillColSelects(){
   if (mesaiCol && document.getElementById('col-mesai')) document.getElementById('col-mesai').value = mesaiCol;
 }
 
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+// PERFORMANS TABLOSUNU localStorage/Sheets VERİSİNDEN RENDER ET
+// ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+// Sheets'ten performans verisini çek ve tabloyu güncelle (performans sekmesi açıkken arka planda)
+let _perfFetchInProgress = false;
+async function autoFetchPerfIfNeeded() {
+  if (_perfFetchInProgress) return;
+  const url = appConfig.sheetsWebAppUrl;
+  const token = appConfig.sheetsApiToken;
+  if (!url || !token) return;
+
+  _perfFetchInProgress = true;
+  try {
+    const data = await jsonpFetch(url, { action: 'getPerformansRaw', token });
+    if (data.status === 'ok' && Array.isArray(data.performansData) && data.performansData.length > 0) {
+      performansData = restorePerformansDateObjects(data.performansData);
+      // verimlilikPerf değerlerini hedef bazında güncelle
+      const hedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+      performansData.forEach(row => {
+        if (row.verimlilikPerf === undefined || row.verimlilikPerf === null) {
+          row.verimlilikPerf = row.genelHizPerf !== null && row.genelHizPerf !== undefined
+            ? Math.round(row.genelHizPerf * (100 / hedef)) : null;
+        }
+      });
+      saveData();
+      renderPerfTabloFromData();
+      renderDashboard();
+      updateSidebar();
+      showSuccessMessage('✅ Sheets\'ten ' + performansData.length + ' inspector verisi güncellendi', 3000);
+    }
+  } catch(e) {
+    console.warn('Performans oto-çekme hatası:', e.message);
+  }
+  _perfFetchInProgress = false;
+}
+
+// ─── PERFORMANS TABLOSU SAYFALAMA STATE ───
+let _perfPage = 1;
+const _PERF_PER_PAGE = 20;
+
+// performansData array'inden Inspector Performans Raporu tablosunu render eder
+// Excel yüklenmeden, sadece kayıtlı/çekilen veriden tablo gösterir
+function renderPerfTabloFromData(page) {
+  const tablo = document.getElementById('perf-tablo');
+  const empty = document.getElementById('perf-empty');
+  if (!tablo || !empty) return;
+
+  if (!performansData || !performansData.length) {
+    tablo.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  if (page !== undefined) _perfPage = page;
+
+  const hedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+
+  performansData.forEach(row => {
+    if (row.verimlilikPerf === undefined || row.verimlilikPerf === null) {
+      row.verimlilikPerf = row.genelHizPerf !== null && row.genelHizPerf !== undefined
+        ? Math.round(row.genelHizPerf * (100 / hedef)) : null;
+    }
+  });
+
+  const fmtSure = (sn) => {
+    if (!sn) return '—';
+    const s = Math.round(sn);
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sc = s % 60;
+    return h > 0
+      ? `${h}s ${String(m).padStart(2,'0')}d`
+      : `${m}d ${String(sc).padStart(2,'0')}sn`;
+  };
+
+  const ortPerformans = performansData.length > 0
+    ? Math.round(performansData.reduce((s, r) => s + (r.genelHizPerf ?? 0), 0) / performansData.length) : 0;
+  const ortVPerf = performansData.length > 0
+    ? Math.round(performansData.reduce((s, r) => s + (r.genelHizPerf !== null && r.genelHizPerf !== undefined ? Math.round(r.genelHizPerf * (100 / hedef)) : 0), 0) / performansData.length) : 0;
+  const ortalamaGun = performansData.length > 0
+    ? Math.round(performansData.reduce((s, r) => s + (r.gunSayisi || 0), 0) / performansData.length) : 0;
+
+  const vOrtEl = document.getElementById('verimlilik-ort');
+  if (vOrtEl) {
+    vOrtEl.textContent = ortVPerf + '%';
+    vOrtEl.style.color = ortVPerf >= 95 ? 'var(--green)' : ortVPerf >= 85 ? 'var(--blue)' : ortVPerf >= 70 ? 'var(--amber)' : 'var(--red)';
+  }
+
+  // Sayfalama
+  const totalPages = Math.ceil(performansData.length / _PERF_PER_PAGE);
+  if (_perfPage > totalPages) _perfPage = totalPages;
+  if (_perfPage < 1) _perfPage = 1;
+  const startIdx = (_perfPage - 1) * _PERF_PER_PAGE;
+  const pageData = performansData.slice(startIdx, startIdx + _PERF_PER_PAGE);
+
+  const perfColorMap = {
+    'perf-excellent': { bg: 'linear-gradient(135deg,#E8F5E9,#F1F8E9)', accent: '#00897B', badge: '#00897B', badgeTxt: '#fff', label: 'MÜKEMMEL' },
+    'perf-good':      { bg: 'linear-gradient(135deg,#E3F2FD,#EEF7FF)', accent: '#1565C0', badge: '#1565C0', badgeTxt: '#fff', label: 'İYİ' },
+    'perf-average':   { bg: 'linear-gradient(135deg,#FFF8E1,#FFFDE7)', accent: '#F57F17', badge: '#F57F17', badgeTxt: '#fff', label: 'ORTA' },
+    'perf-poor':      { bg: 'linear-gradient(135deg,#FFEBEE,#FFF3F3)', accent: '#C62828', badge: '#C62828', badgeTxt: '#fff', label: 'DÜŞÜK' },
+  };
+
+  const kartlar = pageData.map((row, idx) => {
+    const globalIdx = startIdx + idx + 1;
+    const ini = row.ins.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase();
+    const performans = row.genelHizPerf ?? 0;
+    const performansClass = getPerformanceClass(performans);
+    const cm = perfColorMap[performansClass] || perfColorMap['perf-poor'];
+    const vPerfDisplay = row.genelHizPerf !== null && row.genelHizPerf !== undefined
+      ? Math.round(row.genelHizPerf * (100 / hedef)) : null;
+    const vPerfClass = vPerfDisplay === null ? '' : getPerformanceClass(vPerfDisplay);
+    const vcm = perfColorMap[vPerfClass] || cm;
+    const tarihDurumu = (row.tarihBasariliKayit || 0) > 0
+      ? `<span style="color:var(--green)">✅ ${row.tarihBasariliKayit}/${row.kayit}</span>`
+      : `<span style="color:var(--amber)">⚠️ Tarih yok</span>`;
+    const klasmanEntries = Object.entries(row.klasmanlar || {}).slice(0, 4);
+    const klasmanBars = klasmanEntries.map(([k, v]) => {
+      const kp = Math.round(v.hizPerf || 0);
+      const kc = kp >= 95 ? '#00897B' : kp >= 85 ? '#1565C0' : kp >= 70 ? '#F57F17' : '#C62828';
+      return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <div style="font-size:10px;color:var(--muted);width:70px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;">${k}</div>
+        <div style="flex:1;height:5px;background:var(--border2);border-radius:3px;overflow:hidden;">
+          <div style="width:${Math.min(100,kp)}%;height:100%;background:${kc};border-radius:3px;"></div>
+        </div>
+        <div style="font-size:10px;font-weight:700;color:${kc};min-width:28px;text-align:right;font-family:'DM Mono',monospace;">${kp}%</div>
+      </div>`;
+    }).join('');
+
+    // Dairesel progress
+    const pAngle = Math.min(360, Math.round((Math.min(performans, 150) / 150) * 360));
+
+    return `
+    <div style="background:${cm.bg};border:1.5px solid ${cm.accent}28;border-radius:14px;
+      box-shadow:0 3px 16px ${cm.accent}1A;transition:transform .15s,box-shadow .15s;
+      position:relative;overflow:hidden;display:flex;flex-direction:column;">
+      <!-- Top accent bar -->
+      <div style="height:4px;background:linear-gradient(90deg,${cm.accent},${cm.accent}88);border-radius:14px 14px 0 0;flex-shrink:0;"></div>
+
+      <!-- Rank badge -->
+      <div style="position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;
+        background:${cm.accent};color:#fff;display:flex;align-items:center;justify-content:center;
+        font-size:9px;font-weight:700;font-family:'DM Mono',monospace;box-shadow:0 2px 6px ${cm.accent}44;">${globalIdx}</div>
+
+      <!-- Header: avatar + isim + performans daire -->
+      <div style="padding:14px 16px 12px;display:flex;align-items:center;gap:12px;">
+        <div style="flex-shrink:0;">
+          <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,${cm.accent},${cm.accent}CC);
+            display:flex;align-items:center;justify-content:center;
+            font-size:15px;font-weight:800;color:#fff;
+            box-shadow:0 4px 12px ${cm.accent}44;border:2px solid rgba(255,255,255,.6);">
+            ${ini}
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${row.ins}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:1px;">${row.gunSayisi || 0} gün · ${tarihDurumu}</div>
+          <div style="margin-top:5px;">
+            <span style="font-size:9px;font-weight:700;background:${cm.badge};color:${cm.badgeTxt};
+              padding:2px 7px;border-radius:8px;letter-spacing:.4px;">${cm.label}</span>
+          </div>
+        </div>
+        <!-- Mini performans daire -->
+        <div style="flex-shrink:0;text-align:center;">
+          <div style="width:64px;height:64px;border-radius:50%;
+            background:conic-gradient(${cm.accent} ${pAngle}deg, #e2ecf8 0deg);
+            display:flex;align-items:center;justify-content:center;
+            box-shadow:0 2px 10px ${cm.accent}2A;">
+            <div style="width:46px;height:46px;border-radius:50%;background:#fff;
+              display:flex;flex-direction:column;align-items:center;justify-content:center;
+              box-shadow:inset 0 1px 3px rgba(0,0,0,.07);">
+              <div style="font-size:13px;font-weight:800;color:${cm.accent};font-family:'DM Mono',monospace;line-height:1;">${performans}%</div>
+              <div style="font-size:7px;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;">perf</div>
+            </div>
+          </div>
+          ${hedef !== 100 && vPerfDisplay !== null ? `
+          <div style="margin-top:4px;font-size:9px;font-weight:700;color:${vcm.accent};font-family:'DM Mono',monospace;">⚡ ${vPerfDisplay}%</div>` : ''}
+        </div>
+      </div>
+
+      <!-- Stats: 2×2 grid -->
+      <div style="padding:0 16px 10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        ${[
+          ['📦','Adet',(row.adet||0).toFixed(0)],
+          ['📋','Kayıt',row.kayit||0],
+          ['⏱','Standart',fmtSure(row.standartSure)],
+          ['🕐','Mesai',fmtSure(row.mesaiSure)]
+        ].map(([ic,lb,val])=>`
+          <div style="background:rgba(255,255,255,.75);border:1px solid var(--border2);border-radius:8px;
+            padding:7px 8px;display:flex;align-items:center;gap:7px;">
+            <span style="font-size:14px;">${ic}</span>
+            <div>
+              <div style="font-size:11px;font-weight:700;color:var(--navy);font-family:'DM Mono',monospace;line-height:1.2;">${val}</div>
+              <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;">${lb}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <!-- Klasman bars -->
+      <div style="padding:0 16px 14px;border-top:1px solid ${cm.accent}14;margin-top:2px;padding-top:10px;">
+        ${klasmanBars || `<div style="font-size:10px;color:var(--muted2);font-style:italic;text-align:center;padding:4px 0;">Klasman verisi yok</div>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Sayfalama butonları HTML
+  const pageBtns = (() => {
+    let html = '';
+    for (let p = 1; p <= totalPages; p++) {
+      const active = p === _perfPage;
+      html += `<button onclick="renderPerfTabloFromData(${p})"
+        style="min-width:30px;height:30px;border-radius:7px;border:1px solid ${active ? 'var(--blue2)' : 'var(--border)'};
+        background:${active ? 'var(--blue2)' : 'var(--white)'};color:${active ? '#fff' : 'var(--navy)'};
+        cursor:pointer;font-size:12px;font-weight:${active ? '700' : '500'};padding:0 6px;
+        transition:all .12s;">${p}</button>`;
+    }
+    return html;
+  })();
+
+  const verimlilikBaslik = hedef !== 100
+    ? `⚡ Düz. Performans <span style="font-size:9px;color:var(--amber)">(Hedef %${hedef})</span>`
+    : `⚡ Düz. Performans`;
+
+  tablo.innerHTML = `
+    <!-- RAPOR BAŞLIĞI -->
+    <div style="padding:18px 22px;border-bottom:1px solid var(--border2);background:linear-gradient(135deg,var(--lblue3) 0%,#fff 70%);">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px;">
+            📊 Inspector Performans Raporu
+            <span style="font-size:11px;font-weight:600;background:var(--blue2);color:#fff;padding:3px 10px;border-radius:99px;">${performansData.length} inspector</span>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px;display:flex;gap:16px;flex-wrap:wrap;">
+            <span>📅 Ort. Performans: <strong style="color:var(--navy)">${ortPerformans}%</strong></span>
+            <span>📆 Ort. Çalışma: <strong style="color:var(--navy)">${ortalamaGun} gün</strong></span>
+            ${hedef !== 100 ? `<span>⚡ Düz. Ort.: <strong style="color:var(--amber)">${ortVPerf}%</strong></span>` : ''}
+          </div>
+          <div style="font-size:10px;color:var(--green);margin-top:4px;">
+            ✅ Standart Süre ÷ (Gün × 7.5s) × 100
+            ${hedef !== 100 ? `&nbsp;·&nbsp; <span style="color:var(--amber)">⚡ Ham Perf × (100÷${hedef})</span>` : ''}
+          </div>
+        </div>
+        <!-- Özet stat kutuları -->
+        <div style="display:flex;gap:10px;flex-shrink:0;">
+          ${[
+            ['🏆','Mükemmel',performansData.filter(r=>(r.genelHizPerf??0)>=95).length,'var(--green)','var(--lgreen)'],
+            ['👍','İyi',performansData.filter(r=>{const p=r.genelHizPerf??0;return p>=85&&p<95}).length,'var(--blue)','var(--lblue2)'],
+            ['⚠️','Orta',performansData.filter(r=>{const p=r.genelHizPerf??0;return p>=70&&p<85}).length,'var(--amber)','var(--lamber)'],
+            ['📉','Düşük',performansData.filter(r=>(r.genelHizPerf??0)<70).length,'var(--red)','var(--lred)']
+          ].map(([ic,lb,cnt,col,bg])=>`
+            <div style="background:${bg};border:1px solid ${col}33;border-radius:10px;padding:10px 14px;text-align:center;min-width:54px;">
+              <div style="font-size:16px;">${ic}</div>
+              <div style="font-size:18px;font-weight:800;color:${col};font-family:'DM Mono',monospace;line-height:1;">${cnt}</div>
+              <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">${lb}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- KARTLAR: 3 sütunlu grid -->
+    <div style="padding:18px 22px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+      ${kartlar || '<div style="grid-column:1/-1;padding:32px;text-align:center;color:var(--muted2);">Veri yok</div>'}
+    </div>
+
+    <!-- SAYFALAMA -->
+    ${totalPages > 1 ? `
+    <div style="padding:14px 22px 18px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--offwhite);border-radius:0 0 var(--r) var(--r);">
+      <button onclick="if(_perfPage>1)renderPerfTabloFromData(_perfPage-1)"
+        ${_perfPage<=1?'disabled':''} class="pag-btn">← Önceki</button>
+      <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center;">
+        ${pageBtns}
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="pag-info">${startIdx+1}–${Math.min(startIdx+_PERF_PER_PAGE,performansData.length)} / ${performansData.length}</span>
+        <button onclick="if(_perfPage<${totalPages})renderPerfTabloFromData(_perfPage+1)"
+          ${_perfPage>=totalPages?'disabled':''} class="pag-btn">Sonraki →</button>
+      </div>
+    </div>` : ''}
+  `;
+
+  tablo.style.display = 'block';
+  empty.style.display = 'none';
+}
+
+
 function performansHesapla(){
   const tablo=document.getElementById('perf-tablo');
   const empty=document.getElementById('perf-empty');
@@ -4440,43 +4348,10 @@ function performansHesapla(){
   }
 
   const verimlilikHedef2 = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
-  const verimlilikBaslik = verimlilikHedef2 !== 100 
-    ? `⚡ Düz. Performans <span style="font-size:9px;color:var(--amber)">(Hedef %${verimlilikHedef2})</span>`
-    : `⚡ Düz. Performans`;
 
-  tablo.innerHTML=`
-    <div style="padding:14px 18px;border-bottom:1px solid var(--border2);background:linear-gradient(135deg,var(--lblue3),#fff)">
-      <div style="font-size:15px;font-weight:600;color:var(--navy)">📊 Inspector Performans Raporu</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px">
-        ${liste.length} inspector · ${toplamKayit} işlenmiş kayıt · 
-        📅 Ortalama Performans: <strong>${ortPerformans}%</strong> · 
-        Ortalama Çalışma: <strong>${ortalamaGun} gün</strong>
-        ${verimlilikHedef2 !== 100 ? ` · ⚡ Düz. Ort.: <strong style="color:var(--amber)">${ortVPerf}%</strong>` : ''}
-        ${eslesmeyenKlasmanlar.size > 0 ? ` · ${eslesmeyenKlasmanlar.size} eşleşmeyen klasman` : ''}
-      </div>
-      ${eslesmeyenKlasmanlar.size > 0 ? `
-        <div style="font-size:11px;color:var(--red);margin-top:4px">
-          ⚠️ Eşleşmeyen klasmanlar: ${Array.from(eslesmeyenKlasmanlar).slice(0, 3).join(', ')}${eslesmeyenKlasmanlar.size > 3 ? '...' : ''}
-        </div>
-      ` : ''}
-      <div style="font-size:11px;color:var(--green);margin-top:4px">
-        ✅ Performans hesaplama: Standart Süre ÷ (Gün Sayısı × 7.5 saat) × 100
-        ${verimlilikHedef2 !== 100 ? `&nbsp;·&nbsp; <span style="color:var(--amber)">⚡ Düz. Performans = Ham Performans × (100 ÷ ${verimlilikHedef2})</span>` : ''}
-      </div>
-    </div>
-    <table style="width:100%;border-collapse:collapse">
-      <thead><tr style="background:var(--lblue3)">
-        <th style="padding:12px;text-align:left;border-bottom:1px solid var(--border2)">Inspector</th>
-        <th style="padding:12px;text-align:center;border-bottom:1px solid var(--border2)">Kayıt</th>
-        <th style="padding:12px;text-align:center;border-bottom:1px solid var(--border2)">Toplam Adet</th>
-        <th style="padding:12px;text-align:center;border-bottom:1px solid var(--border2)">Standart Süre</th>
-        <th style="padding:12px;text-align:center;border-bottom:1px solid var(--border2)">Mesai Süresi</th>
-        <th style="padding:12px;text-align:center;border-bottom:1px solid var(--border2)" title="Standart süre ÷ Mesai süresi × 100">📅 Performans</th>
-        <th style="padding:12px;text-align:center;border-bottom:1px solid var(--border2);background:linear-gradient(135deg,#FFF8E1,var(--lblue3))" title="Ham Performans × (100 ÷ Hedef Verimlilik%)">${verimlilikBaslik}</th>
-        <th style="padding:12px;text-align:left;border-bottom:1px solid var(--border2)">Klasman Detayı</th>
-      </tr></thead>
-      <tbody>${satirlar}</tbody>
-    </table>`;
+  // performansData güncellendi; sayfalı kart renderını çağır
+  _perfPage = 1;
+  renderPerfTabloFromData(1);
   tablo.style.display='block';
   empty.style.display='none';
   
@@ -4504,7 +4379,7 @@ function initCanliPage() {
 function updateSlideWelcomeStats() {
   const totalInspectors = performansData.length;
   const avgPerformance = totalInspectors > 0 
-    ? Math.round(performansData.reduce((sum, i) => sum + (i.genelHizPerf ?? 0), 0) / totalInspectors)
+    ? Math.round(performansData.reduce((sum, i) => sum + getDispPerf(i), 0) / totalInspectors)
     : 0;
   
   document.getElementById('welcome-total').textContent = totalInspectors;
@@ -4535,7 +4410,7 @@ function startSlideshow() {
   document.getElementById('canli-controls').style.display = 'none';
   
   // Buton metnini değiştir
-  document.getElementById('slideshow-btn').innerHTML = '⏸️ Durdur';
+  document.getElementById('slideshow-btn').innerHTML = '⏸ Durdur';
   
   // Inspector listesini hazırla
   prepareSlideshow();
@@ -4574,7 +4449,7 @@ function stopSlideshow() {
   document.getElementById('canli-controls').style.display = 'block';
   
   // Buton metnini değiştir
-  document.getElementById('slideshow-btn').innerHTML = '▶️ Gösterimi Başlat';
+  document.getElementById('slideshow-btn').innerHTML = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px"><polygon points="5,3 19,12 5,21"/></svg> Gösterimi Başlat';
   
   // Welcome ekranını göster
   showWelcomeScreen();
@@ -4600,21 +4475,21 @@ function prepareSlideshow() {
   
   let inspectors = [...performansData];
   
-  // Görüntüleme moduna göre filtrele
+  // Görüntüleme moduna göre filtrele — Düz. Performans (getDispPerf) bazında
   switch(displayMode) {
     case 'top5':
       inspectors = inspectors
-        .sort((a, b) => (b.genelHizPerf ?? 0) - (a.genelHizPerf ?? 0))
+        .sort((a, b) => getDispPerf(b) - getDispPerf(a))
         .slice(0, 5);
       break;
     case 'excellent':
-      inspectors = inspectors.filter(i => (i.genelHizPerf ?? 0) >= 95);
+      inspectors = inspectors.filter(i => getDispPerf(i) >= 95);
       break;
     case 'good':
-      inspectors = inspectors.filter(i => (i.genelHizPerf ?? 0) >= 85);
+      inspectors = inspectors.filter(i => getDispPerf(i) >= 85);
       break;
     default: // 'all'
-      inspectors = inspectors.sort((a, b) => (b.genelHizPerf ?? 0) - (a.genelHizPerf ?? 0));
+      inspectors = inspectors.sort((a, b) => getDispPerf(b) - getDispPerf(a));
   }
   
   slideshowInspectors = inspectors;
@@ -4632,18 +4507,18 @@ function updateAnnouncements() {
   
   if (slideshowInspectors.length > 0) {
     const best = slideshowInspectors[0];
-    const bestPerf = best.genelHizPerf ?? 0;
+    const bestPerf = Math.round(getDispPerf(best));
     
     if (bestPerf >= 95) {
       announcements.push(`🏆 Ayın En İyi Inspector'ü: ${best.ins} (${bestPerf}%)`);
     }
     
-    const excellentCount = slideshowInspectors.filter(i => (i.genelHizPerf ?? 0) >= 95).length;
+    const excellentCount = slideshowInspectors.filter(i => getDispPerf(i) >= 95).length;
     if (excellentCount > 0) {
       announcements.push(`⭐ ${excellentCount} Inspector mükemmel performans gösteriyor!`);
     }
     
-    const avgPerf = Math.round(slideshowInspectors.reduce((sum, i) => sum + (i.genelHizPerf ?? 0), 0) / slideshowInspectors.length);
+    const avgPerf = Math.round(slideshowInspectors.reduce((sum, i) => sum + getDispPerf(i), 0) / slideshowInspectors.length);
     announcements.push(`📊 Ortalama Performans: ${avgPerf}% | Toplam: ${slideshowInspectors.length} Inspector`);
   }
   
@@ -4679,14 +4554,14 @@ function renderTopInspectors() {
     return;
   }
 
-  // En iyi 5 inspector'ü al (performans bazında) - 10'dan 5'e değiştirildi
+  // En iyi 5 inspector — Düz. Performans (getDispPerf) bazında sırala
   const topInspectors = [...performansData]
     .filter(i => {
-      const perf = i.genelHizPerf;
+      const perf = getDispPerf(i);
       return perf !== null && perf !== undefined && !isNaN(perf) && perf > 0;
     })
-    .sort((a, b) => (b.genelHizPerf || 0) - (a.genelHizPerf || 0))
-    .slice(0, 5); // 10'dan 5'e değiştirildi
+    .sort((a, b) => getDispPerf(b) - getDispPerf(a))
+    .slice(0, 5);
 
   console.log('🏆 Top 5 Inspectors:', topInspectors.length, 'kişi bulundu');
   
@@ -4703,7 +4578,7 @@ function renderTopInspectors() {
 
   const listHtml = topInspectors.map((inspector, index) => {
     const rank = index + 1;
-    const performans = Math.round(inspector.genelHizPerf || 0);
+    const performans = Math.round(getDispPerf(inspector));
     const performansClass = getPerformanceClass(performans);
     const ini = inspector.ins.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase();
     
@@ -4780,7 +4655,9 @@ function showSlide(index) {
   }
   
   const inspector = slideshowInspectors[index];
-  const performans = Math.round(inspector.genelHizPerf ?? 0);
+  // Düz. Performans (verimlilikPerf) varsa onu kullan, yoksa genelHizPerf
+  const performans = Math.round(getDispPerf(inspector));
+  const hamPerf = Math.round(inspector.genelHizPerf ?? 0);
   const performansClass = getPerformanceClass(performans);
   
   const performansLevel = (() => {
@@ -4792,8 +4669,8 @@ function showSlide(index) {
   
   const ini = inspector.ins.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase();
   
-  // SVG circle hesaplaması
-  const radius = 70;
+  // SVG circle hesaplaması — container 150×150px → merkez (75,75), r=65
+  const radius = 65;
   const circumference = 2 * Math.PI * radius;
   const strokeDasharray = circumference;
   const strokeDashoffset = circumference - (Math.min(performans, 150) / 150) * circumference;
@@ -4864,17 +4741,17 @@ function showSlide(index) {
         <!-- Sağ: Performans -->
         <div class="inspector-slide-performance">
           <div class="performance-circle">
-            <svg>
+            <svg viewBox="0 0 150 150">
               <circle
                 class="performance-circle-bg"
-                cx="80"
-                cy="80"
+                cx="75"
+                cy="75"
                 r="${radius}"
               />
               <circle
                 class="performance-circle-progress"
-                cx="80"
-                cy="80"
+                cx="75"
+                cy="75"
                 r="${radius}"
                 stroke-dasharray="${strokeDasharray}"
                 stroke-dashoffset="${strokeDashoffset}"
@@ -4882,12 +4759,12 @@ function showSlide(index) {
             </svg>
             <div class="performance-circle-text">
               <div class="performance-circle-value">${performans}%</div>
-              <div class="performance-circle-label">Performans</div>
+              <div class="performance-circle-label">${inspector.verimlilikPerf !== null && inspector.verimlilikPerf !== undefined ? 'Düz. Perf.' : 'Performans'}</div>
             </div>
           </div>
           <div class="performance-level">${performansLevel}</div>
-          ${inspector.verimlilikPerf !== null && inspector.verimlilikPerf !== undefined && inspector.verimlilikPerf !== inspector.genelHizPerf
-            ? `<div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.6)">⚡ Düz: <strong style="color:#FFB74D">${Math.round(inspector.verimlilikPerf)}%</strong></div>`
+          ${inspector.verimlilikPerf !== null && inspector.verimlilikPerf !== undefined && hamPerf !== performans
+            ? `<div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,.5)">Ham: <strong style="color:rgba(255,255,255,.75)">${hamPerf}%</strong></div>`
             : ''}
         </div>
       </div>
@@ -5006,7 +4883,7 @@ function updateAnimationEffect() {
 function updateSlideHeader() {
   const totalInspectors = slideshowInspectors.length;
   const avgPerformance = totalInspectors > 0 
-    ? Math.round(slideshowInspectors.reduce((sum, i) => sum + (i.genelHizPerf ?? 0), 0) / totalInspectors)
+    ? Math.round(slideshowInspectors.reduce((sum, i) => sum + getDispPerf(i), 0) / totalInspectors)
     : 0;
   
   document.getElementById('slide-total-inspectors').textContent = totalInspectors;
@@ -5207,6 +5084,7 @@ loadConfig();
 renderListe();
 renderEditor();
 renderDashboard();
+renderPerfTabloFromData();
 updateSidebar();
 
 // Şifre kapısını başlat
@@ -5346,7 +5224,7 @@ const LAST_VERSION_KEY = 'lc_inspection_last_version';
 function checkVersion() {
   const lastVersion = localStorage.getItem(LAST_VERSION_KEY);
   if (lastVersion !== APP_VERSION) {
-    console.log(`🎉 LC Waikiki Inspection Panel güncellendi! v${lastVersion || '1.0.0'} → v${APP_VERSION}`);
+    console.log(`🎉 Inspection Panel güncellendi! v${lastVersion || '1.0.0'} → v${APP_VERSION}`);
     localStorage.setItem(LAST_VERSION_KEY, APP_VERSION);
     
     if (lastVersion) {
@@ -5499,8 +5377,9 @@ const _origShowSlide = showSlide;
 
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-// VİDEO OLUŞTURMA — html2canvas + Canvas.captureStream + MediaRecorder
-// Ekran paylaşımı GEREKMİYOR: DOM → canvas → video stream → WebM
+// HD VİDEO OLUŞTURMA — Slayt başına PNG yakala → WebM video
+// Yöntem: Her slayta bekle, html2canvas ile PNG al, canvas stream üzerinden MediaRecorder'a yaz
+// Kesiklik sorunu giderildi: sabit FPS stream + slayt arası geçiş beklemesi
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 let _vidRecorder   = null;
@@ -5510,17 +5389,62 @@ let _vidCanvas     = null;
 let _vidCtx        = null;
 let _vidStream     = null;
 let _vidRendering  = false;
+let _vidFillTimer  = null;  // sabit FPS dolgu timer
 
-// html2canvas'ı lazy load ederiz
+// HD sabit çözünürlük
+const VID_W = 1920;
+const VID_H = 1080;
+const VID_FPS = 30;
+
 function _loadHtml2Canvas() {
   return new Promise((resolve, reject) => {
     if (window.html2canvas) { resolve(); return; }
     const s = document.createElement('script');
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-    s.onload  = resolve;
+    s.onload = resolve;
     s.onerror = () => reject(new Error('html2canvas yüklenemedi'));
     document.head.appendChild(s);
   });
+}
+
+// Canvas stream'i canlı tutan dolgu loop — MediaRecorder boş frame görmemesi için
+function _startFillLoop(ctx, w, h) {
+  if (_vidFillTimer) { clearInterval(_vidFillTimer); _vidFillTimer = null; }
+  _vidFillTimer = setInterval(() => {
+    // Mevcut içeriği koru; tamamen siyah/boşsa canlı gradient arka plan yaz
+    const px = ctx.getImageData(w>>1, h>>1, 1, 1).data;
+    if (px[0] === 0 && px[1] === 0 && px[2] === 0) {
+      _drawVividBg(ctx, w, h);
+    } else {
+      const imageData = ctx.getImageData(0, 0, w, h);
+      ctx.putImageData(imageData, 0, 0);
+    }
+  }, 1000 / VID_FPS);
+}
+
+// Canlı arka plan: koyu lacivert → orta mavi gradient
+function _drawVividBg(ctx, w, h) {
+  const grd = ctx.createLinearGradient(0, 0, w, h);
+  grd.addColorStop(0,   '#0B1F3A');
+  grd.addColorStop(0.4, '#102848');
+  grd.addColorStop(1,   '#0D2E55');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, w, h);
+  // Köşe aksan
+  const g2 = ctx.createRadialGradient(w*0.15, h*0.85, 0, w*0.15, h*0.85, w*0.4);
+  g2.addColorStop(0, 'rgba(33,150,243,0.12)');
+  g2.addColorStop(1, 'transparent');
+  ctx.fillStyle = g2;
+  ctx.fillRect(0, 0, w, h);
+  const g3 = ctx.createRadialGradient(w*0.85, h*0.15, 0, w*0.85, h*0.15, w*0.35);
+  g3.addColorStop(0, 'rgba(21,101,192,0.10)');
+  g3.addColorStop(1, 'transparent');
+  ctx.fillStyle = g3;
+  ctx.fillRect(0, 0, w, h);
+}
+
+function _stopFillLoop() {
+  if (_vidFillTimer) { clearInterval(_vidFillTimer); _vidFillTimer = null; }
 }
 
 async function startVideoRecording() {
@@ -5538,119 +5462,142 @@ async function startVideoRecording() {
   if (!inspCount) { alert('Gösterilecek inspector yok!'); return; }
 
   const perSlideSec = parseInt(document.getElementById('slide-duration')?.value || 5000) / 1000;
-  const totalMin    = Math.ceil((inspCount * perSlideSec + 3) / 60);
-  const fps         = 10; // DOM render için makul FPS
+  const totalMin = Math.ceil((inspCount * perSlideSec + 5) / 60);
 
   if (!confirm(
-    `🎥 Video Oluşturma Bilgisi\n\n` +
-    `• ${inspCount} inspector × ${perSlideSec}sn = ~${totalMin} dakika\n` +
-    `• Ekran paylaşımı GEREKMİYOR — DOM doğrudan video'ya dönüştürülür\n` +
-    `• Oluşturma sırasında sayfa otomatik çalışır, müdahale etmeyin\n` +
-    `• Hazır olunca WebM dosyası otomatik indirilir\n\n` +
+    `🎥 HD Video Oluşturma (1920×1080)
+
+` +
+    `• ${inspCount} inspector × ${perSlideSec}sn ≈ ${totalMin} dk
+` +
+    `• Çözünürlük: 1920×1080 (Full HD)
+` +
+    `• Format: WebM (tüm tarayıcılarda desteklenir)
+` +
+    `• Oluşturma sırasında sayfada başka işlem yapmayın
+
+` +
     `Başlamak istiyor musunuz?`
   )) return;
 
-  // html2canvas kütüphanesini yükle
   const loadBtn = document.getElementById('video-rec-btn');
-  loadBtn.innerHTML = '⏳ Yükleniyor...';
+  loadBtn.innerHTML = '⏳ Hazırlanıyor...';
   loadBtn.disabled = true;
 
   try {
     await _loadHtml2Canvas();
   } catch(e) {
-    alert('❌ Kütüphane yüklenemedi — internet bağlantınızı kontrol edin:\n' + e.message);
+    alert('❌ html2canvas yüklenemedi: ' + e.message);
     loadBtn.innerHTML = '🎥 Video Oluştur';
     loadBtn.disabled = false;
     return;
   }
 
-  // Slideshow container boyutlarını al
-  const container = document.getElementById('slideshow-container');
-  const rect = container.getBoundingClientRect();
-  const W = Math.round(rect.width)  || 1280;
-  const H = Math.round(rect.height) || 720;
-
-  // Gizli canvas oluştur
+  // HD canvas oluştur
   _vidCanvas = document.createElement('canvas');
-  _vidCanvas.width  = W;
-  _vidCanvas.height = H;
-  _vidCtx = _vidCanvas.getContext('2d');
+  _vidCanvas.width  = VID_W;
+  _vidCanvas.height = VID_H;
+  _vidCtx = _vidCanvas.getContext('2d', { alpha: false });
 
-  // Canvas'tan video stream al
-  _vidStream = _vidCanvas.captureStream(fps);
+  // Canlı gradient arka planla başlat
+  _drawVividBg(_vidCtx, VID_W, VID_H);
 
-  const mimeType = ['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm']
-    .find(t => MediaRecorder.isTypeSupported(t)) || 'video/webm';
+  // Stream al
+  _vidStream = _vidCanvas.captureStream(VID_FPS);
 
-  _vidRecorder = new MediaRecorder(_vidStream, { mimeType, videoBitsPerSecond: 4_000_000 });
-  _vidChunks   = [];
+  // En yüksek kalite codec seç
+  const mimeType = [
+    'video/webm;codecs=vp9',
+    'video/webm;codecs=vp8',
+    'video/webm'
+  ].find(t => MediaRecorder.isTypeSupported(t)) || 'video/webm';
 
+  _vidRecorder = new MediaRecorder(_vidStream, {
+    mimeType,
+    videoBitsPerSecond: 12_000_000  // 12 Mbps — HD kalite
+  });
+  _vidChunks = [];
   _vidRecorder.ondataavailable = e => { if (e.data?.size > 0) _vidChunks.push(e.data); };
   _vidRecorder.onstop = _finishVideo;
-  _vidRecorder.start(500);
+  _vidRecorder.start(200);  // Her 200ms'de bir chunk → akıcı kayıt
   _vidRendering = true;
 
-  // Buton durumunu güncelle
+  // Dolgu loop başlat (kesiklik önlenir)
+  _startFillLoop(_vidCtx, VID_W, VID_H);
+
   loadBtn.innerHTML = '⏹️ Durdur';
   loadBtn.className = 'btn btn-warning';
   loadBtn.disabled  = false;
   loadBtn.onclick   = _stopVideoRecording;
 
-  // Slideshow'u başlat (sessizce)
   if (slideshowActive) stopSlideshow();
   slideshowActive = true;
-  document.getElementById('canli-controls').style.display = 'none';
-  document.getElementById('slideshow-btn').innerHTML = '⏸️ Durdur';
+  const canliCtrl = document.getElementById('canli-controls');
+  if (canliCtrl) canliCtrl.style.display = 'none';
+  document.getElementById('slideshow-btn').innerHTML = '⏸ Durdur';
 
   _showRecordingIndicator();
-  showSuccessMessage('🔴 Video oluşturuluyor... Lütfen bekleyin.', 5000);
+  showSuccessMessage('🔴 HD Video kaydediliyor (1920×1080)...', 4000);
 
-  // Her slayt için: DOM'u canvas'a çiz, perSlideSec süre bekle
-  await _renderAllSlides(inspCount, perSlideSec, fps, W, H);
+  await _renderAllSlidesHD(inspCount, perSlideSec);
 
-  // Kayıt tamamlandı
   _stopVideoRecording();
 }
 
-async function _renderAllSlides(total, perSlideSec, fps, W, H) {
-  const frameMs  = 1000 / fps;
-  const slideMs  = perSlideSec * 1000;
+async function _renderAllSlidesHD(total, perSlideSec) {
+  const container = document.getElementById('slideshow-container');
 
   for (let i = 0; i < total && _vidRendering; i++) {
-    // Slaytı göster
     currentSlideIndex = i;
     showSlide(i);
     _updateRecordProgress(i + 1, total);
 
-    // Bu slayt için belirlenen süre boyunca frame'leri canvas'a çiz
-    const slideEnd = Date.now() + slideMs;
-    while (Date.now() < slideEnd && _vidRendering) {
-      await _paintFrame(W, H);
-      await _sleep(frameMs);
-    }
-  }
-}
+    // Animasyon + DOM render için bekle
+    await _sleep(120);
 
-async function _paintFrame(W, H) {
-  const container = document.getElementById('slideshow-container');
-  try {
-    const cvs = await html2canvas(container, {
-      canvas:          _vidCanvas,
-      width:           W,
-      height:          H,
-      useCORS:         true,
-      allowTaint:      true,
-      backgroundColor: '#0B1F3A',
-      scale:           1,
-      logging:         false,
-      removeContainer: false
-    });
-    // html2canvas zaten _vidCanvas'a yazdı (canvas parametresi geçtik)
-    // Ek bir şey gerekmez
-  } catch(e) {
-    // Hata olursa temiz bir kare çiz
-    _vidCtx.fillStyle = '#0B1F3A';
-    _vidCtx.fillRect(0, 0, W, H);
+    // Slayt fotoğrafını çek (yüksek kalite)
+    try {
+      // Gerçek boyutları al; 0 ise güvenli fallback
+      const cW = container.offsetWidth  || container.getBoundingClientRect().width  || 1280;
+      const cH = container.offsetHeight || container.getBoundingClientRect().height || 720;
+      const bestScale = Math.min(VID_W / cW, 4); // max 4× güvenlik sınırı
+
+      // Arka planı garantile (canlı gradient)
+      _drawVividBg(_vidCtx, VID_W, VID_H);
+
+      const tempCanvas = await html2canvas(container, {
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,   // container kendi arka planını taşısın
+        scale: bestScale,
+        logging: false,
+        removeContainer: false,
+        imageTimeout: 0,
+        foreignObjectRendering: false
+      });
+
+      // Dolgu loop durdur — şimdi gerçek frame yazacağız
+      _stopFillLoop();
+
+      // HD canvas'a çiz
+      _vidCtx.drawImage(tempCanvas, 0, 0, VID_W, VID_H);
+
+      // Slayt süresi boyunca aynı frame'i tut (akıcı tutmak için mini loop)
+      const slideEnd = Date.now() + (perSlideSec * 1000);
+      while (Date.now() < slideEnd && _vidRendering) {
+        // Frame'i yenile (freeze kalmaması için)
+        _vidCtx.drawImage(tempCanvas, 0, 0, VID_W, VID_H);
+        await _sleep(1000 / VID_FPS);
+      }
+
+      // Dolgu loop tekrar başlat
+      _startFillLoop(_vidCtx, VID_W, VID_H);
+
+    } catch(err) {
+      console.warn('Slayt render hatası:', err);
+      // Hata durumunda geçiş yap
+      await _sleep(perSlideSec * 1000);
+    }
   }
 }
 
@@ -5660,6 +5607,7 @@ function _sleep(ms) {
 
 function _stopVideoRecording() {
   _vidRendering = false;
+  _stopFillLoop();
   clearTimeout(_vidSlideTimer);
 
   if (_vidRecorder && _vidRecorder.state !== 'inactive') {
@@ -5685,7 +5633,7 @@ function _stopVideoRecording() {
 
 function _finishVideo() {
   if (!_vidChunks.length) {
-    alert('⚠️ Video verisi oluşturulamadı.');
+    alert('⚠️ Video verisi oluşturulamadı. Tarayıcı MediaRecorder desteğini kontrol edin.');
     return;
   }
   const mimeType = _vidChunks[0]?.type || 'video/webm';
@@ -5694,10 +5642,11 @@ function _finishVideo() {
   const a    = document.createElement('a');
   const date = new Date().toLocaleDateString('tr-TR').replace(/\./g, '-');
   a.href     = url;
-  a.download = `LCW_Inspection_${date}.webm`;
+  a.download = `LCW_Inspection_HD_${date}.webm`;
   a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
-  showSuccessMessage(`🎬 Video indirildi! (${(blob.size / 1024 / 1024).toFixed(1)} MB)`, 6000);
+  setTimeout(() => URL.revokeObjectURL(url), 8000);
+  const mb = (blob.size / 1024 / 1024).toFixed(1);
+  showSuccessMessage(`🎬 HD Video indirildi! ${mb} MB — 1920×1080`, 6000);
   _vidChunks = [];
 }
 
@@ -5708,18 +5657,18 @@ function _showRecordingIndicator() {
     el.id = 'rec-indicator';
     el.style.cssText = `
       position:fixed;top:68px;right:20px;z-index:9998;
-      background:#C62828;color:#fff;padding:8px 18px;
-      border-radius:9px;font-size:13px;font-weight:600;
+      background:linear-gradient(135deg,#B71C1C,#C62828);color:#fff;
+      padding:8px 18px;border-radius:9px;font-size:12px;font-weight:700;
       box-shadow:0 4px 20px rgba(198,40,40,.5);
-      display:flex;align-items:center;gap:8px;
+      display:flex;align-items:center;gap:8px;letter-spacing:.3px;
     `;
     document.head.insertAdjacentHTML('beforeend', `<style>
-      @keyframes recPulse{0%,100%{box-shadow:0 4px 20px rgba(198,40,40,.4);}50%{box-shadow:0 4px 32px rgba(198,40,40,.9);}}
+      @keyframes recPulse{0%,100%{opacity:1}50%{opacity:.7}}
       #rec-indicator{animation:recPulse 1.2s infinite;}
     </style>`);
     document.body.appendChild(el);
   }
-  el.innerHTML = `<span style="width:10px;height:10px;background:#fff;border-radius:50%;display:inline-block"></span> 🔴 VIDEO <span id="rec-progress" style="font-family:'DM Mono',monospace;font-size:12px">0/?</span>`;
+  el.innerHTML = `<span style="width:9px;height:9px;background:#fff;border-radius:50%;display:inline-block;flex-shrink:0"></span> HD REC <span id="rec-progress" style="font-family:'DM Mono',monospace;font-size:11px;opacity:.85">0/?</span>`;
   el.style.display = 'flex';
 }
 
@@ -5732,6 +5681,7 @@ function _hideRecordingIndicator() {
   const el = document.getElementById('rec-indicator');
   if (el) el.style.display = 'none';
 }
+
 
 
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -5783,7 +5733,7 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
 }
 
 // Uygulama hazır
-console.log(`✅ LC Waikiki Inspection Performans Paneli v${APP_VERSION} hazır!`);
+console.log(`✅ Inspection Performans Paneli v${APP_VERSION} hazır!`);
 console.log(`📊 ${klasmanlar.length} klasman, ${performansData.length} inspector verisi yüklendi`);
 
 </script>
