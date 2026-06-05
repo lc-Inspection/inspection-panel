@@ -2804,21 +2804,32 @@ function loadData() {
 // Local Storage'a veri kaydet
 function saveData() {
   try {
+    // kayitlar dizisi localStorage'a kaydedilmez - buyuk veri oldugu icin
+    // 5MB kotasini asiyor. Kayitlar Sheets InspectorKayitlar sekmesinden cekilir.
+    const performansDataTemiz = (performansData || []).map(inspector => {
+      const klasmanlarTemiz = {};
+      Object.entries(inspector.klasmanlar || {}).forEach(([k, v]) => {
+        klasmanlarTemiz[k] = {
+          adet: v.adet,
+          standartSure: v.standartSure,
+          kayitFiiliSure: v.kayitFiiliSure,
+          hizPerf: v.hizPerf,
+          hacimPerf: v.hacimPerf
+        };
+      });
+      return { ...inspector, klasmanlar: klasmanlarTemiz };
+    });
     const data = {
       klasmanlar: klasmanlar,
       nextId: nextId,
-      performansData: performansData,
+      performansData: performansDataTemiz,
       verimlilikHedef: parseFloat(document.getElementById('inp-verimlilik')?.value) || 100,
       savedAt: new Date().toISOString()
     };
     localStorage.setItem('lc_inspection_data', JSON.stringify(data));
-    
     const notification = document.getElementById('save-notification');
     notification.classList.add('show');
-    setTimeout(() => {
-      notification.classList.remove('show');
-    }, 3000);
-    
+    setTimeout(() => { notification.classList.remove('show'); }, 3000);
     console.log('✅ Veriler localStorage\'a kaydedildi');
   } catch (err) {
     console.error('❌ localStorage kaydetme hatası:', err);
