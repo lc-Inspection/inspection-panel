@@ -1341,9 +1341,9 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
             <select id="col-bitis" onchange="performansHesapla()"></select>
           </div>
           <div>
-            <label>⏰ Mesai Süresi <span style="color:var(--muted2);font-weight:400">(dk veya s:d)</span></label>
+            <label>⏰ Mesai Süresi <span style="color:var(--muted2);font-weight:400">(dk veya s:d) <span style="color:var(--amber);font-weight:600">K/L seçiliyse otomatik</span></span></label>
             <select id="col-mesai" onchange="performansHesapla()">
-              <option value="">— opsiyonel —</option>
+              <option value="">— K/L sütunundan otomatik türet —</option>
             </select>
           </div>
         </div>
@@ -2972,6 +2972,8 @@ function hesaplaGunlukMesaiSuresi(kayitListesi) {
 
   const gunSayisi = Object.keys(gunBitisSaatleri).length;
   let toplamMesaiSaniye = 0;
+  let toplamMesaistiSaniye = 0; // 16:30 sonrası toplam overtime
+  const gunlukOvertimeDetay = {}; // key: gunStr → overtime saniye
 
   Object.entries(gunBitisSaatleri).forEach(([gunStr, enGecBitis]) => {
     // O günün 08:00 ve sınır saatlerini oluştur
@@ -2981,17 +2983,22 @@ function hesaplaGunlukMesaiSuresi(kayitListesi) {
     const mesaiBitis  = new Date(gunBase); mesaiBitis.setHours(20, 0, 0, 0);   // Mesai sonu üst sınır
 
     let gercekBitis;
+    let overtimeSn = 0; // Bu gün için mesai üstü (16:30 sonrası) saniye
+
     if (!enGecBitis) {
       // Bitiş tarihi yoksa normal mesai varsay
       gercekBitis = normalBitis;
     } else if (enGecBitis >= mesaiBitis) {
       // 20:00 veya sonrası → 20:00'de kes (gece sayılmaz)
       gercekBitis = mesaiBitis;
+      // Overtime = 20:00 - 16:30 = 3.5 saat - öğle sonrası çay (15:00-15:15 normalBitis'ten sonra sayılmaz)
+      overtimeSn = (mesaiBitis - normalBitis) / 1000; // 3.5 saat = 12600 sn
     } else if (enGecBitis > normalBitis) {
       // 16:30 ile 20:00 arasında → mesai kaldı, gerçek bitiş saati
       gercekBitis = enGecBitis;
+      overtimeSn = (enGecBitis - normalBitis) / 1000;
     } else {
-      // 16:30 veya öncesi → normal gün
+      // 16:30 veya öncesi → normal gün, overtime yok
       gercekBitis = normalBitis;
     }
 
@@ -3012,11 +3019,17 @@ function hesaplaGunlukMesaiSuresi(kayitListesi) {
     sureSn -= molaDus(15, 0, 15, 15);  // öğleden sonra çayı
 
     toplamMesaiSaniye += Math.max(sureSn, 0);
+    toplamMesaistiSaniye += Math.max(overtimeSn, 0);
+    if (overtimeSn > 0) {
+      gunlukOvertimeDetay[gunStr] = Math.round(overtimeSn / 60); // dakika olarak sakla
+    }
   });
 
   return {
     gunSayisi,
     toplamMesaiSaniye,
+    toplamMesaistiSaniye,   // 16:30 sonrası toplam overtime saniye
+    gunlukOvertimeDetay,    // gün bazında overtime dakika
     gunlukDetay: Object.keys(gunBitisSaatleri).sort()
   };
 }
@@ -3355,7 +3368,9 @@ function renderInspectorCards() {
       }
       const gunSayisi = inspector.gunSayisi || 0;
       const mesaiSaat = Math.round((inspector.mesaiSure || 0) / 3600);
-      return `${gunSayisi} gün × 7.5s = ${mesaiSaat}s mesai bazlı`;
+      const overtimeDk = Math.round((inspector.toplamMesaistiSaniye || 0) / 60);
+      const overtimeStr = overtimeDk > 0 ? ` · 🌙 ${overtimeDk}dk mesai üstü` : '';
+      return `${gunSayisi} gün × 7.5s = ${mesaiSaat}s mesai bazlı${overtimeStr}`;
     })();
 
     const performansSeviyesi = (() => {
@@ -3427,7 +3442,11 @@ function renderInspectorCards() {
           </div>
           <div class="inspector-stat">
             <div class="inspector-stat-value">${fmtSnKisa(inspector.mesaiSure||0)}</div>
-            <div class="inspector-stat-label">Mesai Süresi</div>
+            <div class="inspector-stat-label">Mesai Süresi${
+              inspector.toplamMesaistiSaniye > 0
+                ? `<br><span style="color:#E65100;font-size:9px;font-weight:700">🌙 +${Math.round(inspector.toplamMesaistiSaniye/60)}dk mesai üstü</span>`
+                : ''
+            }</div>
           </div>
         </div>
 
@@ -3745,7 +3764,7 @@ async function showInspectorDetail(inspectorName) {
         ['📦','TOPLAM ADET',String(toplamAdet),'var(--navy)'],
         ['⏱','STANDART SÜRE',fmtSn(toplamStandart),'var(--navy)'],
         ['🕐','GERÇEKLEŞen',toplamFiili>0?fmtSn(toplamFiili):'—',toplamFiili>0?'var(--green)':'var(--muted2)'],
-        ['🗓','MESAİ SÜRESİ',fmtSn(totalMesai),'var(--navy)'],
+        ['🗓','MESAİ SÜRESİ', fmtSn(totalMesai) + (inspector.toplamMesaistiSaniye > 0 ? ` (+${Math.round(inspector.toplamMesaistiSaniye/60)}dk 🌙)` : ''), inspector.toplamMesaistiSaniye > 0 ? '#E65100' : 'var(--navy)'],
         ['📊','DÜZ. PERFORMANS',(totalPerf??0)+'%',perfColor(totalPerf)]
       ].map(([ic,lb,val,col])=>`
         <div style="background:var(--lblue3);border:1px solid var(--border2);border-radius:10px;padding:12px 8px;text-align:center;">
@@ -4707,7 +4726,7 @@ function renderPerfTabloFromData(page) {
           ['📦','Adet',(row.adet||0).toFixed(0)],
           ['📋','Kayıt',row.kayit||0],
           ['⏱','Standart',fmtSure(row.standartSure)],
-          ['🕐','Mesai',fmtSure(row.mesaiSure)]
+          ['🕐','Mesai',fmtSure(row.mesaiSure) + (row.toplamMesaistiSaniye > 0 ? ` 🌙+${Math.round(row.toplamMesaistiSaniye/60)}dk` : '')]
         ].map(([ic,lb,val])=>`
           <div style="background:rgba(255,255,255,.75);border:1px solid var(--border2);border-radius:8px;
             padding:7px 8px;display:flex;align-items:center;gap:7px;">
@@ -5017,11 +5036,13 @@ function performansHesapla(){
       verimlilikPerf: performans !== null ? Math.round(performans * (100 / verimlilikHedef)) : null,
       tarihBasariliKayit: inspectorData.kayitListesi.length,
       gunSayisi: mesaiHesap ? mesaiHesap.gunSayisi : 0,
-      gunlukDetay: mesaiHesap ? mesaiHesap.gunlukDetay : []
+      gunlukDetay: mesaiHesap ? mesaiHesap.gunlukDetay : [],
+      toplamMesaistiSaniye: mesaiHesap ? (mesaiHesap.toplamMesaistiSaniye || 0) : 0,
+      gunlukOvertimeDetay: mesaiHesap ? (mesaiHesap.gunlukOvertimeDetay || {}) : {}
     };
     
     // Debug log
-    console.log(`[${ins}] Gün:${mesaiHesap?.gunSayisi || 0} Standart:${Math.round(toplamStandartSure/60)}dk Mesai:${Math.round(mesaiSureSn/60)}dk Performans:${performans}% VPerf:${performans !== null ? Math.round(performans*(100/verimlilikHedef)) : null}%`);
+    console.log(`[${ins}] Gün:${mesaiHesap?.gunSayisi || 0} Standart:${Math.round(toplamStandartSure/60)}dk Mesai:${Math.round(mesaiSureSn/60)}dk Mesaisti:${Math.round((mesaiHesap?.toplamMesaistiSaniye||0)/60)}dk Performans:${performans}% VPerf:${performans !== null ? Math.round(performans*(100/verimlilikHedef)) : null}%`);
   });
 
   const liste = Object.values(map).sort((a, b) => {
