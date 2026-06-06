@@ -1823,6 +1823,14 @@ async function autoFetchOnStartup() {
     if (perfData.status === 'ok' && Array.isArray(perfData.performansData) && perfData.performansData.length > 0) {
       performansData = restorePerformansDateObjects(perfData.performansData);
       console.log('✅ Performans verisi yüklendi:', performansData.length, 'inspector');
+      // verimlilikPerf yoksa hesapla
+const _hedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+performansData.forEach(row => {
+  if (row.verimlilikPerf === undefined || row.verimlilikPerf === null) {
+    row.verimlilikPerf = row.genelHizPerf !== null && row.genelHizPerf !== undefined
+      ? Math.round(row.genelHizPerf * (100 / _hedef)) : null;
+  }
+});
     }
   } catch(e) {
     console.warn('Performans otomatik çekme hatası:', e.message);
@@ -2380,6 +2388,13 @@ async function pullPerformansFromSheets(silent = false) {
     console.log('📥 getPerformansRaw yanıtı:', JSON.stringify(data).substring(0, 300));
     if (data.status === 'ok' && Array.isArray(data.performansData) && data.performansData.length > 0) {
       performansData = restorePerformansDateObjects(data.performansData);
+      const _h2 = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+performansData.forEach(row => {
+  if (row.verimlilikPerf === undefined || row.verimlilikPerf === null) {
+    row.verimlilikPerf = row.genelHizPerf !== null && row.genelHizPerf !== undefined
+      ? Math.round(row.genelHizPerf * (100 / _h2)) : null;
+  }
+});
       saveData();
       renderDashboard();
       updateSidebar();
@@ -3623,9 +3638,10 @@ async function showInspectorDetail(inspectorName) {
         } else {
           console.warn('[detay] getInspectorKayitlar bos/hata dondu:', JSON.stringify(data).substring(0,200));
         }
-      } catch(e) {
-        console.warn('getInspectorKayitlar hatası:', e.message);
-      }
+} catch(e) {
+  console.warn('getInspectorKayitlar hatası:', e.message);
+  // Kayıt yok ama özet veri var — detay tabloyu boş göster
+}
     }
   }
 
