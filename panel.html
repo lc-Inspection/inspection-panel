@@ -3247,7 +3247,8 @@ function updateSummaryStats(inspectors) {
   document.getElementById('poor-count').textContent = poor;
   document.getElementById('avg-performance').textContent = avgPerformans + '%';
   document.getElementById('avg-working-days').textContent = avgWorkingDays + ' gün';
-  document.getElementById('total-products').textContent = formatNumber(totalProducts);
+  document.getElementById('total-products').textContent = totalProducts.toLocaleString('tr-TR');
+
 }
 
 // ────────────────────────────
@@ -3489,11 +3490,11 @@ function renderInspectorCards() {
         <!-- Ana İstatistikler -->
         <div class="inspector-stats">
           <div class="inspector-stat">
-            <div class="inspector-stat-value">${inspector.adet}</div>
+            <div class="inspector-stat-value">${inspector.adet.toLocaleString('tr-TR')}</div>
             <div class="inspector-stat-label">Toplam Adet</div>
           </div>
           <div class="inspector-stat">
-            <div class="inspector-stat-value">${inspector.kayit}</div>
+            <div class="inspector-stat-value">${inspector.kayit.toLocaleString('tr-TR')}</div>
             <div class="inspector-stat-label">Kayıt Sayısı</div>
           </div>
         </div>
