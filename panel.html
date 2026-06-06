@@ -1756,32 +1756,14 @@ function jsonpFetch(url, params) {
     // action ve token dışındaki tüm parametreleri de URL'e ekle
     let iframeUrl = url + '?action=' + encodeURIComponent(action) +
                           '&token='  + encodeURIComponent(token);
-// ── Türkçe Karakter Fix v5.2-TR ──
-// Türkçe karakter içerebilecek parametreler (inspectorAdi, vb.)
-// base64 ile kodlanarak _p parametresinde gönderilir.
-// Apps Script _p'yi decode ederek gerçek değeri alır.
-const extraParams = {};
-Object.entries(params).forEach(([k, v]) => {
-  if (k !== 'action' && k !== 'token') {
-    extraParams[k] = typeof v === 'string' ? v.normalize('NFC').trim() : v;
-  }
-});
-if (Object.keys(extraParams).length > 0) {
-  try {
-    const bytes = new TextEncoder().encode(JSON.stringify(extraParams));
-    let bin = '';
-    bytes.forEach(b => bin += String.fromCharCode(b));
-    iframeUrl += '&_p=' + encodeURIComponent(btoa(bin));
-  } catch(e) {
-    // Fallback: direkt encode (eski davranış)
-    Object.entries(extraParams).forEach(([k, v]) => {
-      iframeUrl += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(String(v).normalize('NFC'));
+    Object.entries(params).forEach(([k, v]) => {
+      if (k !== 'action' && k !== 'token') {
+        iframeUrl += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(String(v).normalize('NFC'));
+      }
     });
-  }
-}
 
-const iframe = document.createElement('iframe');
-iframe.src = iframeUrl;
+    const iframe = document.createElement('iframe');
+    iframe.src = iframeUrl;
     iframe.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;border:none;';
     document.body.appendChild(iframe);
 
@@ -2621,8 +2603,6 @@ async function pullPerformansFromSheets(silent = false) {
     console.log('📥 getPerformansRaw yanıtı:', JSON.stringify(data).substring(0, 300));
     if (data.status === 'ok' && Array.isArray(data.performansData) && data.performansData.length > 0) {
       performansData = restorePerformansDateObjects(data.performansData);
-// Türkçe fix: inspector adlarını NFC normalize et
-performansData.forEach(row => { if (row.ins) row.ins = row.ins.normalize('NFC').trim(); });
       const _h2 = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
 performansData.forEach(row => {
   if (row.verimlilikPerf === undefined || row.verimlilikPerf === null) {
@@ -3846,9 +3826,7 @@ async function showInspectorDetail(inspectorName) {
     const token = appConfig.sheetsApiToken;
     if (url && token) {
       try {
-        // Türkçe karakter normalize
-const _normInsAdi = inspectorName.normalize('NFC').trim();
-const data = await jsonpFetch(url, { action: 'getInspectorKayitlar', token, inspectorAdi: _normInsAdi });
+        const data = await jsonpFetch(url, { action: 'getInspectorKayitlar', token, inspectorAdi: inspectorName.normalize('NFC').trim() });
         if (data.status === 'ok' && data.kayitlar && typeof data.kayitlar === 'object') {
           // Çekilen kayitlar'ı inspector nesnesine işle
           // NOT: Sheets'teki klasman adı ile performansData'daki klasman adı
@@ -3856,16 +3834,10 @@ const data = await jsonpFetch(url, { action: 'getInspectorKayitlar', token, insp
           const insKlasmanKeys = Object.keys(inspector.klasmanlar);
           Object.entries(data.kayitlar).forEach(([klasmanAd, kayitlarArr]) => {
             if (!Array.isArray(kayitlarArr) || kayitlarArr.length === 0) return;
-// Türkçe fix: 3 katmanlı eşleştirme
-const norm = s => s.normalize('NFC').trim().toLowerCase();
-const trNorm = s => norm(s)
-  .replace(/ı/g,'i').replace(/İ/g,'i').replace(/ş/g,'s').replace(/Ş/g,'s')
-  .replace(/ğ/g,'g').replace(/Ğ/g,'g').replace(/ç/g,'c').replace(/Ç/g,'c')
-  .replace(/ö/g,'o').replace(/Ö/g,'o').replace(/ü/g,'u').replace(/Ü/g,'u')
-  .replace(/\s+/g,' ');
-let hedefKey = insKlasmanKeys.find(k => k === klasmanAd)
-  || insKlasmanKeys.find(k => norm(k) === norm(klasmanAd))
-  || insKlasmanKeys.find(k => trNorm(k) === trNorm(klasmanAd));
+            // Önce birebir eşleştir, yoksa normalize edilmiş eşleştir
+            const norm = (s) => s.normalize('NFC').trim().toLowerCase();
+            let hedefKey = insKlasmanKeys.find(k => k === klasmanAd)
+              || insKlasmanKeys.find(k => norm(k) === norm(klasmanAd));
             if (!hedefKey) return;
             inspector.klasmanlar[hedefKey].kayitlar = kayitlarArr.map(r => ({
               ...r,
@@ -5017,8 +4989,6 @@ async function autoFetchPerfIfNeeded() {
     const data = await jsonpFetch(url, { action: 'getPerformansRaw', token });
     if (data.status === 'ok' && Array.isArray(data.performansData) && data.performansData.length > 0) {
       performansData = restorePerformansDateObjects(data.performansData);
-// Türkçe fix: inspector adlarını NFC normalize et
-performansData.forEach(row => { if (row.ins) row.ins = row.ins.normalize('NFC').trim(); });
       // verimlilikPerf değerlerini hedef bazında güncelle
       const hedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
       performansData.forEach(row => {
