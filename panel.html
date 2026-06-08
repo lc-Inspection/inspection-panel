@@ -3424,11 +3424,10 @@ function fixVerimlilikPerf(liste) {
   // Tümü 100 ise de al (en azından tutarlı olsun)
   if (!sheetsHedef) sheetsHedef = liste[0]?.hedefVerimlilik || 100;
 
-  // 2) inp-verimlilik input'unu güncelle — bu bilgisayarda da doğru hedef görünsün
+  // 2) inp-verimlilik input'unu ve ornekleme-mod radio'sunu güncelle
   const inputEl = document.getElementById('inp-verimlilik');
   if (inputEl) {
     inputEl.value = sheetsHedef;
-    // Açıklama label'ını da güncelle
     const vAciklama = document.getElementById('verimlilik-aciklama');
     if (vAciklama) {
       if (sheetsHedef === 100) vAciklama.textContent = '';
@@ -3436,6 +3435,10 @@ function fixVerimlilikPerf(liste) {
       else vAciklama.textContent = `(%${sheetsHedef} hedef → performans ${(100/sheetsHedef).toFixed(2)}x çarpanla azalır) `;
     }
   }
+  // orneklemeMod radio'sunu Sheets'ten gelen değere göre set et
+  const sheetsOrneklemeMod = liste[0]?.orneklemeMod || 'kapali';
+  const radioEl = document.getElementById('ornekleme-' + sheetsOrneklemeMod);
+  if (radioEl) radioEl.checked = true;
 
   // 3) Her inspector'ın verimlilikPerf ve hedefVerimlilik'ini güncelle
   liste.forEach(inspector => {
