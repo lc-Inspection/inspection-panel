@@ -2856,6 +2856,8 @@ async function pushPerformansRawToSheets(liste) {
     // kayitlar dizisi olmadan gönder — boyut sınırını aşmamak için
     // (kayitlar ayrıca setInspectorKayitlar ile gönderilir)
     // YENİ
+const _pushHedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+const _pushOrneklemeMod = document.querySelector('input[name="ornekleme-mod"]:checked')?.value || 'kapali';
 const listeTemiz = liste.map(inspector => {
   const klasmanlarTemiz = {};
   Object.entries(inspector.klasmanlar || {}).forEach(([k, v]) => {
@@ -2869,8 +2871,9 @@ const listeTemiz = liste.map(inspector => {
     klasmanlar: klasmanlarTemiz,
     toplamMesaistiSaniye: inspector.toplamMesaistiSaniye || 0,
     gunlukOvertimeDetay: inspector.gunlukOvertimeDetay || {},
-    hedefVerimlilik: inspector.hedefVerimlilik || 100,
-    orneklemeMod: inspector.orneklemeMod || 'kapali'
+    hedefVerimlilik: _pushHedef,
+    verimlilikPerf: inspector.genelHizPerf != null ? Math.round(inspector.genelHizPerf * (100 / _pushHedef)) : inspector.verimlilikPerf,
+    orneklemeMod: _pushOrneklemeMod
   };
 });
 
@@ -3089,6 +3092,7 @@ async function pushPerformansManual(ev) {
   if (btn) { btn.innerHTML = '⏳ Gönderiliyor...'; btn.disabled = true; }
 
   try {
+    const _rowsHedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
     // 1) Okunabilir tablo satırlarını gönder (Sheets'te Performans sekmesi)
     const rows = performansData.map(row => ({
       ins: row.ins,
@@ -3098,8 +3102,8 @@ async function pushPerformansManual(ev) {
       standartSureDk: row.standartSure ? Math.round(row.standartSure / 60) : 0,
       mesaiSureDk:    row.mesaiSure    ? Math.round(row.mesaiSure / 60)    : 0,
       genelHizPerf:   row.genelHizPerf,
-      verimlilikPerf: row.verimlilikPerf,
-      hedefVerimlilik: row.hedefVerimlilik || 100,
+      verimlilikPerf: row.genelHizPerf != null ? Math.round(row.genelHizPerf * (100 / _rowsHedef)) : row.verimlilikPerf,
+      hedefVerimlilik: _rowsHedef,
       klasmanOzet: Object.entries(row.klasmanlar || {})
         .map(([k,v]) => `${k}: ${v.adet} adet (${v.hizPerf}%)`)
         .join(' | ')
@@ -3114,6 +3118,8 @@ async function pushPerformansManual(ev) {
 
     // 2) Ham JSON'u gönder — kayitlar olmadan (boyut sınırı aşılmasın)
     // Not: kayitlar ayrıca pushInspectorKayitlarToSheets ile gönderilecek
+    const _manualHedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
+    const _manualOrneklemeMod = document.querySelector('input[name="ornekleme-mod"]:checked')?.value || 'kapali';
     const performansDataTemiz = performansData.map(inspector => {
   const klasmanlarTemiz = {};
   Object.entries(inspector.klasmanlar || {}).forEach(([k, v]) => {
@@ -3127,8 +3133,9 @@ async function pushPerformansManual(ev) {
     klasmanlar: klasmanlarTemiz,
     toplamMesaistiSaniye: inspector.toplamMesaistiSaniye || 0,
     gunlukOvertimeDetay: inspector.gunlukOvertimeDetay || {},
-    hedefVerimlilik: inspector.hedefVerimlilik || 100,
-    orneklemeMod: inspector.orneklemeMod || document.querySelector('input[name="ornekleme-mod"]:checked')?.value || 'kapali'
+    hedefVerimlilik: _manualHedef,
+    verimlilikPerf: inspector.genelHizPerf != null ? Math.round(inspector.genelHizPerf * (100 / _manualHedef)) : inspector.verimlilikPerf,
+    orneklemeMod: _manualOrneklemeMod
   };
 });
     await fetch(url, {
@@ -3399,13 +3406,19 @@ function restorePerformansDateObjects(liste) {
 
 // ─────────────────────────────────────────────
 // PULL SONRASI verimlilikPerf DÜZELT
-// Sheets'te yanlış push yapılmışsa (farklı bilgisayar, farklı inp-verimlilik)
-// genelHizPerf ve hedefVerimlilik'ten yeniden hesapla.
+// Sheets'te yanlış push yapılmışsa (farklı bilgisayar, farklı inp-verimlilik),
+// mevcut bilgisayardaki inp-verimlilik input değerini kullanarak yeniden hesapla.
+// Bu sayede hangi bilgisayardan push yapılmış olursa olsun tutarlı sonuç çıkar.
 // ─────────────────────────────────────────────
 function fixVerimlilikPerf(liste) {
   if (!Array.isArray(liste)) return liste;
+  // Mevcut bilgisayardaki hedef değeri al (DOM hazırsa), değilse her row'un kendi hedefini kullan
+  const inputEl = document.getElementById('inp-verimlilik');
+  const globalHedef = inputEl ? Math.max(1, parseFloat(inputEl.value) || 100) : null;
   liste.forEach(inspector => {
-    const hedef = inspector.hedefVerimlilik || 100;
+    const hedef = globalHedef || inspector.hedefVerimlilik || 100;
+    // hedefVerimlilik'i de güncelle — gelecekteki push'larda doğru gitsin
+    inspector.hedefVerimlilik = hedef;
     if (inspector.genelHizPerf !== null && inspector.genelHizPerf !== undefined) {
       inspector.verimlilikPerf = Math.round(inspector.genelHizPerf * (100 / hedef));
     }
@@ -3420,11 +3433,11 @@ function loadData() {
       const data = JSON.parse(saved);
       klasmanlar = data.klasmanlar || [];
       nextId = data.nextId || 1;
-      performansData = fixVerimlilikPerf(restorePerformansDateObjects(data.performansData || []));
-      // Verimlilik hedefini geri yükle
+      // Verimlilik hedefini ÖNCE geri yükle — fixVerimlilikPerf bu değeri okuyacak
       if (data.verimlilikHedef && document.getElementById('inp-verimlilik')) {
         document.getElementById('inp-verimlilik').value = data.verimlilikHedef;
       }
+      performansData = fixVerimlilikPerf(restorePerformansDateObjects(data.performansData || []));
       console.log('✅ localStorage\'dan yüklendi:', klasmanlar.length, 'klasman,', performansData.length, 'inspector');
     } else {
       // İlk kurulum - örnek veriler
@@ -3874,9 +3887,10 @@ function updateSummaryStats(inspectors) {
 function onHedefChange() {
   // Veri varsa tablo + kartları yeniden çiz; yoksa sadece tabloyu yenile
   if (performansData && performansData.length > 0) {
-    // verimlilikPerf değerlerini güncelle
+    // verimlilikPerf ve hedefVerimlilik değerlerini güncelle
     const hedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
     performansData.forEach(row => {
+      row.hedefVerimlilik = hedef;  // ← gelecekteki push'larda doğru gitsin
       row.verimlilikPerf = row.genelHizPerf !== null && row.genelHizPerf !== undefined
         ? Math.round(row.genelHizPerf * (100 / hedef))
         : null;
@@ -3884,6 +3898,10 @@ function onHedefChange() {
     renderDashboard();
     renderPerfTabloFromData();
     updateSidebar();
+    // Sheets'e de güncelle — Excel yoksa bile hedef değişikliği push edilsin
+    if (!excelRows || excelRows.length === 0) {
+      pushPerformansRawToSheets(performansData);
+    }
   }
   // Tabloda da güncelle (Excel yüklüyse)
   if (excelRows && excelRows.length > 0) performansHesapla();
