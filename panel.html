@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -7632,7 +7633,7 @@ function aoGkeyToggleEye() {
 function aoGkeySave() {
   var val = document.getElementById('ao-gkey').value.trim();
   if (!val) { aoSetKeyStatus('⚠️ Boş bırakmayın.', '#E65100'); return; }
-  if (val.length < 10) { aoSetKeyStatus('⚠️ Geçersiz format. API anahtarı çok kısa.', '#E65100'); return; }
+  if (!val.startsWith('AIza')) { aoSetKeyStatus('⚠️ Geçersiz format. Gemini anahtarları "AIza" ile başlar.', '#E65100'); return; }
   try { localStorage.setItem(AO_LS_KEY, val); aoSetKeyStatus('✅ Anahtar kaydedildi!', '#00897B'); }
   catch(e) { aoSetKeyStatus('❌ Kayıt başarısız: ' + e.message, '#C62828'); }
 }
