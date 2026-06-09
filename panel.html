@@ -4,17 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inspection Performans Paneli</title>
-  <meta name="theme-color" content="#0B1F3A">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0B1F3A">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="IC Panel">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="apple-touch-icon" href="ikon.png">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
@@ -7954,100 +7950,6 @@ function aoShowErr(msg) {
 function exportInspectorDetailFromOverlay() {
   if (typeof exportInspectorDetail === 'function') exportInspectorDetail();
 }
-</script>
-
-<!-- ══════════════ PWA INSTALL BANNER ══════════════ -->
-<style>
-#pwa-banner {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(140px);
-  background: #0B1F3A; color: #fff;
-  border: 1px solid rgba(66,165,245,.35); border-radius: 16px;
-  padding: 14px 18px; display: flex; align-items: center; gap: 14px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.4); z-index: 9999;
-  min-width: 300px; max-width: 380px;
-  transition: transform .45s cubic-bezier(.34,1.56,.64,1);
-  font-family: 'DM Sans', sans-serif;
-}
-#pwa-banner.visible { transform: translateX(-50%) translateY(0); }
-#pwa-banner .pwa-ico {
-  width: 44px; height: 44px; border-radius: 12px; background: #1976D2;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
-}
-#pwa-banner .pwa-txt strong { display: block; font-size: 13px; font-weight: 600; }
-#pwa-banner .pwa-txt span   { font-size: 11px; color: rgba(255,255,255,.55); }
-.pwa-btns { display: flex; gap: 8px; margin-left: auto; }
-.pwa-ok {
-  background: #1976D2; color: #fff; border: none; border-radius: 9px;
-  padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer;
-  font-family: 'DM Sans', sans-serif; white-space: nowrap;
-}
-.pwa-ok:hover { background: #1565C0; }
-.pwa-no {
-  background: rgba(255,255,255,.08); color: rgba(255,255,255,.5);
-  border: 1px solid rgba(255,255,255,.12); border-radius: 9px;
-  padding: 8px 10px; font-size: 13px; cursor: pointer;
-}
-.pwa-no:hover { background: rgba(255,255,255,.15); }
-</style>
-
-<div id="pwa-banner">
-  <div class="pwa-ico">📋</div>
-  <div class="pwa-txt">
-    <strong>Uygulamayı Yükle</strong>
-    <span>Ana ekrana ekle, uygulama gibi kullan</span>
-  </div>
-  <div class="pwa-btns">
-    <button class="pwa-ok" id="pwa-install-btn">Yükle</button>
-    <button class="pwa-no" id="pwa-dismiss-btn">✕</button>
-  </div>
-</div>
-
-<script>
-(function(){
-  var banner = document.getElementById('pwa-banner');
-  var btnOk  = document.getElementById('pwa-install-btn');
-  var btnNo  = document.getElementById('pwa-dismiss-btn');
-  var deferred = null;
-
-  function hide(){ banner.classList.remove('visible'); try{sessionStorage.setItem('pwa_hidden','1');}catch(e){} }
-
-  // ── Service Worker kaydı (sw.js ayrı dosya) ──
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register(
-      'https://lc-inspection.github.io/inspection-panel/sw.js',
-      { scope: '/inspection-panel/' }
-    ).then(function(r){ console.log('SW OK', r.scope); })
-     .catch(function(e){ console.warn('SW err', e); });
-  }
-
-  // ── Install prompt ──
-  window.addEventListener('beforeinstallprompt', function(e){
-    e.preventDefault();
-    deferred = e;
-    try{ if(sessionStorage.getItem('pwa_hidden')) return; }catch(ex){}
-    setTimeout(function(){ banner.classList.add('visible'); }, 1200);
-  });
-
-  btnOk.addEventListener('click', function(){
-    if(!deferred){ alert('Tarayıcınız yükleme diyaloğunu henüz tetiklemedi. Adres çubuğunun sağındaki ⊕ ikonuna tıklayın.'); return; }
-    deferred.prompt();
-    deferred.userChoice.then(function(c){ if(c.outcome==='accepted') hide(); deferred=null; });
-  });
-  btnNo.addEventListener('click', hide);
-  window.addEventListener('appinstalled', function(){ hide(); deferred=null; });
-
-  // iOS Safari
-  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
-  if(isIOS && !window.navigator.standalone){
-    try{ if(sessionStorage.getItem('pwa_hidden')) return; }catch(ex){}
-    setTimeout(function(){
-      banner.querySelector('.pwa-txt span').textContent = "Safari → Paylaş → Ana Ekrana Ekle";
-      btnOk.style.display='none';
-      banner.classList.add('visible');
-    }, 1500);
-  }
-})();
 </script>
 
 </body>
