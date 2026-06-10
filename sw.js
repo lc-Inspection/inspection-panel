@@ -1,40 +1,72 @@
-// Inspection Performans Paneli — Service Worker v2
-// Bu dosyayı panel.html ile aynı dizine koy: /inspection-panel/sw.js
+// sw.js — Inspection Performans Paneli Service Worker
+// Bu dosyayı HTML dosyanızla aynı dizine (GitHub Pages repo root'una) koyun.
+// Chrome, Edge, Firefox ve Android için PWA install promptu bu dosya sayesinde tetiklenir.
 
-const CACHE_NAME = 'inspection-panel-v2';
-const PAGE_URL   = './panel.html';
+const CACHE_NAME = 'inspection-panel-v3';
 
-self.addEventListener('install', function(e) {
+// Sayfa URL'sini dinamik al — hangi origin'den yüklenirse o cache edilsin
+self.addEventListener('install', e => {
+  console.log('[SW] Installing...');
   e.waitUntil(
+    // Cache'e eklerken hata olursa install yine de tamamlansın
     caches.open(CACHE_NAME)
-      .then(function(cache) { return cache.add(PAGE_URL); })
-      .then(function() { return self.skipWaiting(); })
+      .then(cache => {
+        // SW'nin scope'undaki ana sayfayı cache'e al
+        const pageUrl = self.registration.scope;
+        // Panel HTML dosyasını bul (scope dizinindeki ilk HTML)
+        return cache.addAll([pageUrl]).catch(err => {
+          console.warn('[SW] Cache add failed (may be ok):', err);
+        });
+      })
+      .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener('activate', function(e) {
+self.addEventListener('activate', e => {
+  console.log('[SW] Activating...');
   e.waitUntil(
-    caches.keys().then(function(keys) {
-      return Promise.all(
-        keys.filter(function(k) { return k !== CACHE_NAME; })
-            .map(function(k)   { return caches.delete(k); })
-      );
-    }).then(function() { return self.clients.claim(); })
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(k => k !== CACHE_NAME)
+          .map(k => {
+            console.log('[SW] Deleting old cache:', k);
+            return caches.delete(k);
+          })
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', function(e) {
+self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+
+  // Chrome DevTools ve extension isteklerini atla
+  if (e.request.url.startsWith('chrome-extension://')) return;
+
   e.respondWith(
-    caches.match(e.request).then(function(cached) {
-      var networkFetch = fetch(e.request).then(function(resp) {
+    caches.match(e.request).then(cached => {
+      if (cached) {
+        // Cache'den sun, arka planda güncelle (stale-while-revalidate)
+        fetch(e.request)
+          .then(resp => {
+            if (resp && resp.ok && resp.type === 'basic') {
+              caches.open(CACHE_NAME).then(c => c.put(e.request, resp));
+            }
+          })
+          .catch(() => {});
+        return cached;
+      }
+      // Cache'de yok — networkten getir ve cache'e ekle
+      return fetch(e.request).then(resp => {
         if (resp && resp.ok && resp.type === 'basic') {
-          var clone = resp.clone();
-          caches.open(CACHE_NAME).then(function(c) { c.put(e.request, clone); });
+          const clone = resp.clone();
+          caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
         }
         return resp;
+      }).catch(err => {
+        console.warn('[SW] Fetch failed:', e.request.url, err);
       });
-      return cached || networkFetch;
     })
   );
 });
