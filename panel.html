@@ -1255,65 +1255,6 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
         </div>
       </div>
 
-      <!-- Google Sheets Banner -->
-      <div class="sheets-banner">
-        <div class="sheets-banner-icon">📊</div>
-        <div class="sheets-banner-text">
-          <strong data-i18n="sheets_conn_title">Google Sheets Connection</strong>
-          <small data-i18n="sheets_conn_sub">Sync classification data with Google Sheets — access from different computers</small>
-        </div>
-        <div class="sheets-banner-actions">
-          <span class="sheets-btn sheets-btn-push" onclick="pushToSheets()" data-i18n="send">📤 Send</span>
-          <span class="sheets-btn sheets-btn-pull" onclick="pullFromSheets()" data-i18n="pull">📥 Pull</span>
-        </div>
-      </div>
-
-      <!-- Sheets URL Ayarı -->
-      <div class="card" style="margin-bottom:16px">
-        <div class="card-header"><h2 data-i18n="sheets_settings_title">🔗 Google Sheets Connection Settings</h2></div>
-        <div class="card-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-            <div>
-              <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_url_label">Google Apps Script Web App URL (Send/Receive Data)</label>
-              <div class="sheets-url-row">
-                <input type="text" id="sheets-webapp-url" class="sheets-url-input" placeholder="https://script.google.com/macros/s/…/exec" oninput="saveConfig()">
-              </div>
-              <div style="font-size:10px;color:var(--muted);line-height:1.6">
-                Google Sheets → Uzantılar → Apps Script menüsünden bir Web App deploy edin. 
-                <a href="#" onclick="showSheetsHelp();return false" style="color:var(--blue)" data-i18n="how_to_setup">How to set up? ℹ️</a>
-              </div>
-            </div>
-            <div>
-              <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_table_label">Google Sheets Table Link (View)</label>
-              <div class="sheets-url-row">
-                <input type="text" id="sheets-view-url" class="sheets-url-input" placeholder="https://docs.google.com/spreadsheets/d/…" oninput="saveConfig()">
-                <a id="sheets-view-link" href="#" target="_blank" style="padding:8px 12px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;text-decoration:none;font-weight:500;white-space:nowrap" data-i18n="open_link">🔗 Open</a>
-              </div>
-              <div style="font-size:10px;color:var(--muted)" data-i18n="open_link_hint">Used to open the table in a browser</div>
-            </div>
-          </div>
-          <!-- API Token satırı -->
-          <div style="margin-top:12px;display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--lamber);border:1px solid #FFE082;border-radius:8px">
-            <span style="font-size:18px">🔑</span>
-            <div style="flex:1">
-              <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block">API Token <span style="font-weight:400;color:var(--muted)" data-i18n="api_token_hint">(Must match the API_TOKEN in Apps Script)</span></label>
-              <div style="display:flex;gap:8px;align-items:center">
-                <input type="password" id="sheets-api-token" placeholder="lcw-secret-2024" oninput="saveConfig()" style="width:280px;font-family:'DM Mono',monospace;letter-spacing:2px">
-                <button onclick="toggleTokenVisibility()" style="padding:6px 10px;border:1px solid var(--border);background:var(--white);border-radius:6px;cursor:pointer;font-size:12px" id="token-eye-btn">👁️</button>
-                <span style="font-size:11px;color:var(--muted)" data-i18n="apiscript_match_hint">Must match value in Apps Script file <code style="background:var(--border2);padding:1px 5px;border-radius:3px">API_TOKEN</code> değeriyle eşleşmeli</span>
-              </div>
-            </div>
-          </div>
-          <div style="margin-top:12px;padding:10px 14px;background:var(--lblue3);border-radius:8px;border:1px solid var(--lblue);font-size:11px;color:var(--navy)">
-            <strong data-i18n="pw_settings">🔒 Password Settings:</strong> 
-            <span style="color:var(--muted)" data-i18n="current_pw">Current password: </span>
-            <code id="pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
-            <button onclick="changePwPrompt()" style="margin-left:10px;padding:3px 10px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_pw">✏️ Change Password</button>
-            <span id="pw-sheets-sync-status" style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
-          </div>
-        </div>
-      </div>
-
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start" id="klasman-layout">
         <!-- Sol: Klasman Grid -->
         <div class="card" style="overflow:hidden">
@@ -1354,6 +1295,68 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
               <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--lblue2),var(--lblue3));display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:18px;border:1px solid var(--border)">⚙️</div>
               <h3 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:8px" data-i18n="select_klasman">Select a classification</h3>
               <p style="font-size:12px;color:var(--muted);max-width:220px;line-height:1.6" data-i18n="select_klasman_hint">Select a classification on the left to edit station durations</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Google Sheets Bağlantısı (açılır-kapanır, default kapalı) ─── -->
+      <div class="sheets-banner" onclick="toggleSheetsBannerSection()" style="cursor:pointer;user-select:none" id="sheets-banner-toggle">
+        <div class="sheets-banner-icon">📊</div>
+        <div class="sheets-banner-text">
+          <strong data-i18n="sheets_conn_title">Google Sheets Bağlantısı</strong>
+          <small data-i18n="sheets_conn_sub">Klasman verilerini Google Sheets ile senkronize edin — farklı bilgisayarlardan erişin</small>
+        </div>
+        <div class="sheets-banner-actions" onclick="event.stopPropagation()">
+          <span class="sheets-btn sheets-btn-push" onclick="pushToSheets()" data-i18n="send">📤 Gönder</span>
+          <span class="sheets-btn sheets-btn-pull" onclick="pullFromSheets()" data-i18n="pull">📥 Çek</span>
+        </div>
+        <span id="sheets-banner-toggle-icon" style="font-size:14px;color:rgba(255,255,255,.6);margin-left:14px;transition:transform .25s;display:inline-block">▼</span>
+      </div>
+
+      <!-- Sheets Ayarları Kartı (gizli, banner'a tıklayınca açılır) -->
+      <div id="sheets-settings-section" style="display:none">
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header"><h2 data-i18n="sheets_settings_title">🔗 Google Sheets Bağlantı Ayarları</h2></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div>
+                <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_url_label">Google Apps Script Web App URL'si (Veri Gönder/Al)</label>
+                <div class="sheets-url-row">
+                  <input type="text" id="sheets-webapp-url" class="sheets-url-input" placeholder="https://script.google.com/macros/s/…/exec" oninput="saveConfig()">
+                </div>
+                <div style="font-size:10px;color:var(--muted);line-height:1.6">
+                  Google Sheets → Uzantılar → Apps Script menüsünden bir Web App deploy edin.
+                  <a href="#" onclick="showSheetsHelp();return false" style="color:var(--blue)" data-i18n="how_to_setup">Nasıl kurulur? ℹ️</a>
+                </div>
+              </div>
+              <div>
+                <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_table_label">Google Sheets Tablo Bağlantısı (Görüntüle)</label>
+                <div class="sheets-url-row">
+                  <input type="text" id="sheets-view-url" class="sheets-url-input" placeholder="https://docs.google.com/spreadsheets/d/…" oninput="saveConfig()">
+                  <a id="sheets-view-link" href="#" target="_blank" style="padding:8px 12px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;text-decoration:none;font-weight:500;white-space:nowrap" data-i18n="open_link">🔗 Aç</a>
+                </div>
+                <div style="font-size:10px;color:var(--muted)" data-i18n="open_link_hint">Tabloyu tarayıcıda açmak için kullanılır</div>
+              </div>
+            </div>
+            <!-- API Token satırı -->
+            <div style="margin-top:12px;display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--lamber);border:1px solid #FFE082;border-radius:8px">
+              <span style="font-size:18px">🔑</span>
+              <div style="flex:1">
+                <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block">API Token <span style="font-weight:400;color:var(--muted)" data-i18n="api_token_hint">(Apps Script'teki API_TOKEN değeriyle eşleşmeli)</span></label>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <input type="password" id="sheets-api-token" placeholder="lcw-secret-2024" oninput="saveConfig()" style="width:280px;font-family:'DM Mono',monospace;letter-spacing:2px">
+                  <button onclick="toggleTokenVisibility()" style="padding:6px 10px;border:1px solid var(--border);background:var(--white);border-radius:6px;cursor:pointer;font-size:12px" id="token-eye-btn">👁️</button>
+                  <span style="font-size:11px;color:var(--muted)" data-i18n="apiscript_match_hint">Apps Script dosyasındaki değerle eşleşmeli</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:12px;padding:10px 14px;background:var(--lblue3);border-radius:8px;border:1px solid var(--lblue);font-size:11px;color:var(--navy)">
+              <strong data-i18n="pw_settings">🔒 Şifre Ayarları:</strong>
+              <span style="color:var(--muted)" data-i18n="current_pw">Mevcut şifre: </span>
+              <code id="pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
+              <button onclick="changePwPrompt()" style="margin-left:10px;padding:3px 10px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_pw">✏️ Şifreyi Değiştir</button>
+              <span id="pw-sheets-sync-status" style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
             </div>
           </div>
         </div>
@@ -2942,6 +2945,15 @@ function checkKlasmanPassword() {
     document.getElementById('kpw-input').value = '';
     document.getElementById('kpw-input').focus();
   }
+}
+
+function toggleSheetsBannerSection() {
+  var section = document.getElementById('sheets-settings-section');
+  var icon    = document.getElementById('sheets-banner-toggle-icon');
+  if (!section) return;
+  var isOpen = section.style.display !== 'none';
+  section.style.display = isOpen ? 'none' : 'block';
+  if (icon) icon.style.transform = isOpen ? '' : 'rotate(180deg)';
 }
 
 function toggleKlasmanPwSection() {
