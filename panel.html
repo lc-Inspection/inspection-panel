@@ -894,6 +894,29 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 .pw-err { color: var(--red); font-size: 12px; margin-bottom: 10px; min-height: 18px; }
 .pw-btn { width: 100%; padding: 10px; background: var(--blue2); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s; }
 .pw-btn:hover { background: var(--blue); }
+.lang-switcher {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 18px;
+}
+.lang-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 14px; border-radius: 99px; cursor: pointer;
+  font-size: 12px; font-weight: 600; border: 1.5px solid var(--border);
+  background: var(--white); color: var(--muted); transition: all .15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.lang-btn:hover { border-color: var(--blue3); color: var(--blue); background: var(--lblue3); }
+.lang-btn.active { background: var(--blue2); border-color: var(--blue2); color: #fff; }
+
+/* ─── TOPBAR LANG BTN ─── */
+.topbar-lang-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 16px; width: 28px; height: 28px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  opacity: .55; transition: all .15s; padding: 0;
+}
+.topbar-lang-btn:hover { opacity: 1; background: rgba(255,255,255,.12); }
+.topbar-lang-btn.active { opacity: 1; background: rgba(255,255,255,.18); box-shadow: 0 0 0 2px rgba(255,255,255,.35); }
 
 /* ─── SHEETS BANNER ─── */
 .sheets-banner {
@@ -953,18 +976,22 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 <!-- PASSWORD MODAL -->
 <div class="pw-overlay" id="pw-overlay" style="display:none">
   <div class="pw-box">
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="pw-lang-btn-tr" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+      <button class="lang-btn" id="pw-lang-btn-en" onclick="setLang('en')">🇬🇧 English</button>
+    </div>
     <div class="pw-icon" id="pw-icon">🔐</div>
-    <div class="pw-title" id="pw-title">Giriş Yap</div>
-    <div class="pw-sub" id="pw-sub">Şifrenizi girerek devam edin</div>
-    <input type="password" class="pw-input" id="pw-input" placeholder="••••••" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="pw-title" id="pw-title" data-i18n="login_title">Giriş Yap</div>
+    <div class="pw-sub" id="pw-sub" data-i18n="login_sub">Şifrenizi girerek devam edin</div>
+    <input type="password" class="pw-input" id="pw-input" data-i18n-placeholder="password_placeholder" placeholder="••••••" onkeydown="if(event.key==='Enter')checkPassword()">
     <div class="pw-err" id="pw-err"></div>
-    <button class="pw-btn" onclick="checkPassword()">🔓 Giriş Yap</button>
+    <button class="pw-btn" onclick="checkPassword()" data-i18n="login_btn">🔓 Giriş Yap</button>
     <div style="margin-top:10px;font-size:11px;color:var(--muted2);display:flex;align-items:center;justify-content:center;gap:6px" id="pw-server-status">
       <span style="width:7px;height:7px;border-radius:50%;background:var(--muted2);display:inline-block" id="pw-dot"></span>
-      <span id="pw-server-label">Sunucu doğrulaması aktif</span>
+      <span id="pw-server-label" data-i18n="server_active">Sunucu doğrulaması aktif</span>
     </div>
     <div style="margin-top:12px" id="pw-cancel-row">
-      <button onclick="closePwModal()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer">İptal</button>
+      <button onclick="closePwModal()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer" data-i18n="cancel">Cancel</button>
     </div>
   </div>
 </div>
@@ -984,13 +1011,18 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
     <div class="topbar-logo">LC</div>
     <div class="topbar-title">
       Inspection Performans
-      <small>Inspection Kontrol</small>
+      <small data-i18n="app_subtitle">Inspection Control</small>
     </div>
   </div>
   <div class="topbar-right">
-    <span class="top-badge" id="klasman-badge">0 klasman</span>
-    <button onclick="showPerformansHowItWorks()" style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;background:#fff;color:var(--navy);border:1px solid rgba(255,255,255,.25);border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.2px;font-family:'DM Sans',sans-serif;transition:all .15s" onmouseover="this.style.background='#f0f6ff'" onmouseout="this.style.background='#fff'">ℹ️ Nasıl Çalışır</button>
+    <span class="top-badge" id="klasman-badge">0 <span data-i18n="klasman">klasman</span></span>
+    <button onclick="showPerformansHowItWorks()" style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;background:#fff;color:var(--navy);border:1px solid rgba(255,255,255,.25);border-radius:99px;font-size:11px;font-weight:600;cursor:pointer;letter-spacing:.2px;font-family:'DM Sans',sans-serif;transition:all .15s" onmouseover="this.style.background='#f0f6ff'" onmouseout="this.style.background='#fff'"><span data-i18n="how_it_works">ℹ️ Nasıl Çalışır</span></button>
     <span class="top-badge" id="inspector-badge">0 inspector</span>
+    <!-- Dil Seçici -->
+    <div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:3px 5px;">
+      <button id="lang-btn-tr" onclick="setLang('tr')" class="topbar-lang-btn active" title="Türkçe">🇹🇷</button>
+      <button id="lang-btn-en" onclick="setLang('en')" class="topbar-lang-btn" title="English">🇬🇧</button>
+    </div>
     <div class="top-clock" id="clock">--:--:--</div>
   </div>
 </header>
@@ -1000,34 +1032,34 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 
   <!-- SIDEBAR -->
   <nav class="sidebar">
-    <div class="sb-label">Ana Sayfa</div>
+    <div class="sb-label" data-i18n="nav_home">Ana Sayfa</div>
     <div class="nav-item active" onclick="showPage('dashboard')">
       <span class="nav-icon">📊</span>
-      <span>Dashboard</span>
+      <span data-i18n="nav_dashboard">Dashboard</span>
       <span class="nav-count" id="nav-dashboard-count">0</span>
     </div>
 
-    <div class="sb-label">Yönetim</div>
+    <div class="sb-label" data-i18n="nav_management">Yönetim</div>
     <div class="nav-item" id="nav-klasmanlar" onclick="requirePassword(this)">
       <span class="nav-icon">📦</span>
-      <span>Klasman Yönetimi</span>
+      <span data-i18n="nav_klasman_mgmt">Klasman Yönetimi</span>
       <span class="nav-count" id="nav-kl-count">0</span>
     </div>
 
-    <div class="sb-label">Analiz</div>
+    <div class="sb-label" data-i18n="nav_analysis">Analiz</div>
     <div class="nav-item" onclick="showPage('klasman-analiz')">
   <span class="nav-icon">🎯</span>
-  <span>Klasman Analizi</span>
+  <span data-i18n="nav_klasman_analysis">Klasman Analizi</span>
 </div>
     <div class="nav-item" onclick="showPage('performans')">
       <span class="nav-icon">📈</span>
-      <span>Performans Analizi</span>
+      <span data-i18n="nav_perf_analysis">Performans Analizi</span>
     </div>
 
-    <div class="sb-label">Görüntüleme</div>
+    <div class="sb-label" data-i18n="nav_display">Görüntüleme</div>
     <div class="nav-item" onclick="showPage('canli')">
       <span class="nav-icon">📺</span>
-      <span>Canlı Gösterim</span>
+      <span data-i18n="nav_live">Canlı Gösterim</span>
       <span class="nav-count" id="nav-canli-count">TV</span>
     </div>
 
@@ -1037,7 +1069,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
         <strong style="font-size: 12px; color: rgba(255,255,255,.7); font-family: 'DM Mono', monospace;" id="sb-inspector-total">0</strong>
       </div>
       <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: 7px; background: rgba(255,255,255,.04); margin-bottom: 6px;">
-        <span style="font-size: 11px; color: rgba(255,255,255,.35);">Klasman</span>
+        <span style="font-size: 11px; color: rgba(255,255,255,.35);" data-i18n="klasman">Klasman</span>
         <strong style="font-size: 12px; color: rgba(255,255,255,.7); font-family: 'DM Mono', monospace;" id="sb-klasman-total">0</strong>
       </div>
     </div>
@@ -1050,18 +1082,18 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
     <div id="page-dashboard" class="page active">
       <div class="ph">
         <div class="ph-left">
-          <h1>Inspector Performans Dashboard</h1>
-          <p>Tüm inspectörlerin performans durumunu tek ekranda izleyin</p>
+          <h1 data-i18n="dash_title">Inspector Performans Dashboard</h1>
+          <p data-i18n="dash_sub">Tüm inspectörlerin performans durumunu tek ekranda izleyin</p>
         </div>
         <div class="ph-buttons">
           <button class="btn" onclick="pullPerformansFromSheets()" id="dash-pull-btn" title="Sheets'ten performans verisini çek">
-            📥 Sheets'ten Çek
+            <span data-i18n="pull_from_sheets">📥 Sheets'ten Çek</span>
           </button>
           <button class="btn btn-warning" onclick="clearDashboardData()">
-            🗑️ Temizle
+            <span data-i18n="clear">🗑️ Temizle</span>
           </button>
           <button class="btn btn-primary" onclick="exportToExcel()">
-            📊 Excel'e Aktar
+            <span data-i18n="export_excel">📊 Excel'e Aktar</span>
           </button>
         </div>
       </div>
@@ -1070,69 +1102,69 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
       <div class="summary-stats">
         <div class="summary-stat">
           <div class="summary-stat-value" id="total-inspectors">0</div>
-          <div class="summary-stat-label">Toplam Inspector</div>
+          <div class="summary-stat-label" data-i18n="stat_total_inspector">Toplam Inspector</div>
         </div>
         <div class="summary-stat" style="background:linear-gradient(135deg,var(--lgreen) 0%,#fff 100%);border-color:#B2DFDB">
           <div class="summary-stat-value" id="excellent-count" style="color:var(--green)">0</div>
-          <div class="summary-stat-label">Mükemmel (≥95%)</div>
+          <div class="summary-stat-label" data-i18n="stat_excellent">Mükemmel (≥95%)</div>
         </div>
         <div class="summary-stat" style="background:linear-gradient(135deg,var(--lblue2) 0%,#fff 100%);border-color:var(--lblue)">
           <div class="summary-stat-value" id="good-count" style="color:var(--blue)">0</div>
-          <div class="summary-stat-label">İyi (85-94%)</div>
+          <div class="summary-stat-label" data-i18n="stat_good">İyi (85-94%)</div>
         </div>
         <div class="summary-stat" style="background:linear-gradient(135deg,var(--lamber) 0%,#fff 100%);border-color:#FFE082">
           <div class="summary-stat-value" id="average-count" style="color:var(--amber)">0</div>
-          <div class="summary-stat-label">Orta (70-84%)</div>
+          <div class="summary-stat-label" data-i18n="stat_average">Orta (70-84%)</div>
         </div>
         <div class="summary-stat" style="background:linear-gradient(135deg,var(--lred) 0%,#fff 100%);border-color:#FFCDD2">
           <div class="summary-stat-value" id="poor-count" style="color:var(--red)">0</div>
-          <div class="summary-stat-label">Düşük (<70%)</div>
+          <div class="summary-stat-label" data-i18n="stat_poor">Düşük (<70%)</div>
         </div>
         <div class="summary-stat" style="background:linear-gradient(135deg,var(--lgreen) 0%,#fff 100%);border-color:#B2DFDB">
           <div class="summary-stat-value" id="avg-performance" style="color:var(--green)">0%</div>
-          <div class="summary-stat-label">📅 Ortalama Performans</div>
+          <div class="summary-stat-label" data-i18n="stat_avg_perf">📅 Ortalama Performans</div>
         </div>
         <div class="summary-stat" style="background:linear-gradient(135deg,var(--lblue3) 0%,#fff 100%);border-color:var(--lblue)">
           <div class="summary-stat-value" id="avg-working-days" style="color:var(--blue)">0</div>
-          <div class="summary-stat-label">⏰ Ortalama Çalışma Günü</div>
+          <div class="summary-stat-label" data-i18n="stat_avg_days">⏰ Ortalama Çalışma Günü</div>
         </div>
         <div class="summary-stat" style="background:linear-gradient(135deg,var(--lamber) 0%,#fff 100%);border-color:#FFE082">
           <div class="summary-stat-value" id="total-products" style="color:var(--amber)">0</div>
-          <div class="summary-stat-label">📦 Toplam Ürün</div>
+          <div class="summary-stat-label" data-i18n="stat_total_product">📦 Toplam Ürün</div>
         </div>
       </div>
 
       <!-- Filtre Çubuğu -->
       <div class="filter-bar">
         <div class="filter-group">
-          <label>Performans Filtresi:</label>
+          <label data-i18n="filter_perf">Performans Filtresi:</label>
           <select id="perf-filter" onchange="filterInspectors()">
-            <option value="">Tümü</option>
-            <option value="excellent">Mükemmel (≥95%)</option>
-            <option value="good">İyi (85-94%)</option>
-            <option value="average">Orta (70-84%)</option>
-            <option value="poor">Düşük (<70%)</option>
+            <option value="" data-i18n="filter_all">All</option>
+            <option value="excellent" data-i18n="opt_excellent">Excellent (≥95%)</option>
+            <option value="good" data-i18n="stat_good">İyi (85-94%)</option>
+            <option value="average" data-i18n="stat_average">Orta (70-84%)</option>
+            <option value="poor" data-i18n="stat_poor">Düşük (<70%)</option>
           </select>
         </div>
         <div class="filter-group">
-          <label>Klasman Filtresi:</label>
+          <label data-i18n="filter_klasman">Klasman Filtresi:</label>
           <select id="klasman-filter" onchange="filterInspectors()">
-            <option value="">Tüm Klasmanlar</option>
+            <option value="" data-i18n="filter_all_klasman">Tüm Klasmanlar</option>
           </select>
         </div>
         <div class="filter-group">
-          <label>Inspector Ara:</label>
-          <input type="text" id="inspector-search" placeholder="Inspector adı..." oninput="filterInspectors()">
+          <label data-i18n="filter_search">Inspector Ara:</label>
+          <input type="text" id="inspector-search" data-i18n-placeholder="inspector_search_ph" placeholder="Inspector adı..." oninput="filterInspectors()">
         </div>
         <div class="filter-group">
-          <label>Sıralama:</label>
+          <label data-i18n="filter_sort">Sıralama:</label>
           <select id="sort-order" onchange="filterInspectors()">
-            <option value="perf-desc">Performans (Yüksek-Düşük)</option>
-            <option value="perf-asc">Performans (Düşük-Yüksek)</option>
-            <option value="name-asc">İsim (A-Z)</option>
-            <option value="name-desc">İsim (Z-A)</option>
-            <option value="adet-desc">Adet (Çok-Az)</option>
-            <option value="adet-asc">Adet (Az-Çok)</option>
+            <option value="perf-desc" data-i18n="sort_perf_desc">Performans (Yüksek-Düşük)</option>
+            <option value="perf-asc" data-i18n="sort_perf_asc">Performans (Düşük-Yüksek)</option>
+            <option value="name-asc" data-i18n="sort_name_asc">İsim (A-Z)</option>
+            <option value="name-desc" data-i18n="sort_name_desc">İsim (Z-A)</option>
+            <option value="adet-desc" data-i18n="sort_qty_desc">Adet (Çok-Az)</option>
+            <option value="adet-asc" data-i18n="sort_qty_asc">Adet (Az-Çok)</option>
           </select>
         </div>
       </div>
@@ -1141,16 +1173,16 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
       <div class="dashboard-grid" id="inspector-grid">
         <div class="empty">
           <div class="empty-icon">📊</div>
-          <h3>Henüz performans verisi yok</h3>
-          <p>Performans Analizi sayfasından Excel yükleyip analiz yapın</p>
+          <h3 data-i18n="no_perf_data">No performance data yet</h3>
+          <p data-i18n="no_perf_data_hint">Upload an Excel file from the Performance Analysis page</p>
         </div>
       </div>
 
       <!-- Sayfalama -->
       <div class="pagination" id="dashboard-pagination" style="display: none;">
-        <button class="pag-btn" id="dash-btn-prev" onclick="changeDashboardPage(-1)">‹ Önceki</button>
+        <button class="pag-btn" id="dash-btn-prev" onclick="changeDashboardPage(-1)" data-i18n="prev">‹ Önceki</button>
         <div class="pag-info" id="dash-page-info">1 / 1</div>
-        <button class="pag-btn" id="dash-btn-next" onclick="changeDashboardPage(1)">Sonraki ›</button>
+        <button class="pag-btn" id="dash-btn-next" onclick="changeDashboardPage(1)" data-i18n="next">Sonraki ›</button>
       </div>
     </div>
 
@@ -1158,8 +1190,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
     <div id="page-klasmanlar" class="page">
       <div class="ph">
         <div class="ph-left">
-          <h1>Klasman Yönetimi</h1>
-          <p>Ürün klasmanlarını tanımlayın ve istasyon sürelerini ayarlayın</p>
+          <h1 data-i18n="page_klasman_title">Classification Management</h1>
+          <p data-i18n="page_klasman_sub">Define product classifications and adjust station durations</p>
         </div>
         <div class="ph-buttons">
           <button class="btn" onclick="pushToSheets()" title="Google Sheets'e gönder">
@@ -1181,63 +1213,63 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
       <div class="sheets-banner">
         <div class="sheets-banner-icon">📊</div>
         <div class="sheets-banner-text">
-          <strong>Google Sheets Bağlantısı</strong>
-          <small>Klasman verilerini Google Sheets ile senkronize edin — farklı bilgisayarlardan erişin</small>
+          <strong data-i18n="sheets_conn_title">Google Sheets Connection</strong>
+          <small data-i18n="sheets_conn_sub">Sync classification data with Google Sheets — access from different computers</small>
         </div>
         <div class="sheets-banner-actions">
-          <span class="sheets-btn sheets-btn-push" onclick="pushToSheets()">📤 Gönder</span>
-          <span class="sheets-btn sheets-btn-pull" onclick="pullFromSheets()">📥 Çek</span>
+          <span class="sheets-btn sheets-btn-push" onclick="pushToSheets()" data-i18n="send">📤 Send</span>
+          <span class="sheets-btn sheets-btn-pull" onclick="pullFromSheets()" data-i18n="pull">📥 Pull</span>
         </div>
       </div>
 
       <!-- Sheets URL Ayarı -->
       <div class="card" style="margin-bottom:16px">
-        <div class="card-header"><h2>🔗 Google Sheets Bağlantı Ayarları</h2></div>
+        <div class="card-header"><h2 data-i18n="sheets_settings_title">🔗 Google Sheets Connection Settings</h2></div>
         <div class="card-body">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div>
-              <label style="margin-bottom:6px;display:block;font-weight:600">Google Apps Script Web App URL (Veri Gönderme/Çekme)</label>
+              <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_url_label">Google Apps Script Web App URL (Send/Receive Data)</label>
               <div class="sheets-url-row">
                 <input type="text" id="sheets-webapp-url" class="sheets-url-input" placeholder="https://script.google.com/macros/s/…/exec" oninput="saveConfig()">
               </div>
               <div style="font-size:10px;color:var(--muted);line-height:1.6">
                 Google Sheets → Uzantılar → Apps Script menüsünden bir Web App deploy edin. 
-                <a href="#" onclick="showSheetsHelp();return false" style="color:var(--blue)">Nasıl kurulur? ℹ️</a>
+                <a href="#" onclick="showSheetsHelp();return false" style="color:var(--blue)" data-i18n="how_to_setup">How to set up? ℹ️</a>
               </div>
             </div>
             <div>
-              <label style="margin-bottom:6px;display:block;font-weight:600">Google Sheets Tablo Linki (Görüntüleme)</label>
+              <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_table_label">Google Sheets Table Link (View)</label>
               <div class="sheets-url-row">
                 <input type="text" id="sheets-view-url" class="sheets-url-input" placeholder="https://docs.google.com/spreadsheets/d/…" oninput="saveConfig()">
-                <a id="sheets-view-link" href="#" target="_blank" style="padding:8px 12px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;text-decoration:none;font-weight:500;white-space:nowrap">🔗 Aç</a>
+                <a id="sheets-view-link" href="#" target="_blank" style="padding:8px 12px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;text-decoration:none;font-weight:500;white-space:nowrap" data-i18n="open_link">🔗 Open</a>
               </div>
-              <div style="font-size:10px;color:var(--muted)">Tabloyu tarayıcıda açmak için kullanılır</div>
+              <div style="font-size:10px;color:var(--muted)" data-i18n="open_link_hint">Used to open the table in a browser</div>
             </div>
           </div>
           <!-- API Token satırı -->
           <div style="margin-top:12px;display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--lamber);border:1px solid #FFE082;border-radius:8px">
             <span style="font-size:18px">🔑</span>
             <div style="flex:1">
-              <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block">API Token <span style="font-weight:400;color:var(--muted)">(Apps Script'teki API_TOKEN ile aynı olmalı)</span></label>
+              <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block">API Token <span style="font-weight:400;color:var(--muted)" data-i18n="api_token_hint">(Must match the API_TOKEN in Apps Script)</span></label>
               <div style="display:flex;gap:8px;align-items:center">
                 <input type="password" id="sheets-api-token" placeholder="lcw-secret-2024" oninput="saveConfig()" style="width:280px;font-family:'DM Mono',monospace;letter-spacing:2px">
                 <button onclick="toggleTokenVisibility()" style="padding:6px 10px;border:1px solid var(--border);background:var(--white);border-radius:6px;cursor:pointer;font-size:12px" id="token-eye-btn">👁️</button>
-                <span style="font-size:11px;color:var(--muted)">Apps Script dosyasındaki <code style="background:var(--border2);padding:1px 5px;border-radius:3px">API_TOKEN</code> değeriyle eşleşmeli</span>
+                <span style="font-size:11px;color:var(--muted)" data-i18n="apiscript_match_hint">Must match value in Apps Script file <code style="background:var(--border2);padding:1px 5px;border-radius:3px">API_TOKEN</code> değeriyle eşleşmeli</span>
               </div>
             </div>
           </div>
           <div style="margin-top:12px;padding:10px 14px;background:var(--lblue3);border-radius:8px;border:1px solid var(--lblue);font-size:11px;color:var(--navy)">
-            <strong>🔒 Şifre Ayarı:</strong> 
-            <span style="color:var(--muted)">Mevcut şifre: </span>
+            <strong data-i18n="pw_settings">🔒 Password Settings:</strong> 
+            <span style="color:var(--muted)" data-i18n="current_pw">Current password: </span>
             <code id="pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
-            <button onclick="changePwPrompt()" style="margin-left:10px;padding:3px 10px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer">✏️ Şifreyi Değiştir</button>
+            <button onclick="changePwPrompt()" style="margin-left:10px;padding:3px 10px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_pw">✏️ Change Password</button>
             <span id="pw-sheets-sync-status" style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
           </div>
           <div style="margin-top:8px;padding:10px 14px;background:#FFF3E0;border-radius:8px;border:1px solid #FFB74D;font-size:11px;color:var(--navy)">
-            <strong>🔑 Klasman Yönetimi Şifresi:</strong>
-            <span style="color:var(--muted)"> Bu sayfaya özel erişim şifresi: </span>
+            <strong data-i18n="klasman_pw_label">🔑 Classification Management Password:</strong>
+            <span style="color:var(--muted)" data-i18n="klasman_pw_hint"> Access password for this page: </span>
             <code id="klasman-pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
-            <button onclick="changeKlasmanPwPrompt()" style="margin-left:10px;padding:3px 10px;background:#E65100;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer">✏️ Klasman Şifresini Değiştir</button>
+            <button onclick="changeKlasmanPwPrompt()" style="margin-left:10px;padding:3px 10px;background:#E65100;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_klasman_pw">✏️ Change Classification Password</button>
             <span style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
           </div>
         </div>
@@ -1261,8 +1293,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
           </div>
           <!-- Tamamlanma Filtresi -->
           <div class="kl-filter-bar" id="kl-filter-bar">
-            <button class="kl-filter-btn active" id="kl-f-all"    onclick="setKlFilter('all')"  >Tümü</button>
-            <button class="kl-filter-btn"         id="kl-f-done"   onclick="setKlFilter('done')" >✅ Girişi Tamamlananlar</button>
+            <button class="kl-filter-btn active" id="kl-f-all"    onclick="setKlFilter('all')"   data-i18n="all_btn">All</button>
+            <button class="kl-filter-btn"         id="kl-f-done"   onclick="setKlFilter('done')"  data-i18n="completed_btn">✅ Completed</button>
             <button class="kl-filter-btn"         id="kl-f-undone" onclick="setKlFilter('undone')">⚠️ Tamamlanmayanlar</button>
             <span id="kl-filter-counts" style="margin-left:auto;font-size:10px;color:var(--muted);align-self:center"></span>
           </div>
@@ -1281,8 +1313,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
           <div id="editor-content">
             <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px;text-align:center">
               <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--lblue2),var(--lblue3));display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:18px;border:1px solid var(--border)">⚙️</div>
-              <h3 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:8px">Bir klasman seçin</h3>
-              <p style="font-size:12px;color:var(--muted);max-width:220px;line-height:1.6">Soldan bir klasman seçerek istasyon sürelerini düzenleyebilirsiniz</p>
+              <h3 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:8px" data-i18n="select_klasman">Select a classification</h3>
+              <p style="font-size:12px;color:var(--muted);max-width:220px;line-height:1.6" data-i18n="select_klasman_hint">Select a classification on the left to edit station durations</p>
             </div>
           </div>
         </div>
@@ -1292,8 +1324,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 <div id="page-klasman-analiz" class="page">
   <div class="ph">
     <div class="ph-left">
-      <h1>🎯 Klasman Bazında Gerçekleşen Süre Analizi</h1>
-      <p>Standart ve gerçekleşen 1 adet ürün kontrol sürelerini karşılaştırın</p>
+      <h1 data-i18n="klasman_analiz_title">🎯 Actual Duration Analysis by Classification</h1>
+      <p data-i18n="klasman_analiz_sub">Compare standard and actual per-unit inspection durations</p>
     </div>
 <div class="ph-buttons">
       <button class="btn" onclick="pullKlasmanAnalizFromSheets()" id="kla-pull-btn">
@@ -1307,8 +1339,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
   <div id="klasman-analiz-icerik">
     <div class="empty">
       <div class="empty-icon">🎯</div>
-      <h3>Veri bekleniyor</h3>
-      <p>Performans analizi yapıldıktan sonra burası otomatik dolar</p>
+      <h3 data-i18n="waiting_data">Awaiting data</h3>
+      <p data-i18n="waiting_data_sub">This will populate automatically after a performance analysis is run</p>
     </div>
   </div>
 </div>
@@ -1316,8 +1348,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
     <div id="page-performans" class="page">
       <div class="ph">
         <div class="ph-left">
-          <h1>Performans Analizi</h1>
-          <p>Excel yükleyin ve inspector bazında performansı ölçün</p>
+          <h1 data-i18n="perf_page_title">Performance Analysis</h1>
+          <p data-i18n="perf_page_sub">Upload an Excel file and measure performance by inspector</p>
         </div>
         <div class="ph-buttons">
           <button class="btn" onclick="showPerformansHowItWorks()" title="Hesaplama mantığını öğrenin">
@@ -1334,16 +1366,16 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 
       <!-- Üst: Upload -->
       <div class="card" style="margin-bottom:16px">
-        <div class="card-header"><h2>📁 Excel Yükle</h2></div>
+        <div class="card-header"><h2 data-i18n="excel_upload_title">📁 Upload Excel</h2></div>
         <div class="card-body">
           <p style="font-size:12px;color:var(--muted);margin-bottom:12px">
-            Excel dosyanızda <strong>A sütunu: Klasman</strong>, <strong>R sütunu: BakilacakMiktar</strong>, <strong>K sütunu: InspectionBaslamaTarihi</strong> ve <strong>L sütunu: InspectionBitisTarihi</strong> bulunmalıdır.
+            <span data-i18n="excel_cols_hint">Your Excel file must contain <strong>Col A: Classification</strong>, <strong>Col R: QuantityToCheck</strong>, <strong>Col K: InspectionStartDate</strong> and <strong>Col L: InspectionEndDate</strong>.</span>
           </p>
           <input type="file" id="file-input" accept=".xlsx,.xls" style="display:none" onchange="excelYukle(event)">
           <div style="border: 2px dashed var(--border); border-radius: var(--r); padding: 22px; text-align: center; cursor: pointer; transition: all .15s; background: var(--lblue3);" id="upload-zone" onclick="document.getElementById('file-input').click()">
             <div style="font-size:28px;margin-bottom:8px">📂</div>
-            <div style="font-size:13px;font-weight:500;color:var(--navy)">Dosya seçin veya sürükleyin</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">.xlsx / .xls formatı</div>
+            <div style="font-size:13px;font-weight:500;color:var(--navy)" data-i18n="file_drop">Select or drag a file</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px" data-i18n="file_format">.xlsx / .xls format</div>
           </div>
           <div id="file-status" style="margin-top:10px;font-size:12px"></div>
         </div>
@@ -1351,15 +1383,15 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 
       <!-- Sütun Eşleme -->
       <div style="display: none; background: var(--lblue3); border: 1px solid var(--lblue); border-radius: var(--r); padding: 16px 18px; margin-bottom: 16px;" id="sutun-panel">
-        <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:4px">🔗 Sütun Eşleme</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Mesai Sütunu seçilmezse Genel Performans otomatik olarak <strong>günlük 7.5 saat × çalışma gün sayısı</strong> bazında hesaplanır.</div>
+        <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:4px" data-i18n="col_mapping_title">🔗 Column Mapping</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px" data-i18n="overtime_col_hint">If no Overtime column is selected, Overall Performance is automatically calculated based on <strong>daily 7.5 hours × working days</strong>.</div>
         <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">
           <div>
-            <label>Klasman Sütunu (A)</label>
+            <label data-i18n="col_klasman">Classification Column (A)</label>
             <select id="col-klasman" onchange="performansHesapla()"></select>
           </div>
           <div>
-            <label>Inspector Sütunu</label>
+            <label data-i18n="col_inspector">Inspector Column</label>
             <select id="col-inspector" onchange="performansHesapla()"></select>
           </div>
           <div>
@@ -1367,17 +1399,17 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
             <select id="col-adet" onchange="performansHesapla()"></select>
           </div>
           <div>
-            <label>Başlama Tarihi (K)</label>
+            <label data-i18n="col_start_date">Start Date (K)</label>
             <select id="col-baslangic" onchange="performansHesapla()"></select>
           </div>
           <div>
-            <label>Bitiş Tarihi (L)</label>
+            <label data-i18n="col_end_date">End Date (L)</label>
             <select id="col-bitis" onchange="performansHesapla()"></select>
           </div>
           <div>
-            <label>⏰ Mesai Süresi <span style="color:var(--muted2);font-weight:400">(dk veya s:d) <span style="color:var(--amber);font-weight:600">K/L seçiliyse otomatik</span></span></label>
+            <label data-i18n="col_overtime_label">⏰ Overtime Duration <span style="color:var(--muted2);font-weight:400">(dk veya s:d) <span style="color:var(--amber);font-weight:600">K/L seçiliyse otomatik</span></span></label>
             <select id="col-mesai" onchange="performansHesapla()">
-              <option value="">— K/L sütunundan otomatik türet —</option>
+              <option value="" data-i18n="col_auto_derive">— Auto-derive from K/L columns —</option>
             </select>
           </div>
         </div>
@@ -1386,17 +1418,17 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
           <span style="font-size:15px">🏭</span>
           <span style="font-size:12px;font-weight:600;color:var(--navy);white-space:nowrap">InspectionYapilanDepo Filtresi</span>
           <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:180px">
-            <label style="margin:0;font-size:11px;color:var(--muted);white-space:nowrap">Sütun (T)</label>
+            <label style="margin:0;font-size:11px;color:var(--muted);white-space:nowrap" data-i18n="col_t_label">Column (T)</label>
             <select id="col-yapilan-depo" onchange="performansHesapla()" style="flex:1">
-              <option value="">— Filtre yok (tüm satırlar) —</option>
+              <option value="" data-i18n="filter_none">— No filter (all rows) —</option>
             </select>
           </div>
-          <span style="font-size:11px;color:var(--muted)">Seçilirse boş olan satırlar hesaplamaya dahil edilmez.</span>
+          <span style="font-size:11px;color:var(--muted)" data-i18n="blank_rows_hint">If selected, rows with empty values will be excluded from the calculation.</span>
         </div>
         <!-- Örnekleme Modu -->
         <div style="margin-top:12px;padding:10px 14px;background:linear-gradient(135deg,#F3E5F5 0%,#fff 100%);border:1px solid #CE93D8;border-radius:9px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
           <span style="font-size:15px">🔢</span>
-          <span style="font-size:12px;font-weight:600;color:var(--navy);white-space:nowrap">Örnekleme Modu</span>
+          <span style="font-size:12px;font-weight:600;color:var(--navy);white-space:nowrap" data-i18n="sampling_mode">Sampling Mode</span>
           <div style="display:flex;gap:6px;align-items:center">
             <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--navy);padding:5px 11px;border-radius:7px;border:1.5px solid #CE93D8;background:#fff;transition:all .15s" id="lbl-ornekleme-kapat">
               <input type="radio" name="ornekleme-mod" value="kapali" id="ornekleme-kapali" onchange="performansHesapla()" checked style="width:auto;padding:0;border:none;box-shadow:none"> Kapalı
@@ -1405,11 +1437,11 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
               <input type="radio" name="ornekleme-mod" value="bir" id="ornekleme-bir" onchange="performansHesapla()" style="width:auto;padding:0;border:none;box-shadow:none"> Bir Alttan
             </label>
             <label style="margin:0;display:flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;color:var(--navy);padding:5px 11px;border-radius:7px;border:1.5px solid #CE93D8;background:#fff;transition:all .15s" id="lbl-ornekleme-iki">
-              <input type="radio" name="ornekleme-mod" value="iki" id="ornekleme-iki" onchange="performansHesapla()" style="width:auto;padding:0;border:none;box-shadow:none"> İki Alttan
+              <input type="radio" name="ornekleme-mod" value="iki" id="ornekleme-iki" onchange="performansHesapla()" style="width:auto;padding:0;border:none;box-shadow:none"> <span data-i18n="two_below">Two Below</span>
             </label>
           </div>
           <div id="ornekleme-aciklama" style="font-size:11px;color:var(--muted);flex:1;min-width:200px">
-            Kapalı: gerçek adet kullanılır. <strong>Bir Alttan</strong> / <strong>İki Alttan</strong>: adet örnekleme tablosuna göre dönüştürülür.
+            <span data-i18n="sampling_off">Off: actual quantity used.</span> <strong data-i18n="one_below">One Below</strong> / <strong data-i18n="two_below">Two Below</strong>: <span data-i18n="sampling_desc_end">quantity converted by sampling table.</span>
           </div>
           <div id="ornekleme-tablo-preview" style="font-size:10px;color:var(--muted2);font-family:'DM Mono',monospace;display:none;background:rgba(206,147,216,.1);padding:5px 10px;border-radius:6px;white-space:nowrap"></div>
         </div>
@@ -1431,7 +1463,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
             Düzeltilmiş Performans = (Standart Süre ÷ Mesai) × (100 ÷ Hedef%)
           </div>
           <div style="display:flex;align-items:center;gap:6px;background:var(--white);border:1px solid var(--border2);border-radius:7px;padding:6px 12px">
-            <span style="font-size:10px;color:var(--muted)">Düzeltilmiş Ort. Performans:</span>
+            <span style="font-size:10px;color:var(--muted)" data-i18n="adj_avg_perf">Adjusted Avg. Performance:</span>
             <span id="verimlilik-ort" style="font-size:15px;font-weight:700;color:var(--amber);font-family:'DM Mono',monospace">—</span>
           </div>
         </div>
@@ -1441,8 +1473,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
       <div class="card" id="perf-card">
         <div class="empty" id="perf-empty">
           <div class="empty-icon">📊</div>
-          <h3>Henüz veri yok</h3>
-          <p>Excel dosyası yükleyip klasman tanımlarını tamamladıktan sonra analiz görünecek</p>
+          <h3 data-i18n="no_data_yet">No data yet</h3>
+          <p data-i18n="no_data_hint">Upload an Excel file and complete classification definitions to see the analysis</p>
         </div>
         <div id="perf-tablo" style="display:none;overflow-x:auto"></div>
       </div>
@@ -1455,8 +1487,8 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
         <div style="display:flex;align-items:center;gap:14px">
           <div style="width:42px;height:42px;background:linear-gradient(135deg,#1565C0,#2196F3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;box-shadow:0 3px 12px rgba(33,150,243,.3)">LC</div>
           <div>
-            <div style="font-size:17px;font-weight:700;color:var(--navy);letter-spacing:-.3px">Canlı Performans Gösterimi</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:2px">Inspector performanslarını büyük ekranda yayınlayın · HD video export</div>
+            <div style="font-size:17px;font-weight:700;color:var(--navy);letter-spacing:-.3px" data-i18n="live_page_title">Live Performance Display</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px" data-i18n="live_page_sub">Broadcast inspector performances on a large screen · HD video export</div>
           </div>
         </div>
         <div style="display:flex;gap:10px;align-items:center">
@@ -1470,7 +1502,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
           </button>
           <button class="btn btn-primary" onclick="toggleSlideshow()" id="slideshow-btn" style="gap:6px">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-            Gösterimi Başlat
+            <span data-i18n="start_slideshow">Start Display</span>
           </button>
         </div>
       </div>
@@ -1478,13 +1510,13 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
       <!-- Kontrol Paneli -->
       <div class="card" id="canli-controls" style="margin-bottom:16px">
         <div class="card-header">
-          <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Yayın Ayarları</h2>
-          <div style="font-size:11px;color:var(--muted)">Gösterimi başlatmadan önce yapılandırın</div>
+          <h2><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> <span data-i18n="broadcast_settings">Broadcast Settings</span></h2>
+          <div style="font-size:11px;color:var(--muted)" data-i18n="broadcast_settings_hint">Configure before starting the display</div>
         </div>
         <div class="card-body">
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:end">
             <div>
-              <label>⏱ Slayt Süresi</label>
+              <label data-i18n="slide_duration">⏱ Slide Duration</label>
               <select id="slide-duration" onchange="updateSlideDuration()">
                 <option value="3000">3 saniye</option>
                 <option value="5000" selected>5 saniye</option>
@@ -1494,25 +1526,25 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
               </select>
             </div>
             <div>
-              <label>👁 Görüntüleme Modu</label>
+              <label data-i18n="view_mode">👁 View Mode</label>
               <select id="display-mode" onchange="updateDisplayMode()">
-                <option value="all">Tüm Inspectorler</option>
-                <option value="top5">En İyi 5</option>
+                <option value="all" data-i18n="all_inspectors">All Inspectors</option>
+                <option value="top5" data-i18n="top5">Top 5</option>
                 <option value="excellent">Mükemmel (≥95%)</option>
-                <option value="good">İyi (≥85%)</option>
+                <option value="good" data-i18n="opt_good">Good (≥85%)</option>
               </select>
             </div>
             <div>
-              <label>✨ Geçiş Efekti</label>
+              <label data-i18n="transition_effect">✨ Transition Effect</label>
               <select id="animation-effect" onchange="updateAnimationEffect()">
-                <option value="slide" selected>Kaydırma</option>
+                <option value="slide" selected data-i18n="slide_slide">Slide</option>
                 <option value="fade">Solma</option>
-                <option value="zoom">Yakınlaştırma</option>
-                <option value="flip">Çevirme</option>
+                <option value="zoom" data-i18n="slide_zoom">Zoom</option>
+                <option value="flip" data-i18n="slide_flip">Flip</option>
               </select>
             </div>
             <div style="display:flex;gap:8px">
-              <button class="btn btn-warning" onclick="resetSlideshow()" style="flex:1">↺ Sıfırla</button>
+              <button class="btn btn-warning" onclick="resetSlideshow()" style="flex:1" data-i18n="reset">↺ Reset</button>
             </div>
           </div>
         </div>
@@ -1566,11 +1598,11 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
               </div>
               <div class="slideshow-stat">
                 <div class="slideshow-stat-value" id="slide-avg-performance">0%</div>
-                <div class="slideshow-stat-label">Ortalama Performans</div>
+                <div class="slideshow-stat-label" data-i18n="avg_perf_plain">Average Performance</div>
               </div>
               <div class="slideshow-stat">
                 <div class="slideshow-stat-value" id="slide-current-time">--:--</div>
-                <div class="slideshow-stat-label">Güncel Saat</div>
+                <div class="slideshow-stat-label" data-i18n="current_time">Current Time</div>
               </div>
             </div>
           </div>
@@ -1579,7 +1611,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
           <div class="slideshow-announcements" id="slideshow-announcements">
             <div class="announcement-item active">
               <span class="announcement-icon">🏆</span>
-              <span class="announcement-text" id="announcement-text">Ayın En İyi Inspector'ü bekleniyor...</span>
+              <span class="announcement-text" id="announcement-text" data-i18n='waiting_best_inspector'>Best Inspector of the Month awaited...</span>
             </div>
           </div>
 
@@ -1587,20 +1619,20 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
           <div class="slideshow-main" id="slideshow-main">
             <div class="slideshow-welcome">
               <div class="welcome-icon">🎬</div>
-              <h2>Canlı Performans Gösterimi</h2>
-              <p>Inspector performanslarını canlı olarak takip edin</p>
+              <h2 data-i18n="live_h2_title">Live Performance Display</h2>
+              <p data-i18n="live_h2_sub">Track inspector performance live</p>
               <div class="welcome-stats">
                 <div class="welcome-stat">
                   <div class="welcome-stat-value" id="welcome-total">0</div>
-                  <div class="welcome-stat-label">Toplam Inspector</div>
+                  <div class="welcome-stat-label" data-i18n="stat_total_inspector">Total Inspectors</div>
                 </div>
                 <div class="welcome-stat">
                   <div class="welcome-stat-value" id="welcome-avg">0%</div>
-                  <div class="welcome-stat-label">Ortalama Performans</div>
+                  <div class="welcome-stat-label" data-i18n="avg_perf_plain">Average Performance</div>
                 </div>
               </div>
               <button class="welcome-start-btn" onclick="toggleSlideshow()">
-                ▶ Gösterimi Başlat
+                <span data-i18n="start_slideshow">Start Display</span>
               </button>
             </div>
           </div>
@@ -1612,7 +1644,7 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
             </div>
             <div class="slideshow-footer-content">
               <div class="slideshow-footer-left">
-                <span id="slide-counter">Gösterim başlatılmadı</span>
+                <span id="slide-counter" data-i18n="display_not_started">Display not started</span>
               </div>
               <div class="slideshow-footer-center">
                 <span id="slide-title">Inspection Performance Dashboard</span>
@@ -1635,17 +1667,17 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 <div class="modal-overlay" id="modal">
   <div class="modal-box" style="max-width:480px;">
     <div class="modal-title">✨ Yeni Klasman Ekle</div>
-    <div class="modal-sub">Bir isim girin ve ikon seçin</div>
+    <div class="modal-sub" data-i18n="icon_modal_hint">Enter a name and select an icon</div>
     <input type="text" id="modal-input" placeholder="Klasman adı (örn: Gömlek, Pantolon…)" onkeydown="modalKey(event)" style="margin-bottom:14px;">
-    <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;letter-spacing:.4px;text-transform:uppercase;">İkon Seç</div>
+    <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;letter-spacing:.4px;text-transform:uppercase;" data-i18n="select_icon">Select Icon</div>
     <div id="modal-icon-grid" style="display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-bottom:14px;max-height:200px;overflow-y:auto;padding:2px;"></div>
     <input type="hidden" id="modal-icon-val" value="👔">
     <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--lblue3);border:1px solid var(--border2);border-radius:8px;margin-bottom:4px;">
       <span id="modal-icon-preview" style="font-size:24px;">👔</span>
-      <span style="font-size:12px;color:var(--muted);">Seçili ikon</span>
+      <span style="font-size:12px;color:var(--muted);" data-i18n="selected_icon">Selected icon</span>
     </div>
     <div class="modal-actions">
-      <button class="btn" onclick="closeModal()">İptal</button>
+      <button class="btn" onclick="closeModal()" data-i18n="cancel_btn">Cancel</button>
       <button class="btn btn-primary" onclick="addKlasman()">Ekle</button>
     </div>
   </div>
@@ -1654,11 +1686,11 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 <!-- Inspector Detay Modal -->
 <div class="modal-overlay" id="detail-modal">
   <div class="modal-box" style="max-width:960px;">
-    <div class="modal-title" id="detail-modal-title">Inspector Detayları</div>
-    <div class="modal-sub">Klasman bazında detaylı performans analizi</div>
+    <div class="modal-title" id="detail-modal-title" data-i18n="inspector_detail_title">Inspector Details</div>
+    <div class="modal-sub" data-i18n="inspector_detail_sub">Detailed performance analysis by classification</div>
     <div id="detail-modal-content"></div>
     <div class="modal-actions">
-      <button class="btn btn-success" onclick="exportInspectorDetail()">📊 Excel İndir</button>
+      <button class="btn btn-success" onclick="exportInspectorDetail()" data-i18n="download_excel">📊 Download Excel</button>
       <button class="btn" onclick="closeDetailModal()">Kapat</button>
     </div>
   </div>
@@ -1667,6 +1699,730 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
 </div><!-- /app-shell -->
 
 <script>
+/* ============================================================
+   ÇEVIRI / TRANSLATION SYSTEM
+   ============================================================ */
+const translations = {
+  tr: {
+    // Login
+    login_title:          'Giriş Yap',
+    login_sub:            'Şifrenizi girerek devam edin',
+    login_btn:            '🔓 Giriş Yap',
+    password_placeholder: '••••••',
+    server_active:        'Sunucu doğrulaması aktif',
+    cancel:               'İptal',
+
+    // Top bar
+    how_it_works:         'ℹ️ Nasıl Çalışır',
+    klasman:              'Klasman',
+
+    // Sidebar nav
+    nav_home:             'Ana Sayfa',
+    nav_dashboard:        'Dashboard',
+    nav_management:       'Yönetim',
+    nav_klasman_mgmt:     'Klasman Yönetimi',
+    nav_analysis:         'Analiz',
+    nav_klasman_analysis: 'Klasman Analizi',
+    nav_perf_analysis:    'Performans Analizi',
+    nav_display:          'Görüntüleme',
+    nav_live:             'Canlı Gösterim',
+
+    // Dashboard page
+    dash_title:           'Inspector Performans Dashboard',
+    dash_sub:             'Tüm inspectörlerin performans durumunu tek ekranda izleyin',
+    pull_from_sheets:     '📥 Sheets\'ten Çek',
+    clear:                '🗑️ Temizle',
+    export_excel:         '📊 Excel\'e Aktar',
+
+    // Summary stats
+    stat_total_inspector: 'Toplam Inspector',
+    stat_excellent:       'Mükemmel (≥95%)',
+    stat_good:            'İyi (85-94%)',
+    stat_average:         'Orta (70-84%)',
+    stat_poor:            'Düşük (<70%)',
+    stat_avg_perf:        '📅 Ortalama Performans',
+    stat_avg_days:        '⏰ Ortalama Çalışma Günü',
+    stat_total_product:   '📦 Toplam Ürün',
+
+    // Filters
+    filter_perf:          'Performans Filtresi:',
+    filter_all:           'Tümü',
+    filter_klasman:       'Klasman Filtresi:',
+    filter_all_klasman:   'Tüm Klasmanlar',
+    filter_search:        'Inspector Ara:',
+    inspector_search_ph:  'Inspector adı...',
+    filter_sort:          'Sıralama:',
+    sort_perf_desc:       'Performans (Yüksek→Düşük)',
+    sort_perf_asc:        'Performans (Düşük→Yüksek)',
+    sort_name_asc:        'İsim (A→Z)',
+    sort_name_desc:       'İsim (Z→A)',
+    sort_qty_desc:        'Adet (Çok→Az)',
+    sort_qty_asc:         'Adet (Az→Çok)',
+
+    // Empty state
+    no_data_yet:          'Henüz performans verisi yok',
+    no_data_sub:          'Performans Analizi sayfasından Excel yükleyip analiz yapın',
+
+    // Pagination
+    prev:                 '‹ Önceki',
+    next:                 'Sonraki ›',
+
+    // Login dynamic states (JS ile üretilen)
+    verifying:            '⏳ Doğrulanıyor...',
+    connecting:           'Sunucuya bağlanılıyor...',
+    verified:             'Doğrulandı ✓',
+    error_label:          'Hata',
+    pw_empty:             '❌ Şifre boş olamaz',
+    pw_wrong:             '❌ Yanlış şifre, tekrar deneyin',
+    pw_no_server_cache:   '⚠️ Sunucuya bağlanılamadı ve önbellek bulunamadı. İnternet bağlantınızı kontrol edin.',
+    pw_offline:           'Çevrimdışı doğrulama (önbellek)',
+    pw_no_sheets_pw:      'Sheets\'te şifre bulunamadı',
+    pw_unreachable:       'Sunucuya ulaşılamadı',
+    pw_wrong_klasman:     'Yanlış şifre!',
+    pw_overlay_title:     'Giriş Yap',
+    pw_overlay_sub:       'Devam etmek için şifrenizi girin',
+    pw_klasman_title:     'Klasman Yönetimi',
+    pw_klasman_sub:       'Bu bölüme erişmek için şifre gereklidir',
+    // Dynamic JS strings
+    sending:              '⏳ Gönderiliyor...',
+    pulling:              '⏳ Çekiliyor...',
+    no_data_js:           'Veri yok',
+    no_data_js_hint:      'Önce Performans Analizi sayfasından Excel yükleyin',
+    data_not_found:       'Veri bulunamadı',
+    days_suffix:          'gün',
+    filter_none:          '— Filtre yok (tüm satırlar) —',
+    detailed_perf:        'Detaylı Performans',
+    loading_records:      'Kayıt detayları yükleniyor...',
+    sampling_desc:        '<span data-i18n="sampling_off">Off: actual quantity used.</span> <strong data-i18n="one_below">One Below</strong> / <strong data-i18n="two_below">Two Below</strong>: <span data-i18n="sampling_desc_end">quantity converted by sampling table.</span>',
+    target_below_100:     'hedef → performans',
+    target_above_100:     'hedef → performans',
+    start_slideshow:      'Gösterimi Başlat',
+    stop_slideshow:       '⏸ Durdur',
+    no_perf_alert:        'Henüz performans verisi yok! Önce Performans Analizi sayfasından veri yükleyin.',
+    records_summary:      'kayıt · ',
+    units_summary:        'adet · ',
+    analyzing:            'Analiz ediliyor...',
+    col_overtime_label:   '⏰ Mesai Süresi',
+    // Card & JS dynamic labels
+    working:              'gün çalışma',
+    units_short:          'adet',
+    klasman_word:         'klasman',
+    efficiency_label:     'verimlilik',
+    above_target:         'hedeften hızlı',
+    below_target:         'hedeften yavaş',
+    overtime_over:        'mesai üstü',
+    detailed_analysis:    'Detaylı Analiz',
+    perf_excellent:       'Mükemmel',
+    perf_good:            'İyi',
+    perf_average:         'Orta',
+    perf_poor:            'Düşük',
+    stat_total_product2:  'TOPLAM ADET',
+    std_duration_label:   'STANDART SÜRE',
+    adj_perf_label_upper: 'DÜZ. PERFORMANS',
+    best_inspector_month: 'Ayın En İyi Inspector\'ü',
+    // Final remaining keys
+    excel_cols_hint:      'Excel dosyanızda A Klasman, R BakilacakMiktar, K BaşlamaTarihi, L BitişTarihi sütunları bulunmalıdır.',
+    overtime_col_hint:    'Mesai sütunu seçilmezse günlük 7.5s × gün bazında hesaplanır.',
+    col_t_label:          'Sütun (T)',
+    blank_rows_hint:      'Seçilirse boş satırlar hesaplamaya dahil edilmez.',
+    security_warning:     'Güvenlik Uyarısı:',
+    try_other_model:      'Hata alırsan farklı model dene',
+    default_opt:          'Varsayılan',
+    sort_by_date:         'Tarihe Göre ↑',
+    sampling_off:         'Kapalı: gerçek adet kullanılır.',
+    one_below:            'Bir Alttan',
+    sampling_desc_end:    'adet örnekleme tablosuna göre dönüştürülür.',
+    // New dynamic keys
+    closed_label:         'Kapalı',
+    open_label:           'Açık',
+    hide_label:           'Gizle',
+    raw_avg:              'Ham Ort.:',
+    perf_formula:         'Standart Süre ÷ (Gün × 7.5s) × 100',
+    adj_formula:          'Ham Perf × (100÷${hedef})',
+    records_word:         'kayıt',
+    days_x_formula:       'gün × 7.5s = {h}s mesai bazlı',
+    avg_perf_plain:       'Ortalama Performans',
+    stat_avg_perf_plain:  'Ortalama Performans',
+    ai_overtime_prompt:   'Mesai süresi ve mesai üstü durumunu analiz et. Yoğunluk ne zaman en yüksek? Mesai yönetimi nasıl?',
+    waiting_best_inspector: 'Ayın En İyi Inspector\'ü bekleniyor...',
+    // Extended i18n keys
+    actual_duration_th:    'Gerçekleşen Süre',
+    actual_label:          '⏱ Gerçekleşen',
+    actual_per_unit:       'Gerçekleşen/Adet',
+    actual_vs_std:         'Gerçekleşen / Standart oranı',
+    add_first_station:     'Bu klasmanı tanımlamaya başlamak için ilk istasyonu ekleyin',
+    add_station:           '＋ İstasyon Ekle',
+    adj_avg_perf:          'Düz. Ort. Performans:',
+    adj_avg_short:         '⚡ Düz. Ort.:',
+    adj_perf_label:        'Düz. Performans',
+    ai_custom_q:           '💬 Özel Soru Sor',
+    ai_general:            '📊 Genel Performans Değerlendirmesi',
+    ai_improve:            '💡 İyileştirme Önerileri',
+    ai_klasman_compare:    '👔 Klasmana Göre Karşılaştırma',
+    ai_overtime:           '🌙 Mesai & Yoğunluk Analizi',
+    ai_panel_hint:         'AI destekli detaylı analiz · Açmak için tıklayın',
+    ai_strengths:          '💪 Güçlü/Zayıf Yönler',
+    all_btn:               'Tümü',
+    all_inspectors:        'Tüm Inspectorler',
+    api_key_warning:       '⚠️ Anahtarınızı başkalarıyla paylaşmayın.',
+    api_token_hint:        '(Apps Script\'teki API_TOKEN değeriyle eşleşmeli)',
+    apiscript_match_hint:  'Apps Script dosyasındaki değerle eşleşmeli',
+    app_subtitle:          'Inspection Kontrol',
+    avg_work_days:         '📆 Ort. Çalışma:',
+    awaiting_results:      'Analiz sonuçları bekleniyor',
+    broadcast_settings:    'Yayın Ayarları',
+    broadcast_settings_hint: 'Gösterimi başlatmadan önce ayarlayın',
+    cancel_btn:            'İptal',
+    change_klasman_pw:     '✏️ Klasman Şifresini Değiştir',
+    change_pw:             '✏️ Şifreyi Değiştir',
+    change_search:         'Arama kriterlerini değiştirin',
+    col_auto_derive:       '— K/L sütunlarından otomatik türet —',
+    col_end_date:          'Bitiş Tarihi (L)',
+    col_inspector:         'Inspector Sütunu',
+    col_klasman:           'Klasman Sütunu (A)',
+    col_mapping_title:     '🔗 Sütun Eşleştirme',
+    col_start_date:        'Başlangıç Tarihi (K)',
+    completed_btn:         '✅ Tamamlandı',
+    current_pw:            'Mevcut şifre:',
+    current_time:          'Şu Anki Saat',
+    display_not_started:   'Gösterim başlamadı',
+    download_excel:        '📊 Excel İndir',
+    end_date_th:           'Bitiş',
+    excel_upload_title:    '📁 Excel Yükle',
+    file_drop:             'Dosya seçin veya sürükleyin',
+    file_format:           '.xlsx / .xls formatı',
+    filter_no_result:      'Filtre sonucu bulunamadı',
+    filter_no_result_hint: 'Filtre kriterlerini değiştirmeyi deneyin',
+    gemini_8b:             'gemini-1.5-flash-8b (En Hızlı)',
+    gemini_api_key:        'Gemini API Anahtarı',
+    gemini_flash:          'gemini-2.5-flash (Önerilen)',
+    gemini_lite:           'gemini-2.0-flash-lite (Ücretsiz / Hızlı)',
+    gemini_pro:            'gemini-2.5-pro (En Güçlü)',
+    how_to_setup:          'Nasıl kurulur? ℹ️',
+    icon_modal_hint:       'Bir isim girin ve bir ikon seçin',
+    inspector_detail_sub:  'Klasman bazında detaylı performans analizi',
+    inspector_detail_title:'Inspector Detayları',
+    klasman_analiz_overlay_sub:   'Klasman bazında detaylı performans analizi',
+    klasman_analiz_overlay_title: 'Klasman Analizi — Sheets\'ten Çekildi',
+    klasman_analiz_sub:    'Klasman bazında standart ve gerçekleşen birim muayene sürelerini karşılaştırın',
+    klasman_analiz_title:  '🎯 Klasmana Göre Gerçekleşen Süre Analizi',
+    klasman_count:         'Klasmanlar',
+    klasman_details:       '📋 Klasman Detayları',
+    klasman_filter_empty:  'Filtreyle eşleşen klasman bulunamadı',
+    klasman_pw_hint:       'Bu sayfa için erişim şifresi:',
+    klasman_pw_label:      '🔑 Klasman Yönetimi Şifresi:',
+    live_h2_sub:           'Inspector performansını canlı takip edin',
+    live_h2_title:         'Canlı Performans Gösterimi',
+    live_page_sub:         'Inspector performanslarını büyük ekranda yayınlayın · HD video dışa aktarımı',
+    live_page_title:       'Canlı Performans Gösterimi',
+    login_klasman_sub:     'Bu bölüme erişmek için yönetici şifresi gereklidir',
+    login_klasman_title:   'Klasman Yönetimi',
+    no_data_hint:          'Analizi görmek için Excel yükleyin ve klasman tanımlarını tamamlayın',
+    no_data_live:          'Henüz veri yok',
+    no_perf_data:          'Performans Verisi Bulunamadı',
+    no_perf_data_hint:     'Önce Performans Analizi sayfasından Excel yükleyin',
+    no_records_found:      'Filtreyle eşleşen kayıt bulunamadı.',
+    not_found:             'Bulunamadı',
+    one_unit_check:        '1 adet muayene',
+    open_link:             '🔗 Aç',
+    open_link_hint:        'Tabloyu tarayıcıda açmak için kullanılır',
+    opt_excellent:         'Mükemmel (≥95%)',
+    opt_good:              'İyi (≥85%)',
+    overtime_duration:     'Mesai Süresi',
+    page_klasman_sub:      'Ürün klasmanlarını tanımlayın ve istasyon sürelerini ayarlayın',
+    page_klasman_title:    'Klasman Yönetimi',
+    perf_how_sub:          'Hesaplama mantığı, formüller ve Google Sheets entegrasyonu',
+    perf_how_title:        '📊 Performans Analizi — Nasıl Çalışır?',
+    perf_page_sub:         'Excel dosyası yükleyin ve inspector bazında performansı ölçün',
+    perf_page_title:       'Performans Analizi',
+    print_btn:             '🖨️ Yazdır',
+    pull:                  '📥 Çek',
+    pw_settings:           '🔒 Şifre Ayarları:',
+    quick_analyses:        '⚡ Hızlı Analizler',
+    record_count:          'Kayıt Sayısı',
+    reset:                 '↺ Sıfırla',
+    sampling_mode:         'Örnekleme Modu',
+    see_details:           'Detayları Gör',
+    select_icon:           'İkon Seç',
+    select_icon_btn:       'İkon Seç',
+    select_klasman:        'Bir klasman seçin',
+    select_klasman_hint:   'İstasyon sürelerini düzenlemek için soldan bir klasman seçin',
+    selected_icon:         'Seçilen ikon',
+    send:                  '📤 Gönder',
+    send_btn:              'Gönder ↵',
+    send_hint:             'Ctrl+Enter ile de gönderebilirsiniz',
+    sheets_conn_sub:       'Klasman verilerini Google Sheets ile senkronize edin — farklı bilgisayarlardan erişin',
+    sheets_conn_title:     'Google Sheets Bağlantısı',
+    sheets_help_intro:     'Klasman verilerini Google Sheets ile senkronize etmek için',
+    sheets_settings_title: '🔗 Google Sheets Bağlantı Ayarları',
+    sheets_table_label:    'Google Sheets Tablo Bağlantısı (Görüntüle)',
+    sheets_url_label:      'Google Apps Script Web App URL\'si (Veri Gönder/Al)',
+    slide_duration:        '⏱ Slayt Süresi',
+    slide_flip:            'Çevirme',
+    slide_slide:           'Kaydırma',
+    slide_zoom:            'Yakınlaştırma',
+    sort_diff_best:        'Fark ↑ (En İyi)',
+    sort_diff_worst:       'Fark ↓ (En Kötü)',
+    sort_label:            'Sırala:',
+    start_date_th:         'Başlangıç',
+    station_count:         'İstasyon Sayısı',
+    status_high:           '🔴 Yüksek',
+    status_near:           '⚠️ Yakın',
+    std_duration:          'Standart Süre',
+    std_duration_th:       'Standart Süre',
+    top5:                  'İlk 5',
+    total_duration_label:  'Toplam Süre (sn)',
+    total_product:         'Toplam Ürün',
+    total_qty:             'Toplam Adet',
+    transition_effect:     '✨ Geçiş Efekti',
+    two_below:             'İki Alttan',
+    unit_check_duration:   '1 Birim Muayene Süresi',
+    unit_check_hint:       'Ürün başına harcanan standart süre',
+    view_mode:             '👁 Görüntüleme Modu',
+    waiting_data:          'Veri bekleniyor',
+    waiting_data_sub:      'Performans analizi çalıştırıldıktan sonra burası otomatik dolacak',
+    no_overtime_data:      'Mesai verisi yok',
+    gkey_empty:            '⚠️ Boş bırakmayın.',
+    gkey_invalid:          '⚠️ Geçersiz format. API anahtarı çok kısa.',
+    gkey_saving:           '✅ Kaydedildi! Sheets\'e gönderiliyor...',
+    gkey_saved_sheets:     '✅ Anahtar kaydedildi ve Sheets\'e gönderildi!',
+    gkey_saved_local:      '✅ Yerel kaydedildi (Sheets bağlantısı yok).',
+    gkey_save_fail:        '❌ Kayıt başarısız: ',
+    gkey_deleted:          '🗑 Anahtar silindi. Sheets\'ten temizleniyor...',
+    gkey_ask_question:     'Lütfen bir soru girin.',
+    gkey_no_key:           'Lütfen önce Gemini API anahtarınızı girin ve kaydedin.',
+    gkey_empty_response:   'Gemini boş yanıt döndürdü.',
+    gkey_api_error:        'API Hatası: ',
+    gkey_check_key:        ' — API anahtarınızı kontrol edin.',
+    date_filter_with:      'Tarihi Olanlar',
+    date_filter_without:   'Tarihi Olmayanlar',
+    analysis_result:       'Analiz Sonucu',
+    clear_btn:             '✕ Temizle',
+    gemini_analyzing:      'Gemini analiz ediyor...',
+    custom_analysis:       '💬 Özel Analiz',
+    clearing:              '⏳ Temizleniyor...',
+    clear_confirm:         '⚠️ Tüm performans verileri silinecek!\n\nBu işlem:\n• Dashboard verilerini temizler\n• Google Sheets\'teki İşlem Geçmişi, Performans Verileri, PerformansRaw ve InspectorKayitlar sekmelerini siler\n\nDevam etmek istiyor musunuz?',
+    clear_ok_sheets:       '✅ Veriler temizlendi! (Local + Sheets)',
+    clear_ok_local_err:    '✅ Local veriler temizlendi. Sheets bağlantı hatası: ',
+    clear_ok_local:        '✅ Local veriler temizlendi. (Sheets bağlantısı yapılandırılmamış)',
+    clear_status:          '🗑️ Tüm performans verileri temizlendi',
+    klasman_actual_analysis: 'Klasman Bazında Gerçekleşen Süre Analizi',
+    total_units_summary:   'toplam adet',
+    on_target:             'Hedefte',
+    near_target:           'Yakın',
+    high_label:            'Yüksek',
+    no_std:                'Std Yok',
+    std_duration_sn:       '🕐 Standart Süre (sn)',
+    actual_duration_sn:    '⏱ Fiili/Mesai Süresi (sn)',
+    perf_formula_inline:   '(Standart Süre ÷ Mesai Süresi) × 100',
+    file_uploading:        '⏳ Dosya yükleniyor...',
+    file_empty:            '❌ Dosya boş görünüyor.',
+    file_loaded:           '✅ satır başarıyla yüklendi — ',
+    file_error:            '❌ Hata: ',
+    col_select_warning:    '⚠️ Lütfen en az Klasman, Inspector ve Adet sütunlarını seçin',
+    no_data_processable:   '❌ İşlenebilir veri bulunamadı',
+    analysis_done:         ' inspector başarıyla analiz edildi',
+    hd_recording:          '🔴 HD Video kaydediliyor (1920×1080)...',
+    // Sheets sync messages
+    sheets_sent_klasman:   '✅ klasman Google Sheets\'e gönderildi!',
+    sheets_updated_count:  '✅ klasman + performans verisi Sheets\'ten güncellendi!',
+    sheets_loaded_perf:    '✅ inspector verisi Sheets\'ten yüklendi!',
+    sheets_no_perf:        'ℹ️ Sheets\'te henüz performans verisi yok.',
+    sheets_sent_perf:      '✅ inspector verisi Google Sheets\'e gönderildi!',
+    sheets_loaded_to_perf: '✅ inspector verisi Sheets\'ten Performans Analizi\'ne yüklendi!',
+    sheets_klasman_sync:   '☁️ Klasman değişikliği Sheets\'e senkronize edildi',
+    sheets_perf_updated:   '✅ Sheets\'ten inspector verisi güncellendi',
+    sheets_analiz_sent:    '✅ Klasman analizi güncellendi ve Sheets\'e gönderildi!',
+    sheets_analiz_loaded:  '✅ klasman analizi Sheets\'ten yüklendi!',
+  },
+
+  en: {
+    // Login
+    login_title:          'Sign In',
+    login_sub:            'Enter your password to continue',
+    login_btn:            '🔓 Sign In',
+    password_placeholder: '••••••',
+    server_active:        'Server verification active',
+    cancel:               'Cancel',
+
+    // Top bar
+    how_it_works:         'ℹ️ How It Works',
+    klasman:              'Classification',
+
+    // Sidebar nav
+    nav_home:             'Home',
+    nav_dashboard:        'Dashboard',
+    nav_management:       'Management',
+    nav_klasman_mgmt:     'Classification Mgmt',
+    nav_analysis:         'Analysis',
+    nav_klasman_analysis: 'Classification Analysis',
+    nav_perf_analysis:    'Performance Analysis',
+    nav_display:          'Display',
+    nav_live:             'Live View',
+
+    // Dashboard page
+    dash_title:           'Inspector Performance Dashboard',
+    dash_sub:             'Monitor all inspectors\' performance on a single screen',
+    pull_from_sheets:     '📥 Pull from Sheets',
+    clear:                '🗑️ Clear',
+    export_excel:         '📊 Export to Excel',
+
+    // Summary stats
+    stat_total_inspector: 'Total Inspectors',
+    stat_excellent:       'Excellent (≥95%)',
+    stat_good:            'Good (85-94%)',
+    stat_average:         'Average (70-84%)',
+    stat_poor:            'Poor (<70%)',
+    stat_avg_perf:        '📅 Avg Performance',
+    stat_avg_days:        '⏰ Avg Working Days',
+    stat_total_product:   '📦 Total Products',
+
+    // Filters
+    filter_perf:          'Performance Filter:',
+    filter_all:           'All',
+    filter_klasman:       'Classification Filter:',
+    filter_all_klasman:   'All Classifications',
+    filter_search:        'Search Inspector:',
+    inspector_search_ph:  'Inspector name...',
+    filter_sort:          'Sort By:',
+    sort_perf_desc:       'Performance (High→Low)',
+    sort_perf_asc:        'Performance (Low→High)',
+    sort_name_asc:        'Name (A→Z)',
+    sort_name_desc:       'Name (Z→A)',
+    sort_qty_desc:        'Quantity (Most→Least)',
+    sort_qty_asc:         'Quantity (Least→Most)',
+
+    // Empty state
+    no_data_yet:          'No performance data yet',
+    no_data_sub:          'Upload an Excel file from the Performance Analysis page to get started',
+
+    // Pagination
+    prev:                 '‹ Previous',
+    next:                 'Next ›',
+
+    // Login dynamic states
+    verifying:            '⏳ Verifying...',
+    connecting:           'Connecting to server...',
+    verified:             'Verified ✓',
+    error_label:          'Error',
+    pw_empty:             '❌ Password cannot be empty',
+    pw_wrong:             '❌ Wrong password, please try again',
+    pw_no_server_cache:   '⚠️ Could not connect to server and no cache found. Check your internet connection.',
+    pw_offline:           'Offline verification (cache)',
+    pw_no_sheets_pw:      'No password found in Sheets',
+    pw_unreachable:       'Server unreachable',
+    pw_wrong_klasman:     'Wrong password!',
+    pw_overlay_title:     'Sign In',
+    pw_overlay_sub:       'Enter your password to continue',
+    pw_klasman_title:     'Classification Management',
+    pw_klasman_sub:       'A password is required to access this section',
+    // Dynamic JS strings
+    sending:              '⏳ Sending...',
+    pulling:              '⏳ Pulling...',
+    no_data_js:           'No data',
+    no_data_js_hint:      'First upload an Excel file from the Performance Analysis page',
+    data_not_found:       'Data not found',
+    days_suffix:          'days',
+    filter_none:          '— No filter (all rows) —',
+    detailed_perf:        'Detailed Performance',
+    loading_records:      'Loading record details...',
+    sampling_desc:        'Off: actual quantity used. <strong>One Below</strong> / <strong>Two Below</strong>: quantity converted by sampling table.',
+    target_below_100:     'target → performance increases by',
+    target_above_100:     'target → performance decreases by',
+    start_slideshow:      'Start Display',
+    stop_slideshow:       '⏸ Stop',
+    no_perf_alert:        'No performance data yet! First load data from the Performance Analysis page.',
+    records_summary:      'records · ',
+    units_summary:        'units · ',
+    analyzing:            'Analyzing...',
+    col_overtime_label:   '⏰ Overtime Duration',
+    // Card & JS dynamic labels
+    working:              'working days',
+    units_short:          'units',
+    klasman_word:         'classifications',
+    efficiency_label:     'efficiency',
+    above_target:         'above target',
+    below_target:         'below target',
+    overtime_over:        'overtime+',
+    detailed_analysis:    'Detailed Analysis',
+    perf_excellent:       'Excellent',
+    perf_good:            'Good',
+    perf_average:         'Average',
+    perf_poor:            'Poor',
+    stat_total_product2:  'TOTAL QTY',
+    std_duration_label:   'STD DURATION',
+    adj_perf_label_upper: 'ADJ. PERFORMANCE',
+    best_inspector_month: 'Best Inspector of the Month',
+    // Final remaining keys
+    excel_cols_hint:      'Your Excel must contain Col A: Classification, Col R: Quantity, Col K: Start Date, Col L: End Date.',
+    overtime_col_hint:    'Without an overtime column, calculated as daily 7.5h × working days.',
+    col_t_label:          'Column (T)',
+    blank_rows_hint:      'If selected, blank rows are excluded from the calculation.',
+    security_warning:     'Security Warning:',
+    try_other_model:      'If you get an error, try a different model',
+    default_opt:          'Default',
+    sort_by_date:         'By Date ↑',
+    sampling_off:         'Off: actual quantity used.',
+    one_below:            'One Below',
+    sampling_desc_end:    'quantity converted by sampling table.',
+    // New dynamic keys
+    closed_label:         'Closed',
+    open_label:           'Open',
+    hide_label:           'Hide',
+    raw_avg:              'Raw Avg.:',
+    perf_formula:         'Std Duration ÷ (Days × 7.5h) × 100',
+    adj_formula:          'Raw Perf × (100÷${hedef})',
+    records_word:         'records',
+    days_x_formula:       'days × 7.5h = {h}h working',
+    avg_perf_plain:       'Average Performance',
+    stat_avg_perf_plain:  'Average Performance',
+    ai_overtime_prompt:   'Analyze overtime and overwork status. When is intensity highest? How is overtime managed?',
+    waiting_best_inspector: 'Best Inspector of the Month awaited...',
+    // Extended i18n keys
+    actual_duration_th:    'Actual Duration',
+    actual_label:          '⏱ Actual',
+    actual_per_unit:       'Actual/Unit',
+    actual_vs_std:         'Actual / Standard ratio',
+    add_first_station:     'Add the first station to start defining this classification',
+    add_station:           '＋ Add Station',
+    adj_avg_perf:          'Adjusted Avg. Performance:',
+    adj_avg_short:         '⚡ Adj. Avg.:',
+    adj_perf_label:        'Adj. Performance',
+    ai_custom_q:           '💬 Ask a Custom Question',
+    ai_general:            '📊 General Performance Evaluation',
+    ai_improve:            '💡 Improvement Suggestions',
+    ai_klasman_compare:    '👔 Comparison by Classification',
+    ai_overtime:           '🌙 Overtime & Intensity Analysis',
+    ai_panel_hint:         'AI-powered detailed analysis · Click to open',
+    ai_strengths:          '💪 Strengths/Weaknesses',
+    all_btn:               'All',
+    all_inspectors:        'All Inspectors',
+    api_key_warning:       '⚠️ Do not share your key with others.',
+    api_token_hint:        '(Must match the API_TOKEN in Apps Script)',
+    apiscript_match_hint:  'Must match value in Apps Script file',
+    app_subtitle:          'Inspection Control',
+    avg_work_days:         '📆 Avg. Working:',
+    awaiting_results:      'Awaiting analysis results',
+    broadcast_settings:    'Broadcast Settings',
+    broadcast_settings_hint: 'Configure before starting the display',
+    cancel_btn:            'Cancel',
+    change_klasman_pw:     '✏️ Change Classification Password',
+    change_pw:             '✏️ Change Password',
+    change_search:         'Change the search criteria',
+    col_auto_derive:       '— Auto-derive from K/L columns —',
+    col_end_date:          'End Date (L)',
+    col_inspector:         'Inspector Column',
+    col_klasman:           'Classification Column (A)',
+    col_mapping_title:     '🔗 Column Mapping',
+    col_start_date:        'Start Date (K)',
+    completed_btn:         '✅ Completed',
+    current_pw:            'Current password:',
+    current_time:          'Current Time',
+    display_not_started:   'Display not started',
+    download_excel:        '📊 Download Excel',
+    end_date_th:           'End',
+    excel_upload_title:    '📁 Upload Excel',
+    file_drop:             'Select or drag a file',
+    file_format:           '.xlsx / .xls format',
+    filter_no_result:      'No filter results found',
+    filter_no_result_hint: 'Try changing the filter criteria',
+    gemini_8b:             'gemini-1.5-flash-8b (Fastest)',
+    gemini_api_key:        'Gemini API Key',
+    gemini_flash:          'gemini-2.5-flash (Recommended)',
+    gemini_lite:           'gemini-2.0-flash-lite (Free / Fast)',
+    gemini_pro:            'gemini-2.5-pro (Most Powerful)',
+    how_to_setup:          'How to set up? ℹ️',
+    icon_modal_hint:       'Enter a name and select an icon',
+    inspector_detail_sub:  'Detailed performance analysis by classification',
+    inspector_detail_title:'Inspector Details',
+    klasman_analiz_overlay_sub:   'Detailed performance analysis by classification',
+    klasman_analiz_overlay_title: 'Classification Analysis — Fetched from Sheets',
+    klasman_analiz_sub:    'Compare standard and actual per-unit inspection durations by classification',
+    klasman_analiz_title:  '🎯 Actual Duration Analysis by Classification',
+    klasman_count:         'Classifications',
+    klasman_details:       '📋 Classification Details',
+    klasman_filter_empty:  'No classification found matching the filter',
+    klasman_pw_hint:       'Access password for this page:',
+    klasman_pw_label:      '🔑 Classification Management Password:',
+    live_h2_sub:           'Track inspector performance live',
+    live_h2_title:         'Live Performance Display',
+    live_page_sub:         'Broadcast inspector performances on a large screen · HD video export',
+    live_page_title:       'Live Performance Display',
+    login_klasman_sub:     'Admin password required to access this section',
+    login_klasman_title:   'Classification Management',
+    no_data_hint:          'Upload an Excel file and complete classification definitions to see the analysis',
+    no_data_live:          'No data yet',
+    no_perf_data:          'No Performance Data Found',
+    no_perf_data_hint:     'First upload an Excel file from the Performance Analysis page',
+    no_records_found:      'No records found matching the filter.',
+    not_found:             'Not Found',
+    one_unit_check:        '1 unit inspection',
+    open_link:             '🔗 Open',
+    open_link_hint:        'Used to open the table in a browser',
+    opt_excellent:         'Excellent (≥95%)',
+    opt_good:              'Good (≥85%)',
+    overtime_duration:     'Overtime Duration',
+    page_klasman_sub:      'Define product classifications and adjust station durations',
+    page_klasman_title:    'Classification Management',
+    perf_how_sub:          'Calculation logic, formulas, and Google Sheets integration',
+    perf_how_title:        '📊 Performance Analysis — How Does It Work?',
+    perf_page_sub:         'Upload an Excel file and measure performance by inspector',
+    perf_page_title:       'Performance Analysis',
+    print_btn:             '🖨️ Print',
+    pull:                  '📥 Pull',
+    pw_settings:           '🔒 Password Settings:',
+    quick_analyses:        '⚡ Quick Analyses',
+    record_count:          'Record Count',
+    reset:                 '↺ Reset',
+    sampling_mode:         'Sampling Mode',
+    see_details:           'See Details',
+    select_icon:           'Select Icon',
+    select_icon_btn:       'Select Icon',
+    select_klasman:        'Select a classification',
+    select_klasman_hint:   'Select a classification on the left to edit station durations',
+    selected_icon:         'Selected icon',
+    send:                  '📤 Send',
+    send_btn:              'Send ↵',
+    send_hint:             'You can also send with Ctrl+Enter',
+    sheets_conn_sub:       'Sync classification data with Google Sheets — access from different computers',
+    sheets_conn_title:     'Google Sheets Connection',
+    sheets_help_intro:     'To sync classification data with Google Sheets',
+    sheets_settings_title: '🔗 Google Sheets Connection Settings',
+    sheets_table_label:    'Google Sheets Table Link (View)',
+    sheets_url_label:      'Google Apps Script Web App URL (Send/Receive Data)',
+    slide_duration:        '⏱ Slide Duration',
+    slide_flip:            'Flip',
+    slide_slide:           'Slide',
+    slide_zoom:            'Zoom',
+    sort_diff_best:        'Diff ↑ (Best)',
+    sort_diff_worst:       'Diff ↓ (Worst)',
+    sort_label:            'Sort:',
+    start_date_th:         'Start',
+    station_count:         'Station Count',
+    status_high:           '🔴 High',
+    status_near:           '⚠️ Near',
+    std_duration:          'Standard Duration',
+    std_duration_th:       'Standard Duration',
+    top5:                  'Top 5',
+    total_duration_label:  'Total Duration (s)',
+    total_product:         'Total Products',
+    total_qty:             'Total Quantity',
+    transition_effect:     '✨ Transition Effect',
+    two_below:             'Two Below',
+    unit_check_duration:   '1-Unit Inspection Duration',
+    unit_check_hint:       'Standard time spent per product',
+    view_mode:             '👁 View Mode',
+    waiting_data:          'Awaiting data',
+    waiting_data_sub:      'This will populate automatically after a performance analysis is run',
+    no_overtime_data:      'No overtime data',
+    gkey_empty:            '⚠️ Please enter a key.',
+    gkey_invalid:          '⚠️ Invalid format. API key is too short.',
+    gkey_saving:           '✅ Saved! Sending to Sheets...',
+    gkey_saved_sheets:     '✅ Key saved and sent to Sheets!',
+    gkey_saved_local:      '✅ Saved locally (no Sheets connection).',
+    gkey_save_fail:        '❌ Save failed: ',
+    gkey_deleted:          '🗑 Key deleted. Removing from Sheets...',
+    gkey_ask_question:     'Please enter a question.',
+    gkey_no_key:           'Please enter and save your Gemini API key first.',
+    gkey_empty_response:   'Gemini returned an empty response.',
+    gkey_api_error:        'API Error: ',
+    gkey_check_key:        ' — Please check your API key.',
+    date_filter_with:      'With Date',
+    date_filter_without:   'Without Date',
+    analysis_result:       'Analysis Result',
+    clear_btn:             '✕ Clear',
+    gemini_analyzing:      'Gemini analyzing...',
+    custom_analysis:       '💬 Custom Analysis',
+    clearing:              '⏳ Clearing...',
+    clear_confirm:         '⚠️ All performance data will be deleted!\n\nThis action will:\n• Clear dashboard data\n• Delete the History, Performance Data, PerformanceRaw and InspectorRecords sheets in Google Sheets\n\nDo you want to continue?',
+    clear_ok_sheets:       '✅ Data cleared! (Local + Sheets)',
+    clear_ok_local_err:    '✅ Local data cleared. Sheets connection error: ',
+    clear_ok_local:        '✅ Local data cleared. (Sheets connection not configured)',
+    clear_status:          '🗑️ All performance data cleared',
+    klasman_actual_analysis: 'Actual Duration Analysis by Classification',
+    total_units_summary:   'total units',
+    on_target:             'On Target',
+    near_target:           'Near',
+    high_label:            'High',
+    no_std:                'No Std',
+    std_duration_sn:       '🕐 Standard Duration (s)',
+    actual_duration_sn:    '⏱ Actual/Working Duration (s)',
+    perf_formula_inline:   '(Standard Duration ÷ Working Duration) × 100',
+    file_uploading:        '⏳ Uploading file...',
+    file_empty:            '❌ File appears to be empty.',
+    file_loaded:           '✅ rows successfully loaded — ',
+    file_error:            '❌ Error: ',
+    col_select_warning:    '⚠️ Please select at least Classification, Inspector and Quantity columns',
+    no_data_processable:   '❌ No processable data found',
+    analysis_done:         ' inspector(s) successfully analyzed',
+    hd_recording:          '🔴 Recording HD Video (1920×1080)...',
+    // Sheets sync messages
+    sheets_sent_klasman:   '✅ classifications sent to Google Sheets!',
+    sheets_updated_count:  '✅ classifications + performance data updated from Sheets!',
+    sheets_loaded_perf:    '✅ inspector records loaded from Sheets!',
+    sheets_no_perf:        'ℹ️ No performance data in Sheets yet.',
+    sheets_sent_perf:      '✅ inspector records sent to Google Sheets!',
+    sheets_loaded_to_perf: '✅ inspector records loaded from Sheets into Performance Analysis!',
+    sheets_klasman_sync:   '☁️ Classification change synced to Sheets',
+    sheets_perf_updated:   '✅ Inspector data updated from Sheets',
+    sheets_analiz_sent:    '✅ Classification analysis updated and sent to Sheets!',
+    sheets_analiz_loaded:  '✅ classification analyses loaded from Sheets!',
+  }
+};
+
+let currentLang = localStorage.getItem('panelLang') || 'tr';
+
+// i18n yardımcısı: belirli bir DOM kökü altındaki tüm [data-i18n] ve [data-i18n-placeholder] elementlerini çevirir
+function applyI18nToNewNodes(root) {
+  const lang = currentLang;
+  const t = translations[lang] || translations.tr;
+  (root || document).querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  (root || document).querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+}
+
+function setLang(lang) {
+  if (!translations[lang]) return;
+  currentLang = lang;
+  localStorage.setItem('panelLang', lang);
+
+  // Update lang-btn active states (both pw-overlay and topbar)
+  document.querySelectorAll('.lang-btn, .topbar-lang-btn').forEach(btn => btn.classList.remove('active'));
+  // pw-overlay buttons
+  const pwBtn = document.getElementById('pw-lang-btn-' + lang);
+  if (pwBtn) pwBtn.classList.add('active');
+  // topbar buttons
+  const tbBtn = document.getElementById('lang-btn-' + lang);
+  if (tbBtn) tbBtn.classList.add('active');
+
+  // Translate all [data-i18n] and [data-i18n-placeholder] elements in the whole document
+  applyI18nToNewNodes(document);
+
+  // Select <option> elemanlarını çevir (data-i18n attribute'u varsa)
+  document.querySelectorAll('select option[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = (translations[lang]||translations.tr)[key];
+    if (val !== undefined) el.text = val;
+  });
+
+  // Update <html lang="...">
+  document.documentElement.lang = lang;
+
+  // Re-render JS-generated content that uses translations
+  try { if (typeof updateSidebar === 'function') updateSidebar(); } catch(e) {}
+  try { if (typeof renderDashboard === 'function' && performansData && performansData.length) renderDashboard(); } catch(e) {}
+}
+
+// Apply saved / default language on page load
+document.addEventListener('DOMContentLoaded', () => {
+  setLang(currentLang);
+});
+
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 // GLOBAL DEĞİŞKENLER VE SABITLER
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
@@ -1717,7 +2473,7 @@ let animationEffect = 'slide'; // slide, fade, zoom, flip
 // APP CONFIG (Tüm Ayarlar)
 // ────────────────────────────
 const APP_CONFIG_KEY = 'lc_inspection_config';
-const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwHgK52mpGaieyea1pk0w-JjfgQKLUlDYGAhiMUIYDKRLZsZX7ZqCU4V1GJ6aeBwrSFIg/exec';
+const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxiRUDxY9Xy8bGJAxuidTcp2TUwaYbu2p_oIW8HdM-pcySPusCcNX4GHuwsC7bDhZsSTA/exec';
 const DEFAULT_API_TOKEN  = 'lcw-secret-2024';
 let appConfig = {
   password: '',          // Panel giriş şifresi — Sheets Config'ten yüklenir, kodda saklanmaz
@@ -1791,7 +2547,7 @@ function jsonpFetch(url, params) {
         '2. Apps Script kodu v5.1 ile güncellendi ve YENİ dağıtım yapıldı mı?\n' +
         '3. Paneldeki URL doğru mu?'
       ));
-    }, 30000);
+    }, 8000);
 
     function handler(event) {
       // Sadece Apps Script kaynaklarından gelen mesajları kabul et
@@ -2025,13 +2781,13 @@ function _openPwModal(mandatory) {
 
   if (mandatory) {
     iconEl.textContent  = '🔐';
-    titleEl.textContent = 'Giriş Yap';
-    subEl.textContent   = 'Devam etmek için şifrenizi girin';
+    titleEl.textContent = (translations[currentLang]||translations.tr).pw_overlay_title;
+    subEl.textContent = (translations[currentLang]||translations.tr).pw_overlay_sub;
     cancelRow.style.display = 'none';
   } else {
     iconEl.textContent  = '🔐';
-    titleEl.textContent = 'Klasman Yönetimi';
-    subEl.textContent   = 'Bu bölüme erişmek için şifre gereklidir';
+    titleEl.textContent = (translations[currentLang]||translations.tr).pw_klasman_title;
+    subEl.textContent = (translations[currentLang]||translations.tr).pw_klasman_sub;
     cancelRow.style.display = 'block';
   }
 
@@ -2064,8 +2820,8 @@ function _buildKlasmanModal() {
   div.innerHTML = `
     <div style="background:#fff;border-radius:18px;padding:36px 32px;width:90vw;max-width:420px;text-align:center;box-shadow:0 20px 60px rgba(11,31,58,.35);border:1px solid var(--border2);animation:popIn .2s ease;">
       <div style="font-size:36px;margin-bottom:12px;">🔑</div>
-      <div style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;">Klasman Yönetimi</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:22px;">Bu bölüme erişmek için yönetici şifresi gereklidir</div>
+      <div style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;" data-i18n="login_klasman_title">Classification Management</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:22px;" data-i18n="login_klasman_sub">Admin password required to access this section</div>
       <input type="password" id="kpw-input" placeholder="••••••••" 
              style="width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'DM Sans',sans-serif;margin-bottom:10px;text-align:center;letter-spacing:3px;"
              onkeydown="if(event.key==='Enter')checkKlasmanPassword()">
@@ -2094,7 +2850,7 @@ function closeKlasmanModal() {
 function checkKlasmanPassword() {
   const val   = document.getElementById('kpw-input').value.trim();
   const errEl = document.getElementById('kpw-err');
-  if (!val) { errEl.textContent = '❌ Şifre boş olamaz'; return; }
+  if (!val) { errEl.textContent = (translations[currentLang]||translations.tr).pw_empty; return; }
 
   const correctPw = appConfig.klasmanPassword;
   if (!correctPw) {
@@ -2141,10 +2897,10 @@ async function checkPassword() {
   if (!val) { errEl.textContent = '❌ Şifre boş olamaz'; return; }
 
   // Buton kilitle
-  if (btnEl) { btnEl.disabled = true; btnEl.textContent = '⏳ Doğrulanıyor...'; }
+  if (btnEl) { btnEl.disabled = true; btnEl.textContent = (translations[currentLang]||translations.tr).verifying; }
   errEl.textContent = '';
   if (dotEl)   dotEl.style.background = 'var(--amber)';
-  if (labelEl) labelEl.textContent    = 'Sunucuya bağlanılıyor...';
+  if (labelEl) labelEl.textContent = (translations[currentLang]||translations.tr).connecting;
 
   const url   = appConfig.sheetsWebAppUrl;
   const token = appConfig.sheetsApiToken;
@@ -2153,7 +2909,7 @@ async function checkPassword() {
     klasmanUnlocked = true;
     sessionStorage.setItem(SESSION_KEY, '1');
     if (dotEl)   dotEl.style.background = 'var(--green)';
-    if (labelEl) labelEl.textContent    = 'Doğrulandı ✓';
+    if (labelEl) labelEl.textContent = (translations[currentLang]||translations.tr).verified;
     const shell = document.getElementById('app-shell');
     if (shell) shell.style.display = 'block';
     document.getElementById('pw-overlay').style.display = 'none';
@@ -2169,8 +2925,8 @@ async function checkPassword() {
   function _fail(msg) {
     errEl.textContent = msg;
     if (dotEl)   dotEl.style.background = 'var(--red)';
-    if (labelEl) labelEl.textContent    = 'Hata';
-    if (btnEl) { btnEl.disabled = false; btnEl.textContent = '🔓 Giriş Yap'; }
+    if (labelEl) labelEl.textContent = (translations[currentLang]||translations.tr).error_label;
+    if (btnEl) { btnEl.disabled = false; btnEl.textContent = (translations[currentLang]||translations.tr).login_btn; }
   }
 
   // ── 1. Sheets'ten şifreyi çekmeye çalış (20s timeout) ──
@@ -2184,32 +2940,32 @@ async function checkPassword() {
         if (data.config.klasmanPassword) appConfig.klasmanPassword = data.config.klasmanPassword;
         localStorage.setItem(APP_CONFIG_KEY, JSON.stringify(appConfig));
         if (val === sheetsPassword) { _unlock(); return; }
-        else { _fail('❌ Yanlış şifre, tekrar deneyin'); document.getElementById('pw-input').value=''; document.getElementById('pw-input').focus(); return; }
+        else { _fail((translations[currentLang]||translations.tr).pw_wrong); document.getElementById('pw-input').value=''; document.getElementById('pw-input').focus(); return; }
       }
       // Sheets'te şifre yok ama bağlantı kuruldu
       if (dotEl) dotEl.style.background = 'var(--amber)';
-      if (labelEl) labelEl.textContent = 'Sheets’te şifre bulunamadı';
+      if (labelEl) labelEl.textContent = (translations[currentLang]||translations.tr).pw_no_sheets_pw;
     } catch(e) {
       // Zaman aşımı veya bağlantı hatası
       console.warn('Sheets bağlantı hatası:', e.message);
       if (dotEl)   dotEl.style.background = 'var(--amber)';
-      if (labelEl) labelEl.textContent    = 'Sunucuya ulaşılamadı';
+      if (labelEl) labelEl.textContent = (translations[currentLang]||translations.tr).pw_unreachable;
     }
   }
 
   // ── 2. Sheets'e ulaşılamazsa cache'deki şifreyi kullan ──
   const cachedPw = appConfig.password;
   if (cachedPw && val === cachedPw) {
-    if (labelEl) labelEl.textContent = 'Çevrimdışı doğrulama (önbellek)';
+    if (labelEl) labelEl.textContent = (translations[currentLang]||translations.tr).pw_offline;
     _unlock();
     return;
   }
 
   // ── 3. Her iki yöntem de başarısız ──
   if (!cachedPw) {
-    _fail('⚠️ Sunucuya bağlanılamadı ve önbellek bulunamadı. İnternet bağlantınızı kontrol edin.');
+    _fail((translations[currentLang]||translations.tr).pw_no_server_cache);
   } else {
-    _fail('❌ Yanlış şifre, tekrar deneyin');
+    _fail((translations[currentLang]||translations.tr).pw_wrong);
     document.getElementById('pw-input').value = '';
     document.getElementById('pw-input').focus();
   }
@@ -2280,7 +3036,7 @@ async function pushToSheets() {
   }
   const btn = event?.target;
   const origText = btn?.textContent || '';
-  if (btn) { btn.textContent = '⏳ Gönderiliyor...'; btn.disabled = true; }
+  if (btn) { btn.textContent = (translations[currentLang]||translations.tr).sending; btn.disabled = true; }
   try {
     const payload = {
       action: 'setKlasmanlar',
@@ -2301,7 +3057,7 @@ function renderKlasmanAnaliz() {
   if (!el) return;
 
   if (!performansData || !performansData.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🎯</div><h3>Veri yok</h3><p>Önce Performans Analizi sayfasından Excel yükleyin</p></div>';
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🎯</div><h3>${(translations[currentLang]||translations.tr).no_data_js}</h3><p>${(translations[currentLang]||translations.tr).no_data_js_hint}</p></div>';
     return;
   }
 
@@ -2338,7 +3094,7 @@ function renderKlasmanAnaliz() {
     .sort((a, b) => b.toplamAdet - a.toplamAdet);
 
   if (!liste.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><h3>Veri bulunamadı</h3></div>';
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><h3>${(translations[currentLang]||translations.tr).data_not_found}</h3></div>';
     return;
   }
 
@@ -2372,18 +3128,18 @@ function renderKlasmanAnaliz() {
         </div>
         <div style="text-align:right;">
           <div style="font-size:22px;font-weight:800;color:${barRenk};font-family:'DM Mono',monospace;line-height:1;">${gerceklesenOrt !== null ? gerceklesenOrt.toFixed(2)+'sn' : '—'}</div>
-          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:2px;">Gerçekleşen/Adet</div>
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:2px;" data-i18n="actual_per_unit">Actual/Unit</div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
         <div style="background:var(--lblue3);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;">
           <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">📐 Standart</div>
           <div style="font-size:18px;font-weight:700;color:var(--navy);font-family:'DM Mono',monospace;">${standart > 0 ? standart.toFixed(2)+'sn' : '—'}</div>
-          <div style="font-size:10px;color:var(--muted2);margin-top:3px;">1 adet ürün kontrol</div>
+          <div style="font-size:10px;color:var(--muted2);margin-top:3px;" data-i18n="one_unit_check">1 unit inspection</div>
           ${istasyon > 0 ? `<div style="font-size:10px;color:var(--muted2);margin-top:1px;">+ ${istasyon.toFixed(2)}sn istasyon</div>` : ''}
         </div>
         <div style="background:${fark!==null&&fark<=0?'var(--lgreen)':standart===0?'var(--lamber)':'var(--lred)'};border:1px solid ${fark!==null&&fark<=0?'#B2DFDB':standart===0?'#FFE082':'#FFCDD2'};border-radius:10px;padding:12px 14px;">
-          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">⏱ Gerçekleşen</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;" data-i18n="actual_label">⏱ Actual</div>
           <div style="font-size:18px;font-weight:700;color:${barRenk};font-family:'DM Mono',monospace;">${gerceklesenOrt !== null ? gerceklesenOrt.toFixed(2)+'sn' : '—'}</div>
           <div style="font-size:10px;color:${barRenk};margin-top:3px;font-weight:600;">
             ${fark !== null ? (fark>0?'+':'')+fark.toFixed(2)+'sn fark' : 'Standart girilmemiş'}
@@ -2393,7 +3149,7 @@ function renderKlasmanAnaliz() {
       </div>
       <div style="margin-bottom:10px;">
         <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px;">
-          <span>Gerçekleşen / Standart oranı</span>
+          <span data-i18n="actual_vs_std">Actual / Standard ratio</span>
           <span style="font-weight:600;color:${barRenk}">${barGenislik}%</span>
         </div>
         <div style="height:8px;background:var(--border2);border-radius:4px;overflow:hidden;">
@@ -2412,14 +3168,14 @@ function renderKlasmanAnaliz() {
     <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border-radius:12px;padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
       <div style="font-size:28px;">🎯</div>
       <div style="flex:1;">
-        <div style="font-size:15px;font-weight:700;color:#fff;">Klasman Bazında Gerçekleşen Süre Analizi</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;">${liste.length} klasman · ${liste.reduce((s,k)=>s+k.toplamAdet,0).toLocaleString('tr-TR')} toplam adet</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;">${(translations[currentLang]||translations.tr).klasman_actual_analysis}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;">${liste.length} ${(translations[currentLang]||translations.tr).klasman_word} · ${liste.reduce((s,k)=>s+k.toplamAdet,0).toLocaleString('tr-TR')} ${(translations[currentLang]||translations.tr).total_units_summary}</div>
       </div>
       ${[
-        ['✅','Hedefte', liste.filter(k=>{const g=k.toplamAdet>0&&k.toplamFiiliSure>0?k.toplamFiiliSure/k.toplamAdet:null;return g!==null&&k.standartKontrolSure>0&&g<=k.standartKontrolSure;}).length,'#4CAF50'],
-        ['⚠️','Yakın',   liste.filter(k=>{const g=k.toplamAdet>0&&k.toplamFiiliSure>0?k.toplamFiiliSure/k.toplamAdet:null;const s=k.standartKontrolSure;return g!==null&&s>0&&g>s&&g<=s*1.2;}).length,'#FFB74D'],
-        ['🔴','Yüksek',  liste.filter(k=>{const g=k.toplamAdet>0&&k.toplamFiiliSure>0?k.toplamFiiliSure/k.toplamAdet:null;const s=k.standartKontrolSure;return g!==null&&s>0&&g>s*1.2;}).length,'#EF9A9A'],
-        ['➖','Std Yok',  liste.filter(k=>!k.standartKontrolSure||k.standartKontrolSure===0).length,'rgba(255,255,255,.5)']
+        ['✅',(translations[currentLang]||translations.tr).on_target,  liste.filter(k=>{const g=k.toplamAdet>0&&k.toplamFiiliSure>0?k.toplamFiiliSure/k.toplamAdet:null;return g!==null&&k.standartKontrolSure>0&&g<=k.standartKontrolSure;}).length,'#4CAF50'],
+        ['⚠️',(translations[currentLang]||translations.tr).near_target, liste.filter(k=>{const g=k.toplamAdet>0&&k.toplamFiiliSure>0?k.toplamFiiliSure/k.toplamAdet:null;const s=k.standartKontrolSure;return g!==null&&s>0&&g>s&&g<=s*1.2;}).length,'#FFB74D'],
+        ['🔴',(translations[currentLang]||translations.tr).high_label,  liste.filter(k=>{const g=k.toplamAdet>0&&k.toplamFiiliSure>0?k.toplamFiiliSure/k.toplamAdet:null;const s=k.standartKontrolSure;return g!==null&&s>0&&g>s*1.2;}).length,'#EF9A9A'],
+        ['➖',(translations[currentLang]||translations.tr).no_std,       liste.filter(k=>!k.standartKontrolSure||k.standartKontrolSure===0).length,'rgba(255,255,255,.5)']
       ].map(([ic,lb,cnt,col])=>`
         <div style="text-align:center;background:rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;min-width:80px;">
           <div style="font-size:16px;">${ic}</div>
@@ -2432,7 +3188,7 @@ function renderKlasmanAnaliz() {
     </div>
   `;
 }
-showSuccessMessage('✅ ' + klasmanlar.length + ' klasman Google Sheets\'e gönderildi!');
+showSuccessMessage('✅ ' + klasmanlar.length + ' ' + (translations[currentLang]||translations.tr).sheets_sent_klasman);
   } catch(err) {
     alert('❌ Gönderme hatası: ' + err.message);
   } finally {
@@ -2464,7 +3220,7 @@ function renderKlasmanAnaliz() {
   if (!el) return;
 
   if (!performansData || !performansData.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🎯</div><h3>Veri yok</h3><p>Önce Performans Analizi sayfasından Excel yükleyin</p></div>';
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🎯</div><h3>${(translations[currentLang]||translations.tr).no_data_js}</h3><p>${(translations[currentLang]||translations.tr).no_data_js_hint}</p></div>';
     return;
   }
 
@@ -2497,7 +3253,7 @@ function renderKlasmanAnaliz() {
     .sort((a, b) => b.toplamAdet - a.toplamAdet);
 
   if (!_klAnalizTumListe.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><h3>Veri bulunamadı</h3></div>';
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><h3>${(translations[currentLang]||translations.tr).data_not_found}</h3></div>';
     return;
   }
 
@@ -2665,14 +3421,14 @@ function _renderKlAnalizUI(el) {
     <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border-radius:12px;padding:16px 22px;margin-bottom:16px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
       <div style="font-size:28px;">🎯</div>
       <div style="flex:1;">
-        <div style="font-size:15px;font-weight:700;color:#fff;">Klasman Bazında Gerçekleşen Süre Analizi</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;">${orijinal.length} klasman · ${orijinal.reduce((s,k)=>s+k.toplamAdet,0).toLocaleString('tr-TR')} toplam adet</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;">${(translations[currentLang]||translations.tr).klasman_actual_analysis}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;">${orijinal.length} ${(translations[currentLang]||translations.tr).klasman_word} · ${orijinal.reduce((s,k)=>s+k.toplamAdet,0).toLocaleString('tr-TR')} ${(translations[currentLang]||translations.tr).total_units_summary}</div>
       </div>
       ${[
-        ['✅','Hedefte','hedefte',hedefte,'#4CAF50'],
-        ['⚠️','Yakın','yakin',yakin,'#FFB74D'],
-        ['🔴','Yüksek','yuksek',yuksek,'#EF9A9A'],
-        ['➖','Std Yok','stdyok',stdYok,'rgba(255,255,255,.5)']
+        ['✅',(translations[currentLang]||translations.tr).on_target,'hedefte',hedefte,'#4CAF50'],
+        ['⚠️',(translations[currentLang]||translations.tr).near_target,'yakin',yakin,'#FFB74D'],
+        ['🔴',(translations[currentLang]||translations.tr).high_label,'yuksek',yuksek,'#EF9A9A'],
+        ['➖',(translations[currentLang]||translations.tr).no_std,'stdyok',stdYok,'rgba(255,255,255,.5)']
       ].map(([ic,lb,val,cnt,col])=>`
         <div onclick="document.getElementById('kla-durum-filtre').value='${val}';_klAnalizUygula()"
           style="text-align:center;background:rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;min-width:80px;cursor:pointer;transition:background .15s;"
@@ -2687,36 +3443,36 @@ function _renderKlAnalizUI(el) {
     <div style="background:var(--white);border:1px solid var(--border2);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:var(--shadow);">
       <div style="position:relative;flex:1;min-width:180px;">
         <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted2);">🔍</span>
-        <input type="text" id="kla-arama" placeholder="Klasman ara…" value="${_klAnalizFiltre}"
+        <input type="text" id="kla-arama" placeholder="${(translations[currentLang]||translations.tr).select_klasman}…" value="${_klAnalizFiltre}"
           oninput="_klAnalizFiltre=this.value;_klAnalizUygula()"
           style="width:100%;padding:8px 12px 8px 32px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;">
       </div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <label style="font-size:11px;color:var(--muted);white-space:nowrap;margin:0;">Durum:</label>
+        <label style="font-size:11px;color:var(--muted);white-space:nowrap;margin:0;">${(translations[currentLang]||translations.tr).filter_perf.replace(':','')}: </label>
         <select id="kla-durum-filtre" onchange="_klAnalizUygula()"
           style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--navy);">
-          <option value="" ${mevcut_filtre===''?'selected':''}>Tümü</option>
-          <option value="hedefte" ${mevcut_filtre==='hedefte'?'selected':''}>✅ Hedefte</option>
-          <option value="yakin" ${mevcut_filtre==='yakin'?'selected':''}>⚠️ Yakın</option>
-          <option value="yuksek" ${mevcut_filtre==='yuksek'?'selected':''}>🔴 Yüksek</option>
-          <option value="stdyok" ${mevcut_filtre==='stdyok'?'selected':''}>➖ Std Yok</option>
+          <option value="" ${mevcut_filtre===''?'selected':''}>${(translations[currentLang]||translations.tr).filter_all}</option>
+          <option value="hedefte" ${mevcut_filtre==='hedefte'?'selected':''}>✅ ${(translations[currentLang]||translations.tr).on_target}</option>
+          <option value="yakin" ${mevcut_filtre==='yakin'?'selected':''}>${(translations[currentLang]||translations.tr).status_near}</option>
+          <option value="yuksek" ${mevcut_filtre==='yuksek'?'selected':''}>${(translations[currentLang]||translations.tr).status_high}</option>
+          <option value="stdyok" ${mevcut_filtre==='stdyok'?'selected':''}>➖ ${(translations[currentLang]||translations.tr).no_std}</option>
         </select>
       </div>
       <div style="display:flex;align-items:center;gap:6px;">
-        <label style="font-size:11px;color:var(--muted);white-space:nowrap;margin:0;">Sırala:</label>
+        <label style="font-size:11px;color:var(--muted);white-space:nowrap;margin:0;">${(translations[currentLang]||translations.tr).sort_label}</label>
         <select onchange="_klAnalizSiralama=this.value;_klAnalizUygula()"
           style="padding:7px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--navy);">
-          <option value="adet-desc" ${mevcut_siralama==='adet-desc'?'selected':''}>Adet ↓</option>
-          <option value="adet-asc"  ${mevcut_siralama==='adet-asc'?'selected':''}>Adet ↑</option>
-          <option value="ad-asc"    ${mevcut_siralama==='ad-asc'?'selected':''}>A-Z</option>
-          <option value="ad-desc"   ${mevcut_siralama==='ad-desc'?'selected':''}>Z-A</option>
-          <option value="fark-desc" ${mevcut_siralama==='fark-desc'?'selected':''}>Fark ↓ (En Kötü)</option>
-          <option value="fark-asc"  ${mevcut_siralama==='fark-asc'?'selected':''}>Fark ↑ (En İyi)</option>
+          <option value="adet-desc" ${mevcut_siralama==='adet-desc'?'selected':''}>${(translations[currentLang]||translations.tr).sort_qty_desc}</option>
+          <option value="adet-asc"  ${mevcut_siralama==='adet-asc'?'selected':''}>${(translations[currentLang]||translations.tr).sort_qty_asc}</option>
+          <option value="ad-asc"    ${mevcut_siralama==='ad-asc'?'selected':''}>${(translations[currentLang]||translations.tr).sort_name_asc}</option>
+          <option value="ad-desc"   ${mevcut_siralama==='ad-desc'?'selected':''}>${(translations[currentLang]||translations.tr).sort_name_desc}</option>
+          <option value="fark-desc" ${mevcut_siralama==='fark-desc'?'selected':''}>${(translations[currentLang]||translations.tr).sort_diff_worst}</option>
+          <option value="fark-asc"  ${mevcut_siralama==='fark-asc'?'selected':''}>${(translations[currentLang]||translations.tr).sort_diff_best}</option>
         </select>
       </div>
       <button onclick="_klAnalizFiltre='';_klAnalizSiralama='adet-desc';document.getElementById('kla-durum-filtre').value='';_klAnalizUygula()"
         style="padding:7px 14px;border:1px solid var(--border);border-radius:8px;font-size:12px;background:var(--white);cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .15s;"
-        onmouseover="this.style.background='var(--lblue3)'" onmouseout="this.style.background='var(--white)'">↺ Sıfırla</button>
+        onmouseover="this.style.background='var(--lblue3)'" onmouseout="this.style.background='var(--white)'">${(translations[currentLang]||translations.tr).reset}</button>
       <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-left:auto;">
         ${tumListe.length} / ${orijinal.length} klasman · Sayfa ${_klAnalizPage}/${totalPages}
       </span>
@@ -2724,7 +3480,7 @@ function _renderKlAnalizUI(el) {
 
     <!-- KARTLAR -->
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:20px;">
-      ${kartlar || '<div style="grid-column:1/-1;padding:48px;text-align:center;color:var(--muted2);"><div style="font-size:32px;margin-bottom:12px;">🔍</div><h3 style="font-weight:500;color:var(--muted);">Filtreye uyan klasman bulunamadı</h3></div>'}
+      ${kartlar || '<div style="grid-column:1/-1;padding:48px;text-align:center;color:var(--muted2);"><div style="font-size:32px;margin-bottom:12px;">🔍</div><h3 style="font-weight:500;color:var(--muted);" data-i18n="klasman_filter_empty">No classification found matching the filter</h3></div>'}
     </div>
 
     <!-- SAYFALAMA -->
@@ -2758,7 +3514,7 @@ async function pullFromSheets() {
   }
   const btn = event?.target;
   const origText = btn?.textContent || '';
-  if (btn) { btn.textContent = '⏳ Çekiliyor...'; btn.disabled = true; }
+  if (btn) { btn.textContent = (translations[currentLang]||translations.tr).pulling; btn.disabled = true; }
 
   // iframe/postMessage ile veri çek (v5.1 - GitHub Pages CORS çözümü)
   async function gsFetch(action, extraParams) {
@@ -2801,7 +3557,7 @@ async function pullFromSheets() {
       }
 
       renderDashboard();       // inspector kartlarını performans verisiyle yeniden çiz
-      showSuccessMessage(`✅ ${count} klasman + performans verisi Sheets'ten güncellendi!`);
+      showSuccessMessage(`✅ ${count} ` + (translations[currentLang]||translations.tr).sheets_updated_count);
     } else {
       alert('❌ Geçersiz veri formatı döndü.\nApps Script doğru yapılandırıldı mı?');
     }
@@ -2976,7 +3732,7 @@ async function pullPerformansFromSheets(silent = false) {
 
   const btn = document.getElementById('dash-pull-btn');
   const origText = btn ? btn.innerHTML : '';
-  if (btn) { btn.innerHTML = '⏳ Çekiliyor...'; btn.disabled = true; }
+  if (btn) { btn.innerHTML = (translations[currentLang]||translations.tr).pulling; btn.disabled = true; }
 
   try {
     const data = await jsonpFetch(url, { action: 'getPerformansRaw', token });
@@ -2988,7 +3744,7 @@ async function pullPerformansFromSheets(silent = false) {
       renderDashboard();
       updateSidebar();
       renderTopInspectors();
-      if (!silent) showSuccessMessage(`✅ ${performansData.length} inspector verisi Sheets'ten yüklendi!`);
+      if (!silent) showSuccessMessage(`✅ ${performansData.length} ` + (translations[currentLang]||translations.tr).sheets_loaded_perf);
       else showStartupBanner(`✅ ${performansData.length} inspector verisi güncellendi`, 'success');
       console.log('✅ Performans verisi Sheets\u2019ten çekildi:', performansData.length, 'inspector');
       return true;
@@ -2996,7 +3752,7 @@ async function pullPerformansFromSheets(silent = false) {
       const _detay = data.status !== 'ok'
         ? ' (status: ' + (data.status || 'bilinmiyor') + ')'
         : (Array.isArray(data.performansData) ? ' (kayıt: ' + data.performansData.length + ')' : ' (performansData alanı yok)');
-      if (!silent) showSuccessMessage('\u2139\ufe0f Sheets\'te henüz performans verisi yok.' + _detay);
+      if (!silent) showSuccessMessage((translations[currentLang]||translations.tr).sheets_no_perf + _detay);
       console.warn('\u26a0\ufe0f getPerformansRaw boş/hatalı yanıt:', JSON.stringify(data).substring(0, 200));
       return false;
     }
@@ -3017,7 +3773,7 @@ function showSheetsHelp() {
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
         <div>
           <h2 style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px">📋 Google Apps Script Kurulum Rehberi</h2>
-          <p style="font-size:12px;color:var(--muted)">Klasman verilerini Google Sheets ile senkronize etmek için</p>
+          <p style="font-size:12px;color:var(--muted)" data-i18n="sheets_help_intro">To sync classification data with Google Sheets</p>
         </div>
         <button onclick="this.closest('[style*=fixed]').remove()" style="width:32px;height:32px;border:1px solid var(--border);background:var(--offwhite);border-radius:8px;cursor:pointer;font-size:16px">✕</button>
       </div>
@@ -3102,7 +3858,7 @@ async function pushPerformansManual(ev) {
 
   const btn = document.getElementById('perf-push-btn');
   const orig = btn ? btn.innerHTML : '';
-  if (btn) { btn.innerHTML = '⏳ Gönderiliyor...'; btn.disabled = true; }
+  if (btn) { btn.innerHTML = (translations[currentLang]||translations.tr).sending; btn.disabled = true; }
 
   try {
     const _rowsHedef = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
@@ -3161,7 +3917,7 @@ async function pushPerformansManual(ev) {
     // 3) Her inspector'ın ham kayıtlarını ayrı sekmeye gönder
     await pushInspectorKayitlarToSheets(performansData, url, token);
 
-    showSuccessMessage(`✅ ${performansData.length} inspector verisi Google Sheets'e gönderildi!`);
+    showSuccessMessage(`✅ ${performansData.length} ` + (translations[currentLang]||translations.tr).sheets_sent_perf);
   } catch(err) {
     alert('❌ Gönderme hatası: ' + err.message);
   } finally {
@@ -3183,7 +3939,7 @@ async function pullPerformansFromSheetsManual(ev) {
 
   const btn = document.getElementById('perf-pull-btn');
   const orig = btn ? btn.innerHTML : '';
-  if (btn) { btn.innerHTML = '⏳ Çekiliyor...'; btn.disabled = true; }
+  if (btn) { btn.innerHTML = (translations[currentLang]||translations.tr).pulling; btn.disabled = true; }
 
   try {
     const data = await jsonpFetch(url, { action: 'getPerformansRaw', token });
@@ -3204,7 +3960,7 @@ async function pullPerformansFromSheetsManual(ev) {
       renderTopInspectors();
       // Analiz tablosunu yeniden çiz
       if (typeof renderPerformansTable === 'function') renderPerformansTable();
-      showSuccessMessage(`✅ ${count} inspector verisi Sheets'ten Performans Analizi'ne yüklendi!`);
+      showSuccessMessage(`✅ ${count} ` + (translations[currentLang]||translations.tr).sheets_loaded_to_perf);
     } else {
       const detay = data.status !== 'ok'
         ? ` (Durum: ${data.status || 'bilinmiyor'})`
@@ -3236,8 +3992,8 @@ function showPerformansHowItWorks() {
       <!-- Başlık -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
         <div>
-          <h2 style="font-size:19px;font-weight:700;color:var(--navy);margin-bottom:4px">📊 Performans Analizi — Nasıl Çalışır?</h2>
-          <p style="font-size:12px;color:var(--muted)">Hesaplama mantığı, formüller ve Google Sheets entegrasyonu</p>
+          <h2 style="font-size:19px;font-weight:700;color:var(--navy);margin-bottom:4px" data-i18n="perf_how_title">📊 Performance Analysis — How Does It Work?</h2>
+          <p style="font-size:12px;color:var(--muted)" data-i18n="perf_how_sub">Calculation logic, formulas, and Google Sheets integration</p>
         </div>
         <button onclick="this.closest('[style*=fixed]').remove()" style="width:34px;height:34px;border:1px solid var(--border);background:var(--offwhite);border-radius:8px;cursor:pointer;font-size:17px;flex-shrink:0">✕</button>
       </div>
@@ -3444,8 +4200,8 @@ function fixVerimlilikPerf(liste) {
     const vAciklama = document.getElementById('verimlilik-aciklama');
     if (vAciklama) {
       if (sheetsHedef === 100) vAciklama.textContent = '';
-      else if (sheetsHedef < 100) vAciklama.textContent = `(%${sheetsHedef} hedef → performans ${(100/sheetsHedef).toFixed(2)}x çarpanla artar) `;
-      else vAciklama.textContent = `(%${sheetsHedef} hedef → performans ${(100/sheetsHedef).toFixed(2)}x çarpanla azalır) `;
+      else if (sheetsHedef < 100) vAciklama.textContent = `(%${sheetsHedef} (translations[currentLang]||translations.tr).target_below_100 ${(100/sheetsHedef).toFixed(2)}x) `;
+      else vAciklama.textContent = `(%${sheetsHedef} (translations[currentLang]||translations.tr).target_above_100 ${(100/sheetsHedef).toFixed(2)}x) `;
     }
   }
   // orneklemeMod radio'sunu Sheets'ten gelen değere göre set et
@@ -3556,14 +4312,14 @@ function saveData() {
 function saveDashboardData() { saveData(); }
 
 async function clearDashboardData() {
-  if (!confirm('⚠️ Tüm performans verileri silinecek!\n\nBu işlem:\n• Dashboard verilerini temizler\n• Google Sheets\'teki İşlem Geçmişi, Performans Verileri, PerformansRaw ve InspectorKayitlar sekmelerini siler\n\nDevam etmek istiyor musunuz?')) return;
+  if (!confirm((translations[currentLang]||translations.tr).clear_confirm)) return;
 
   const url   = appConfig.sheetsWebAppUrl;
   const token = appConfig.sheetsApiToken;
 
   const btn = document.querySelector('button[onclick="clearDashboardData()"]');
   const origText = btn ? btn.innerHTML : '';
-  if (btn) { btn.innerHTML = '⏳ Temizleniyor...'; btn.disabled = true; }
+  if (btn) { btn.innerHTML = (translations[currentLang]||translations.tr).clearing; btn.disabled = true; }
 
   performansData = [];
   excelRows = [];
@@ -3586,16 +4342,16 @@ async function clearDashboardData() {
         }),
         mode: 'no-cors'
       });
-      showSuccessMessage('✅ Veriler temizlendi! (Local + Sheets)');
+      showSuccessMessage((translations[currentLang]||translations.tr).clear_ok_sheets);
     } catch(err) {
-      showSuccessMessage('✅ Local veriler temizlendi. Sheets bağlantı hatası: ' + err.message);
+      showSuccessMessage((translations[currentLang]||translations.tr).clear_ok_local_err + err.message);
     }
   } else {
-    showSuccessMessage('✅ Local veriler temizlendi. (Sheets bağlantısı yapılandırılmamış)');
+    showSuccessMessage((translations[currentLang]||translations.tr).clear_ok_local);
   }
 
   if (btn) { btn.innerHTML = origText; btn.disabled = false; }
-  showFileStatus('🗑️ Tüm performans verileri temizlendi', 'var(--amber)');
+  showFileStatus((translations[currentLang]||translations.tr).clear_status, 'var(--amber)');
 }
 
 // ────────────────────────────
@@ -3811,7 +4567,7 @@ function birAdet(k){
 function updateSidebar(){
   const n = klasmanlar.length;
   const inspCount = performansData.length;
-  document.getElementById('klasman-badge').textContent = n+' klasman';
+  document.getElementById('klasman-badge').textContent = n+' '+(translations[currentLang]||translations.tr).klasman_word;
   document.getElementById('inspector-badge').textContent = inspCount+' inspector';
   document.getElementById('nav-kl-count').textContent = n;
   document.getElementById('nav-dashboard-count').textContent = inspCount;
@@ -3926,7 +4682,7 @@ function updateSummaryStats(inspectors) {
   document.getElementById('average-count').textContent = average;
   document.getElementById('poor-count').textContent = poor;
   document.getElementById('avg-performance').textContent = avgPerformans + '%';
-  document.getElementById('avg-working-days').textContent = avgWorkingDays + ' gün';
+  document.getElementById('avg-working-days').textContent = avgWorkingDays + ' ' + (translations[currentLang]||translations.tr).days_suffix;
   document.getElementById('total-products').textContent = totalProducts.toLocaleString('tr-TR');
 
 }
@@ -3962,11 +4718,12 @@ function onHedefChange() {
 // ────────────────────────────
 function renderDashboard() {
   if (!performansData.length) {
+    const _t0 = translations[currentLang]||translations.tr;
     document.getElementById('inspector-grid').innerHTML = `
       <div class="empty">
         <div class="empty-icon">📊</div>
-        <h3>Henüz performans verisi yok</h3>
-        <p>Performans Analizi sayfasından Excel yükleyip analiz yapın</p>
+        <h3>${_t0.no_perf_data}</h3>
+        <p>${_t0.no_perf_data_hint}</p>
       </div>
     `;
     document.getElementById('dashboard-pagination').style.display = 'none';
@@ -4001,7 +4758,7 @@ function updateKlasmanFilter() {
 
   const select = document.getElementById('klasman-filter');
   const prev = select.value;
-  select.innerHTML = '<option value="">Tüm Klasmanlar</option>';
+  select.innerHTML = `<option value="">${(translations[currentLang]||translations.tr).filter_all_klasman}</option>`;
   Array.from(klasmanSet).sort().forEach(k => {
     select.innerHTML += `<option value="${k}"${k === prev ? ' selected' : ''}>${k}</option>`;
   });
@@ -4081,10 +4838,11 @@ function renderInspectorCards() {
     grid.innerHTML = `
       <div class="empty">
         <div class="empty-icon">🔍</div>
-        <h3>Filtre sonucu bulunamadı</h3>
-        <p>Filtre kriterlerini değiştirip tekrar deneyin</p>
+        <h3 data-i18n="filter_no_result">No filter results found</h3>
+        <p data-i18n="filter_no_result_hint">Try changing the filter criteria</p>
       </div>
     `;
+    applyI18nToNewNodes(grid);
     pagination.style.display = 'none';
     return;
   }
@@ -4114,20 +4872,20 @@ function renderInspectorCards() {
 
     const performansAciklama = (() => {
       if (performansVal === null || performansVal === undefined) {
-        return 'Mesai verisi yok';
+        return (translations[currentLang]||translations.tr).no_overtime_data;
       }
       const gunSayisi = inspector.gunSayisi || 0;
       const mesaiSaat = Math.round((inspector.mesaiSure || 0) / 3600);
       const overtimeDk = Math.round((inspector.toplamMesaistiSaniye || 0) / 60);
-      const overtimeStr = overtimeDk > 0 ? ` · 🌙 ${overtimeDk}dk mesai üstü` : '';
-      return `${gunSayisi} gün × 7.5s = ${mesaiSaat}s mesai bazlı${overtimeStr}`;
+      const overtimeStr = overtimeDk > 0 ? ` · 🌙 ${overtimeDk}dk ${(translations[currentLang]||translations.tr).overtime_over}` : '';
+      return `${gunSayisi} ${(translations[currentLang]||translations.tr).days_x_formula.replace('{h}', mesaiSaat)}${overtimeStr}`;
     })();
 
     const performansSeviyesi = (() => {
-      if (performansVal >= 95) return 'Mükemmel';
-      if (performansVal >= 85) return 'İyi';
-      if (performansVal >= 70) return 'Orta';
-      return 'Düşük'; // "Geliştirilmeli" yerine "Düşük"
+      if (performansVal >= 95) return (translations[currentLang]||translations.tr).perf_excellent;
+      if (performansVal >= 85) return (translations[currentLang]||translations.tr).perf_good;
+      if (performansVal >= 70) return (translations[currentLang]||translations.tr).perf_average;
+      return (translations[currentLang]||translations.tr).perf_poor; // "Geliştirilmeli" yerine "Düşük"
     })();
 
     const klasmanRowsHtml = Object.entries(inspector.klasmanlar).map(([klasman, data]) => {
@@ -4135,7 +4893,7 @@ function renderInspectorCards() {
       const hizText = hizPerf !== null ? hizPerf + '%' : '—';
       const hizClass = hizPerf !== null ? getPerformanceClass(hizPerf) : '';
       return `<div class="klasman-item">
-        <span class="klasman-name">${klasman} (${data.adet} adet)</span>
+        <span class="klasman-name">${klasman} (${data.adet} ${(translations[currentLang]||translations.tr).units_short})</span>
         <span class="${hizClass}" style="font-size:10px;font-weight:600">${hizText}</span>
       </div>`;
     }).join('');
@@ -4156,7 +4914,7 @@ function renderInspectorCards() {
             <div>
               <div class="inspector-name">${inspector.ins}</div>
               <div style="font-size:10px;color:var(--muted2);margin-top:2px">
-                ${inspector.gunSayisi || 0} gün çalışma · ${gunDetayi}
+                ${inspector.gunSayisi || 0} ${(translations[currentLang]||translations.tr).days_suffix} ${(translations[currentLang]||translations.tr).working} · ${gunDetayi}
               </div>
             </div>
           </div>
@@ -4167,7 +4925,7 @@ function renderInspectorCards() {
               </div>
               ${currentHedef !== 100 ? `<div style="position:absolute;top:-6px;right:-6px;background:var(--amber);color:#fff;font-size:8px;font-weight:700;padding:2px 5px;border-radius:8px;line-height:1.2">H%${currentHedef}</div>` : ''}
             </div>
-            <div style="font-size:10px;color:var(--muted);margin-top:5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase">Düz. Performans</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase" data-i18n="adj_perf_label">Adj. Performance</div>
             <div style="font-size:9px;color:${progressColor};font-weight:600;margin-top:1px">${performansSeviyesi}</div>
           </div>
         </div>
@@ -4176,11 +4934,11 @@ function renderInspectorCards() {
         <div class="inspector-stats">
           <div class="inspector-stat">
             <div class="inspector-stat-value">${inspector.adet.toLocaleString('tr-TR')}</div>
-            <div class="inspector-stat-label">Toplam Adet</div>
+            <div class="inspector-stat-label" data-i18n="total_qty">Total Quantity</div>
           </div>
           <div class="inspector-stat">
             <div class="inspector-stat-value">${inspector.kayit.toLocaleString('tr-TR')}</div>
-            <div class="inspector-stat-label">Kayıt Sayısı</div>
+            <div class="inspector-stat-label" data-i18n="record_count">Record Count</div>
           </div>
         </div>
 
@@ -4188,13 +4946,13 @@ function renderInspectorCards() {
         <div class="inspector-stats">
           <div class="inspector-stat">
             <div class="inspector-stat-value">${fmtSnKisa(inspector.standartSure||0)}</div>
-            <div class="inspector-stat-label">Standart Süre</div>
+            <div class="inspector-stat-label" data-i18n="std_duration">Standard Duration</div>
           </div>
           <div class="inspector-stat">
             <div class="inspector-stat-value">${fmtSnKisa(inspector.mesaiSure||0)}</div>
-            <div class="inspector-stat-label">Mesai Süresi${
+            <div class="inspector-stat-label"><span data-i18n="overtime_duration">Overtime Duration</span>${
               inspector.toplamMesaistiSaniye > 0
-                ? `<br><span style="color:#E65100;font-size:9px;font-weight:700">🌙 +${Math.round(inspector.toplamMesaistiSaniye/60)}dk mesai üstü</span>`
+                ? `<br><span style="color:#E65100;font-size:9px;font-weight:700">🌙 +${Math.round(inspector.toplamMesaistiSaniye/60)}dk <span data-i18n="overtime_over">overtime+</span></span>`
                 : ''
             }</div>
           </div>
@@ -4207,12 +4965,12 @@ function renderInspectorCards() {
           </div>
           <div style="text-align:center">
             <span style="font-size:11px;color:var(--muted2)">📊 </span>
-            <span style="font-size:12px;font-weight:600;color:var(--navy)">${klasmanCount} klasman</span>
+            <span style="font-size:12px;font-weight:600;color:var(--navy)">${klasmanCount} ${(translations[currentLang]||translations.tr).klasman_word}</span>
             <span style="color:var(--border);margin:0 6px"> • </span>
             <span style="font-size:11px;color:var(--muted2)">
-              verimlilik &nbsp;•&nbsp;
-              <span style="color:var(--blue);font-weight:600">%100+</span> = hedeften hızlı &nbsp;•&nbsp;
-              <span style="color:var(--amber);font-weight:600">%100-</span> = hedeften yavaş
+              <span data-i18n="efficiency_label">efficiency</span> &nbsp;•&nbsp;
+              <span style="color:var(--blue);font-weight:600">%100+</span> = <span data-i18n="above_target">above target</span> &nbsp;•&nbsp;
+              <span style="color:var(--amber);font-weight:600">%100-</span> = <span data-i18n="below_target">below target</span>
             </span>
           </div>
         </div>
@@ -4221,11 +4979,11 @@ function renderInspectorCards() {
         <div class="klasman-breakdown">
           <div class="klasman-summary" onclick="toggleKlasmanDetails(this)">
             <div style="display:flex;align-items:center;gap:8px">
-              <span style="font-size:10px;color:var(--muted2)">📋 Klasman Detayları</span>
-              <span style="font-size:8px;color:var(--muted2);background:var(--lblue2);padding:1px 6px;border-radius:10px">${klasmanCount} adet</span>
+              <span style="font-size:10px;color:var(--muted2)" data-i18n="klasman_details">📋 Classification Details</span>
+              <span style="font-size:8px;color:var(--muted2);background:var(--lblue2);padding:1px 6px;border-radius:10px">${klasmanCount} ${(translations[currentLang]||translations.tr).units_short}</span>
             </div>
             <div style="display:flex;align-items:center;gap:4px">
-              <span class="toggle-text" style="font-size:10px;color:var(--blue);font-weight:600">Detayları Gör</span>
+              <span class="toggle-text" style="font-size:10px;color:var(--blue);font-weight:600" data-i18n="see_details">See Details</span>
               <span class="toggle-icon" style="font-size:12px">👁️</span>
             </div>
           </div>
@@ -4238,7 +4996,7 @@ function renderInspectorCards() {
         <div style="display:flex;gap:8px;margin-top:12px">
           <button onclick="showInspectorDetail('${inspector.ins.replace(/'/g, "\\'")}'); event.stopPropagation();" 
                   style="flex:1;padding:8px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:11px;cursor:pointer;font-weight:500">
-            📊 Detaylı Analiz
+            📊 ${(translations[currentLang]||translations.tr).detailed_analysis}
           </button>
         </div>
       </div>
@@ -4246,6 +5004,9 @@ function renderInspectorCards() {
   }).join('');
 
   grid.innerHTML = cards;
+
+  // data-i18n attribute'larını yeni oluşan DOM'a uygula
+  applyI18nToNewNodes(grid);
 
   if (totalPages > 1) {
     pagination.style.display = 'flex';
@@ -4273,11 +5034,11 @@ function toggleKlasmanDetails(element) {
   
   if (details.classList.contains('show')) {
     toggleIcon.textContent = '👁️';
-    toggleText.textContent = 'Gizle';
+    toggleText.textContent = (translations[currentLang]||translations.tr).hide_label;
     element.style.borderRadius = '8px 8px 0 0';
   } else {
     toggleIcon.textContent = '👁️';
-    toggleText.textContent = 'Detayları Gör';
+    toggleText.textContent = (translations[currentLang]||translations.tr).see_details;
     element.style.borderRadius = '8px';
   }
 }
@@ -4290,7 +5051,7 @@ function showInspectorDetail(inspectorName) {
   if (!inspector) return;
   selectedInspectorDetail = inspector;
 
-  document.getElementById('detail-modal-title').textContent = `${inspector.ins} — Detaylı Performans`;
+  document.getElementById('detail-modal-title').textContent = `${inspector.ins} — ${(translations[currentLang]||translations.tr).detailed_perf}`;
 
   // ── ANINDA AÇ: mevcut veriyle overlay'i hemen göster ──
   const _aoHedefValNow = Math.max(1, parseFloat(document.getElementById('inp-verimlilik')?.value) || 100);
@@ -4328,7 +5089,7 @@ function showInspectorDetail(inspectorName) {
       const loadBanner = document.createElement('div');
       loadBanner.id = 'ao-sheets-loading';
       loadBanner.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1565C0;color:#fff;padding:10px 18px;border-radius:10px;font-size:12px;font-family:DM Sans,sans-serif;z-index:9999;box-shadow:0 4px 16px rgba(21,101,192,.4);display:flex;align-items:center;gap:8px;';
-      loadBanner.innerHTML = '<div style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:ao-gspin .8s linear infinite;"></div> Kayıt detayları yükleniyor...';
+      loadBanner.innerHTML = '<div style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;animation:ao-gspin .8s linear infinite;"></div> ' + (translations[currentLang]||translations.tr).loading_records;
       document.body.appendChild(loadBanner);
 
       jsonpFetch(url, { action: 'getInspectorKayitlar', token, inspectorAdi: inspectorName.normalize('NFC').trim() })
@@ -4631,7 +5392,7 @@ function autoSaveAndPushKlasmanlar() {
       mode: 'no-cors'
     }).then(() => {
       console.log('☁️ Klasmanlar Sheets\'e otomatik gönderildi');
-      showSuccessMessage('☁️ Klasman değişikliği Sheets\'e senkronize edildi');
+      showSuccessMessage((translations[currentLang]||translations.tr).sheets_klasman_sync);
     }).catch(err => console.warn('Klasman oto-push hatası:', err.message));
   }, 1500);
 }
@@ -4703,7 +5464,8 @@ function renderListe(){
   if (countEl) countEl.textContent = `✅ ${totalDone}  ·  ⚠️ ${totalUndone}`;
 
   if(!slice.length){
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><h3>Bulunamadı</h3><p>Arama kriterini değiştirin</p></div>';
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><h3 data-i18n="not_found">Not Found</h3><p data-i18n="change_search">Change the search criteria</p></div>';
+    applyI18nToNewNodes(el);
   } else {
     el.innerHTML = '<div class="kl-grid">' + slice.map(k => {
       const icon      = k.icon || KL_ICONS[k.id % KL_ICONS.length];
@@ -4722,7 +5484,7 @@ function renderListe(){
     }).join('') + '</div>';
   }
 
-  document.getElementById('kl-sayac').textContent = fl.length + ' klasman';
+  document.getElementById('kl-sayac').textContent = fl.length + ' ' + (translations[currentLang]||translations.tr).klasman_word;
   
   // Sayfalama güncelle
   const prevBtn = document.getElementById('kl-prev');
@@ -4802,7 +5564,7 @@ function renderEditor(){
       <h2 style="font-size:14px;font-weight:600;color:var(--navy);display:flex;align-items:center;gap:8px">
         <span>${curIcon}</span> ${k.ad} — Düzenle
       </h2>
-      <button onclick="addIstasyon(${k.id})" style="padding:6px 12px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:11px;cursor:pointer">＋ İstasyon Ekle</button>
+      <button onclick="addIstasyon(${k.id})" style="padding:6px 12px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:11px;cursor:pointer" data-i18n="add_station">＋ Add Station</button>
     </div>
     <div style="padding:18px">
 
@@ -4824,7 +5586,7 @@ function renderEditor(){
             style="flex:1;padding:8px 12px;border:1.5px solid var(--blue3);border-radius:8px;font-size:13px;font-weight:600;color:var(--navy);"
             placeholder="Klasman adı">
         </div>
-        <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">İkon Seç</div>
+        <div style="font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;" data-i18n="select_icon_btn">Select Icon</div>
         <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:4px;max-height:130px;overflow-y:auto;padding:2px;" id="editor-icon-grid-${k.id}">
           ${iconGridHtml}
         </div>
@@ -4832,8 +5594,8 @@ function renderEditor(){
       <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--lgreen);border:1px solid var(--green);border-radius:8px;margin-bottom:16px">
         <div style="width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">⏱</div>
         <div style="flex:1">
-          <strong style="font-size:13px;color:var(--green);display:block">1 Adet Ürün Kontrol Süresi</strong>
-          <span style="font-size:11px;color:var(--muted2)">Her ürün için harcanan standart süre</span>
+          <strong style="font-size:13px;color:var(--green);display:block" data-i18n="unit_check_duration">1-Unit Inspection Duration</strong>
+          <span style="font-size:11px;color:var(--muted2)" data-i18n="unit_check_hint">Standard time spent per product</span>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
           <input type="number" value="${urunKontrolSuresi}" min="0" step="1" 
@@ -4847,7 +5609,7 @@ function renderEditor(){
           <div style="padding:40px 24px;text-align:center;border:2px dashed var(--border);border-radius:8px;background:var(--offwhite)">
             <div style="font-size:24px;margin-bottom:8px;opacity:0.5">⚙️</div>
             <h3 style="font-size:13px;font-weight:500;color:var(--muted);margin-bottom:4px">"İstasyon Ekle" ile başlayın</h3>
-            <p style="font-size:11px;color:var(--muted2)">İlk istasyonu ekleyerek klasmanı tanımlamaya başlayın</p>
+            <p style="font-size:11px;color:var(--muted2)" data-i18n="add_first_station">Add the first station to start defining this classification</p>
           </div>
         `:''}
         ${k.istasyonlar.map((ist,i)=>`
@@ -4871,11 +5633,11 @@ function renderEditor(){
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
             <div>
               <div style="font-size:18px;font-weight:700;color:var(--navy);font-family:'DM Mono',monospace">${toplamSure.toFixed(0)}</div>
-              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Toplam Süre (sn)</div>
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px" data-i18n="total_duration_label">Total Duration (s)</div>
             </div>
             <div>
               <div style="font-size:18px;font-weight:700;color:var(--blue);font-family:'DM Mono',monospace">${k.istasyonlar.length}</div>
-              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">İstasyon Sayısı</div>
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px" data-i18n="station_count">Station Count</div>
             </div>
             <div>
               <div style="font-size:18px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace">${(toplamSure/60).toFixed(1)}</div>
@@ -5023,7 +5785,7 @@ function excelYukle(e){
   const file=e.target.files[0];
   if(!file) return;
   
-  showFileStatus('⏳ Dosya yükleniyor...', 'var(--blue)');
+  showFileStatus((translations[currentLang]||translations.tr).file_uploading, 'var(--blue)');
   
   const reader=new FileReader();
   reader.onload=function(ev){
@@ -5033,20 +5795,20 @@ function excelYukle(e){
       const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
       
       if(!rows.length){ 
-        showFileStatus('❌ Dosya boş görünüyor.','var(--red)'); 
+        showFileStatus((translations[currentLang]||translations.tr).file_empty,'var(--red)'); 
         return; 
       }
       
       excelRows=rows;
       excelCols=Object.keys(rows[0]);
-      showFileStatus('✅ '+rows.length+' satır başarıyla yüklendi — '+file.name,'var(--green)');
+      showFileStatus('✅ '+rows.length+' ' + (translations[currentLang]||translations.tr).file_loaded + file.name,'var(--green)');
       document.getElementById('upload-zone').style.background = 'var(--lgreen)';
       document.getElementById('upload-zone').style.borderColor = 'var(--green)';
       fillColSelects();
       document.getElementById('sutun-panel').style.display = 'block';
       performansHesapla();
     }catch(err){
-      showFileStatus('❌ Hata: '+err.message,'var(--red)');
+      showFileStatus((translations[currentLang]||translations.tr).file_error+err.message,'var(--red)');
     }
   };
   reader.readAsBinaryString(file);
@@ -5067,7 +5829,7 @@ function fillColSelects(){
   const mesaiEl = document.getElementById('col-mesai');
   if (mesaiEl) mesaiEl.innerHTML = '<option value="">— opsiyonel —</option>' + excelCols.map(c=>`<option value="${c}">${c}</option>`).join('');
   const yapilanDepoEl = document.getElementById('col-yapilan-depo');
-  if (yapilanDepoEl) yapilanDepoEl.innerHTML = '<option value="">— Filtre yok (tüm satırlar) —</option>' + excelCols.map(c=>`<option value="${c}">${c}</option>`).join('');
+  if (yapilanDepoEl) yapilanDepoEl.innerHTML = `<option value="">${(translations[currentLang]||translations.tr).filter_none}</option>` + excelCols.map(c=>`<option value="${c}">${c}</option>`).join('');
   
   // Otomatik tahmin
   const klasmanCol = excelCols[0] || '';
@@ -5112,7 +5874,7 @@ async function autoFetchPerfIfNeeded() {
       renderPerfTabloFromData();
       renderDashboard();
       updateSidebar();
-      showSuccessMessage('✅ Sheets\'ten ' + performansData.length + ' inspector verisi güncellendi', 3000);
+      showSuccessMessage('✅ ' + (translations[currentLang]||translations.tr).sheets_perf_updated + ' (' + performansData.length + ')', 3000);
     }
   } catch(e) {
     console.warn('Performans oto-çekme hatası:', e.message);
@@ -5310,22 +6072,22 @@ function renderPerfTabloFromData(page) {
             <span style="font-size:11px;font-weight:600;background:var(--blue2);color:#fff;padding:3px 10px;border-radius:99px;">${performansData.length} inspector</span>
           </div>
           <div style="font-size:11px;color:var(--muted);margin-top:4px;display:flex;gap:16px;flex-wrap:wrap;">
-            <span>⚡ Düz. Ort.: <strong style="color:var(--amber)">${ortVPerf}%</strong></span>
-            <span>📅 Ham Ort.: <strong style="color:var(--muted)">${ortPerformans}%</strong></span>
-            <span>📆 Ort. Çalışma: <strong style="color:var(--navy)">${ortalamaGun} gün</strong></span>
+            <span><span data-i18n="adj_avg_short">⚡ Adj. Avg.:</span> <strong style="color:var(--amber)">${ortVPerf}%</strong></span>
+            <span>📅 <span data-i18n='raw_avg'>Ham Ort.:</span> <strong style="color:var(--muted)">${ortPerformans}%</strong></span>
+            <span><span data-i18n="avg_work_days">📆 Avg. Working:</span> <strong style="color:var(--navy)">${ortalamaGun} gün</strong></span>
           </div>
           <div style="font-size:10px;color:var(--green);margin-top:4px;">
-            ✅ Standart Süre ÷ (Gün × 7.5s) × 100
-            ${hedef !== 100 ? `&nbsp;·&nbsp; <span style="color:var(--amber)">⚡ Ham Perf × (100÷${hedef})</span>` : ''}
+            ✅ <span data-i18n='perf_formula'>Std Duration ÷ (Days × 7.5h) × 100</span>
+            ${hedef !== 100 ? `&nbsp;·&nbsp; <span style="color:var(--amber)">⚡ <span data-i18n='adj_formula'>Raw Perf × (100÷${hedef})</span></span>` : ''}
           </div>
         </div>
         <!-- Özet stat kutuları -->
         <div style="display:flex;gap:10px;flex-shrink:0;">
           ${[
-            ['🏆','Mükemmel',performansData.filter(r=>(r.genelHizPerf??0)>=95).length,'var(--green)','var(--lgreen)'],
+            ['🏆',(translations[currentLang]||translations.tr).perf_excellent,performansData.filter(r=>(r.genelHizPerf??0)>=95).length,'var(--green)','var(--lgreen)'],
             ['👍','İyi',performansData.filter(r=>{const p=r.genelHizPerf??0;return p>=85&&p<95}).length,'var(--blue)','var(--lblue2)'],
-            ['⚠️','Orta',performansData.filter(r=>{const p=r.genelHizPerf??0;return p>=70&&p<85}).length,'var(--amber)','var(--lamber)'],
-            ['📉','Düşük',performansData.filter(r=>(r.genelHizPerf??0)<70).length,'var(--red)','var(--lred)']
+            ['⚠️',(translations[currentLang]||translations.tr).perf_average,performansData.filter(r=>{const p=r.genelHizPerf??0;return p>=70&&p<85}).length,'var(--amber)','var(--lamber)'],
+            ['📉',(translations[currentLang]||translations.tr).perf_poor,performansData.filter(r=>(r.genelHizPerf??0)<70).length,'var(--red)','var(--lred)']
           ].map(([ic,lb,cnt,col,bg])=>`
             <div style="background:${bg};border:1px solid ${col}33;border-radius:10px;padding:10px 14px;text-align:center;min-width:54px;">
               <div style="font-size:16px;">${ic}</div>
@@ -5408,7 +6170,7 @@ function updateOrneklemeUI() {
 
   if (mod === 'kapali') {
     preview.style.display = 'none';
-    if (aciklama) aciklama.innerHTML = 'Kapalı: gerçek adet kullanılır. <strong>Bir Alttan</strong> / <strong>İki Alttan</strong>: adet örnekleme tablosuna göre dönüştürülür.';
+    if (aciklama) aciklama.innerHTML = (translations[currentLang]||translations.tr).sampling_desc;
   } else {
     const tablo = mod === 'bir' ? ORNEKLEME_BIR : ORNEKLEME_IKI;
     const satirlar = tablo.map(b => `≤${b.max===Infinity?'∞':b.max}→${b.val===null?'R':b.val}`).join('  ');
@@ -5446,12 +6208,12 @@ function performansHesapla(){
   const vAciklama = document.getElementById('verimlilik-aciklama');
   if (vAciklama) {
     if (verimlilikHedef === 100) vAciklama.textContent = '';
-    else if (verimlilikHedef < 100) vAciklama.textContent = `(%${verimlilikHedef} hedef → performans ${(100/verimlilikHedef).toFixed(2)}x çarpanla artar) `;
-    else vAciklama.textContent = `(%${verimlilikHedef} hedef → performans ${(100/verimlilikHedef).toFixed(2)}x çarpanla azalır) `;
+    else if (verimlilikHedef < 100) vAciklama.textContent = `(%${verimlilikHedef} (translations[currentLang]||translations.tr).target_below_100 ${(100/verimlilikHedef).toFixed(2)}x) `;
+    else vAciklama.textContent = `(%${verimlilikHedef} (translations[currentLang]||translations.tr).target_above_100 ${(100/verimlilikHedef).toFixed(2)}x) `;
   }
 
   if(!klasmanCol || !insCol || !adetCol){
-    showFileStatus('⚠️ Lütfen en az Klasman, Inspector ve Adet sütunlarını seçin', 'var(--amber)');
+    showFileStatus((translations[currentLang]||translations.tr).col_select_warning, 'var(--amber)');
     return;
   }
 
@@ -5661,7 +6423,7 @@ function performansHesapla(){
   if(!liste.length){ 
     tablo.style.display='none'; 
     empty.style.display='block'; 
-    showFileStatus('❌ İşlenebilir veri bulunamadı', 'var(--red)');
+    showFileStatus((translations[currentLang]||translations.tr).no_data_processable, 'var(--red)');
     return; 
   }
 
@@ -5706,7 +6468,7 @@ function performansHesapla(){
         <div class="avatar">${ini}</div>
         <div>
           <strong style="font-size:13px">${row.ins}</strong>
-          <div style="font-size:10px;color:var(--muted2)">${row.gunSayisi || 0} gün çalışma · ${tarihDurumu}</div>
+          <div style="font-size:10px;color:var(--muted2)">${row.gunSayisi || 0} ${(translations[currentLang]||translations.tr).working} · ${tarihDurumu}</div>
         </div>
       </div></td>
       <td style="color:var(--muted);font-family:'DM Mono',monospace">${row.kayit}</td>
@@ -5717,7 +6479,7 @@ function performansHesapla(){
         <div>
           <span class="${performansClass}" style="font-weight:700;font-size:14px">${performans !== null ? performans+'%' : '—'}</span>
           <div style="font-size:9px;color:var(--muted);margin-top:1px">
-            ${row.gunSayisi || 0} gün × 7.5s = ${Math.round((row.mesaiSure||0)/3600)}s mesai
+            ${row.gunSayisi || 0} ${(translations[currentLang]||translations.tr).days_x_formula.replace('{h}', Math.round((row.mesaiSure||0)/3600))}
           </div>
         </div>
       </td>
@@ -5766,7 +6528,7 @@ function performansHesapla(){
   updateSidebar();
   renderDashboard();
   
-  showFileStatus(`✅ ${liste.length} inspector başarıyla analiz edildi`, 'var(--green)');
+  showFileStatus(`✅ ${liste.length}` + (translations[currentLang]||translations.tr).analysis_done, 'var(--green)');
 }
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
@@ -5807,7 +6569,7 @@ function toggleSlideshow() {
 
 function startSlideshow() {
   if (!performansData.length) {
-    alert('Henüz performans verisi yok! Önce Performans Analizi sayfasından veri yükleyin.');
+    alert((translations[currentLang]||translations.tr).no_perf_alert);
     return;
   }
   
@@ -5818,7 +6580,7 @@ function startSlideshow() {
   document.getElementById('canli-controls').style.display = 'none';
   
   // Buton metnini değiştir
-  document.getElementById('slideshow-btn').innerHTML = '⏸ Durdur';
+  document.getElementById('slideshow-btn').innerHTML = (translations[currentLang]||translations.tr).stop_slideshow;
   
   // Inspector listesini hazırla
   prepareSlideshow();
@@ -5857,7 +6619,7 @@ function stopSlideshow() {
   document.getElementById('canli-controls').style.display = 'block';
   
   // Buton metnini değiştir
-  document.getElementById('slideshow-btn').innerHTML = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px"><polygon points="5,3 19,12 5,21"/></svg> Gösterimi Başlat';
+  document.getElementById('slideshow-btn').innerHTML = '<svg width=14 height=14 viewBox="0 0 24 24" fill="currentColor" style="margin-right:4px"><polygon points="5,3 19,12 5,21"/></svg> ' + (translations[currentLang]||translations.tr).start_slideshow;
   
   // Welcome ekranını göster
   showWelcomeScreen();
@@ -5918,7 +6680,7 @@ function updateAnnouncements() {
     const bestPerf = Math.round(getDispPerf(best));
     
     if (bestPerf >= 95) {
-      announcements.push(`🏆 Ayın En İyi Inspector'ü: ${best.ins} (${bestPerf}%)`);
+      announcements.push(`🏆 ${(translations[currentLang]||translations.tr).best_inspector_month}: ${best.ins} (${bestPerf}%)`);
     }
     
     const excellentCount = slideshowInspectors.filter(i => getDispPerf(i) >= 95).length;
@@ -5927,7 +6689,7 @@ function updateAnnouncements() {
     }
     
     const avgPerf = Math.round(slideshowInspectors.reduce((sum, i) => sum + getDispPerf(i), 0) / slideshowInspectors.length);
-    announcements.push(`📊 Ortalama Performans: ${avgPerf}% | Toplam: ${slideshowInspectors.length} Inspector`);
+    announcements.push(`📊 ${(translations[currentLang]||translations.tr).stat_avg_perf_plain}: ${avgPerf}% | ${(translations[currentLang]||translations.tr).stat_total_inspector}: ${slideshowInspectors.length}`);
   }
   
   // Duyuru metnini döngüsel olarak değiştir
@@ -5955,7 +6717,7 @@ function renderTopInspectors() {
     listContainer.innerHTML = `
       <div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">
         <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
-        <div style="font-size: 12px;">Henüz veri yok</div>
+        <div style="font-size: 12px;" data-i18n="no_data_live">No data yet</div>
         <div style="font-size: 10px; margin-top: 4px;">Excel yükleyip analiz yapın</div>
       </div>
     `;
@@ -5978,7 +6740,7 @@ function renderTopInspectors() {
       <div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">
         <div style="font-size: 24px; margin-bottom: 8px;">⚠️</div>
         <div style="font-size: 12px;">Performans verisi yok</div>
-        <div style="font-size: 10px; margin-top: 4px;">Analiz sonuçlarını bekleyin</div>
+        <div style="font-size: 10px; margin-top: 4px;" data-i18n="awaiting_results">Awaiting analysis results</div>
       </div>
     `;
     return;
@@ -6012,8 +6774,8 @@ function renderTopInspectors() {
             ${performans}%
           </div>
           <div class="top-inspector-details">
-            📦 ${inspector.adet || 0} ürün • ${inspector.gunSayisi || 0} gün çalışma<br>
-            🎯 ${Object.keys(inspector.klasmanlar || {}).length} klasman • ${inspector.kayit || 0} kayıt
+            📦 ${inspector.adet || 0} ${(translations[currentLang]||translations.tr).units_short} • ${inspector.gunSayisi || 0} ${(translations[currentLang]||translations.tr).working}<br>
+            🎯 ${Object.keys(inspector.klasmanlar || {}).length} ${(translations[currentLang]||translations.tr).klasman_word} • ${inspector.kayit || 0} ${(translations[currentLang]||translations.tr).records_word}
           </div>
           <div class="top-inspector-badge ${performanceLevel.class}">
             ${performanceLevel.text}
@@ -6069,10 +6831,10 @@ function showSlide(index) {
   const performansClass = getPerformanceClass(performans);
   
   const performansLevel = (() => {
-    if (performans >= 95) return 'Mükemmel';
-    if (performans >= 85) return 'İyi';
-    if (performans >= 70) return 'Orta';
-    return 'Düşük'; // "Geliştirilmeli" yerine "Düşük" olarak değiştirildi
+    if (performans >= 95) return (translations[currentLang]||translations.tr).perf_excellent;
+    if (performans >= 85) return (translations[currentLang]||translations.tr).perf_good;
+    if (performans >= 70) return (translations[currentLang]||translations.tr).perf_average;
+    return (translations[currentLang]||translations.tr).perf_poor; // "Geliştirilmeli" yerine "Düşük" olarak değiştirildi
   })();
   
   const ini = inspector.ins.split(' ').map(w => w[0] || '').slice(0, 2).join('').toUpperCase();
@@ -6120,7 +6882,7 @@ function showSlide(index) {
           </div>
           <div class="inspector-slide-name">${inspector.ins}</div>
           <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom:16px;">
-            📅 ${inspector.gunSayisi || 0} gün çalışma
+            📅 ${inspector.gunSayisi || 0} ${(translations[currentLang]||translations.tr).working}
           </div>
           <!-- Klasman Breakdown -->
           <div style="text-align:left;width:100%">${klasmanRows}</div>
@@ -6130,19 +6892,19 @@ function showSlide(index) {
         <div class="inspector-slide-info">
           <div class="inspector-slide-stat">
             <div class="inspector-slide-stat-value">${inspector.adet || 0}</div>
-            <div class="inspector-slide-stat-label">Toplam Ürün</div>
+            <div class="inspector-slide-stat-label" data-i18n="total_product">Total Products</div>
           </div>
           <div class="inspector-slide-stat">
             <div class="inspector-slide-stat-value">${inspector.kayit || 0}</div>
-            <div class="inspector-slide-stat-label">Kayıt Sayısı</div>
+            <div class="inspector-slide-stat-label" data-i18n="record_count">Record Count</div>
           </div>
           <div class="inspector-slide-stat">
             <div class="inspector-slide-stat-value">${fmtSnKisa(inspector.standartSure||0)}</div>
-            <div class="inspector-slide-stat-label">Standart Süre</div>
+            <div class="inspector-slide-stat-label" data-i18n="std_duration">Standard Duration</div>
           </div>
           <div class="inspector-slide-stat">
             <div class="inspector-slide-stat-value">${Object.keys(inspector.klasmanlar || {}).length}</div>
-            <div class="inspector-slide-stat-label">Klasman Sayısı</div>
+            <div class="inspector-slide-stat-label" data-i18n="klasman_count">Classifications</div>
           </div>
         </div>
         
@@ -6194,20 +6956,20 @@ function showWelcomeScreen() {
   mainArea.innerHTML = `
     <div class="slideshow-welcome">
       <div class="welcome-icon">🎬</div>
-      <h2>Canlı Performans Gösterimi</h2>
-      <p>Inspector performanslarını canlı olarak takip edin</p>
+      <h2 data-i18n="live_page_title">Live Performance Display</h2>
+      <p data-i18n="live_h2_sub">Track inspector performance live</p>
       <div class="welcome-stats">
         <div class="welcome-stat">
           <div class="welcome-stat-value" id="welcome-total">0</div>
-          <div class="welcome-stat-label">Toplam Inspector</div>
+          <div class="welcome-stat-label" data-i18n="stat_total_inspector">Total Inspectors</div>
         </div>
         <div class="welcome-stat">
           <div class="welcome-stat-value" id="welcome-avg">0%</div>
-          <div class="welcome-stat-label">Ortalama Performans</div>
+          <div class="welcome-stat-label" data-i18n="avg_perf_plain">Average Performance</div>
         </div>
       </div>
       <button class="welcome-start-btn" onclick="toggleSlideshow()">
-        ▶️ Gösterimi Başlat
+        ${(translations[currentLang]||translations.tr).start_slideshow}
       </button>
     </div>
   `;
@@ -6942,10 +7704,10 @@ async function startVideoRecording() {
   slideshowActive = true;
   const canliCtrl = document.getElementById('canli-controls');
   if (canliCtrl) canliCtrl.style.display = 'none';
-  document.getElementById('slideshow-btn').innerHTML = '⏸ Durdur';
+  document.getElementById('slideshow-btn').innerHTML = (translations[currentLang]||translations.tr).stop_slideshow;
 
   _showRecordingIndicator();
-  showSuccessMessage('🔴 HD Video kaydediliyor (1920×1080)...', 4000);
+  showSuccessMessage((translations[currentLang]||translations.tr).hd_recording, 4000);
 
   await _renderAllSlidesHD(inspCount, perSlideSec);
 
@@ -7176,7 +7938,7 @@ async function pushKlasmanAnalizToSheets(liste) {
 
 async function pushAndRenderKlasmanAnaliz() {
   renderKlasmanAnaliz();          // Önce hesapla & render et (içinde push var)
-  showSuccessMessage('✅ Klasman analizi güncellendi ve Sheets\'e gönderildi!');
+  showSuccessMessage((translations[currentLang]||translations.tr).sheets_analiz_sent);
 }
 
 async function pullKlasmanAnalizFromSheets() {
@@ -7188,7 +7950,7 @@ async function pullKlasmanAnalizFromSheets() {
   }
   const btn = document.getElementById('kla-pull-btn');
   const orig = btn ? btn.innerHTML : '';
-  if (btn) { btn.innerHTML = '⏳ Çekiliyor...'; btn.disabled = true; }
+  if (btn) { btn.innerHTML = (translations[currentLang]||translations.tr).pulling; btn.disabled = true; }
   try {
     const data = await jsonpFetch(url, { action: 'getKlasmanAnaliz', token });
     if (data.status === 'ok' && Array.isArray(data.klasmanAnaliz) && data.klasmanAnaliz.length > 0) {
@@ -7257,7 +8019,7 @@ async function pullKlasmanAnalizFromSheets() {
         <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border-radius:12px;padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
           <div style="font-size:28px;">🎯</div>
           <div style="flex:1;">
-            <div style="font-size:15px;font-weight:700;color:#fff;">Klasman Analizi — Sheets'ten Çekildi</div>
+            <div style="font-size:15px;font-weight:700;color:#fff;" data-i18n="klasman_analiz_overlay_title">Classification Analysis — Fetched from Sheets</div>
             <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px;">${liste.length} klasman · ${liste.reduce((s,k)=>s+(k.toplamAdet||0),0).toLocaleString('tr-TR')} toplam adet</div>
           </div>
           ${[['✅','Hedefte',hedefte,'#4CAF50'],['⚠️','Yakın',yakin,'#FFB74D'],['🔴','Yüksek',yuksek,'#EF9A9A'],['➖','Veri Yok',veriYok,'rgba(255,255,255,.5)']].map(([ic,lb,cnt,col])=>`
@@ -7269,7 +8031,7 @@ async function pullKlasmanAnalizFromSheets() {
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">${kartlar}</div>
       `;
-      showSuccessMessage(`✅ ${liste.length} klasman analizi Sheets'ten yüklendi!`);
+      showSuccessMessage(`✅ ${liste.length} ` + (translations[currentLang]||translations.tr).sheets_analiz_loaded);
     } else {
       alert('ℹ️ Sheets\'te henüz klasman analiz verisi yok.\n\nÖnce "📤 Sheets\'e Gönder & Yenile" butonuna basın.');
     }
@@ -7294,11 +8056,11 @@ async function pullKlasmanAnalizFromSheets() {
       </button>
       <div>
         <div id="analiz-overlay-title" style="font-size:16px;font-weight:700;letter-spacing:-.2px;"></div>
-        <div style="font-size:11px;opacity:.65;margin-top:2px;">Klasman bazında detaylı performans analizi</div>
+        <div style="font-size:11px;opacity:.65;margin-top:2px;" data-i18n="klasman_analiz_overlay_sub">Detailed performance analysis by classification</div>
       </div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;">
-      <button onclick="window.print()" style="padding:7px 14px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;">🖨️ Yazdır</button>
+      <button onclick="window.print()" style="padding:7px 14px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;" data-i18n="print_btn">🖨️ Print</button>
       <button onclick="exportInspectorDetailFromOverlay()" style="padding:7px 14px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;">📊 Excel</button>
     </div>
   </div>
@@ -7317,11 +8079,11 @@ async function pullKlasmanAnalizFromSheets() {
           <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">✨</div>
           <div>
             <div style="font-size:14px;font-weight:700;letter-spacing:-.2px;">Gemini AI Performans Analizi</div>
-            <div style="font-size:11px;opacity:.65;margin-top:1px;">Yapay zeka destekli detaylı analiz · Tıkla açmak için</div>
+            <div style="font-size:11px;opacity:.65;margin-top:1px;" data-i18n="ai_panel_hint">AI-powered detailed analysis · Click to open</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:10px;z-index:1;">
-          <span id="ao-gemini-badge" style="font-size:10px;font-weight:600;letter-spacing:.6px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);text-transform:uppercase;">Kapalı</span>
+          <span id="ao-gemini-badge" style="font-size:10px;font-weight:600;letter-spacing:.6px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);text-transform:uppercase;" data-i18n="closed_label">Closed</span>
           <span id="ao-gemini-chevron" style="font-size:18px;transition:transform .3s;">›</span>
         </div>
         <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none;"></div>
@@ -7335,24 +8097,24 @@ async function pullKlasmanAnalizFromSheets() {
           <div style="display:flex;align-items:flex-start;gap:14px;">
             <div style="width:38px;height:38px;border-radius:10px;flex-shrink:0;background:#1565C0;display:flex;align-items:center;justify-content:center;font-size:16px;">🔑</div>
             <div style="flex:1;">
-              <div style="font-size:13px;font-weight:700;color:#0B1F3A;margin-bottom:4px;">Gemini API Anahtarı</div>
+              <div style="font-size:13px;font-weight:700;color:#0B1F3A;margin-bottom:4px;" data-i18n="gemini_api_key">Gemini API Key</div>
               <div style="font-size:11px;color:#5A7FA8;margin-bottom:10px;line-height:1.6;">API anahtarınızı aşağıya girin. Anahtar bu tarayıcıda güvenli şekilde saklanır.
-                <span style="color:#E65100;font-weight:600;">⚠️ Anahtarınızı başkalarıyla paylaşmayın.</span></div>
+                <span style="color:#E65100;font-weight:600;" data-i18n="api_key_warning">⚠️ Do not share your key with others.</span></div>
               <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:8px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:#795548;display:flex;align-items:flex-start;gap:8px;">
                 <span style="font-size:14px;flex-shrink:0;">🛡️</span>
-                <span><strong>Güvenlik Uyarısı:</strong> API anahtarınız yalnızca bu sayfada kullanılır ve tarayıcı localStorage'ında saklanır.</span>
+                <span><strong data-i18n="security_warning">Security Warning:</strong> API anahtarınız yalnızca bu sayfada kullanılır ve tarayıcı localStorage'ında saklanır.</span>
               </div>
               <!-- Model Seçici -->
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:#EEF7FF;border:1px solid #BBDEFB;border-radius:8px;">
                 <span style="font-size:11px;font-weight:600;color:#1565C0;white-space:nowrap;">🤖 Model:</span>
                <select id="ao-gmodel" style="flex:1;padding:5px 10px;border:1px solid #CFE3F7;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;color:#0B1F3A;background:#fff;">
-  <option value="gemini-2.5-flash">gemini-2.5-flash (Önerilen)</option>
-  <option value="gemini-2.5-pro">gemini-2.5-pro (En Güçlü)</option>
-  <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite (Ücretsiz / Hızlı)</option>
+  <option value="gemini-2.5-flash" data-i18n="gemini_flash">gemini-2.5-flash (Recommended)</option>
+  <option value="gemini-2.5-pro" data-i18n="gemini_pro">gemini-2.5-pro (Most Powerful)</option>
+  <option value="gemini-2.0-flash-lite" data-i18n="gemini_lite">gemini-2.0-flash-lite (Free / Fast)</option>
   <option value="gemini-1.5-flash">gemini-1.5-flash (Eski / Stabil)</option>
-  <option value="gemini-1.5-flash-8b">gemini-1.5-flash-8b (En Hızlı)</option>
+  <option value="gemini-1.5-flash-8b" data-i18n="gemini_8b">gemini-1.5-flash-8b (Fastest)</option>
 </select>
-                <span style="font-size:10px;color:#5A7FA8;white-space:nowrap;">Hata alırsan farklı model dene</span>
+                <span style="font-size:10px;color:#5A7FA8;white-space:nowrap;" data-i18n="try_other_model">If you get an error, try a different model</span>
               </div>
               <div style="display:flex;gap:8px;align-items:center;">
                 <div style="position:relative;flex:1;">
@@ -7369,25 +8131,25 @@ async function pullKlasmanAnalizFromSheets() {
 
         <!-- Hızlı Analizler -->
         <div style="padding:16px 20px;border-bottom:1px solid #DDEEFF;background:#F9FBFF;">
-          <div style="font-size:11px;font-weight:700;color:#5A7FA8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">⚡ Hızlı Analizler</div>
+          <div style="font-size:11px;font-weight:700;color:#5A7FA8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;" data-i18n="quick_analyses">⚡ Quick Analyses</div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <button onclick="aoCallGeminiQuick('genel')"   style="padding:8px 14px;background:#EEF7FF;color:#1565C0;border:1px solid #BBDEFB;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;">📊 Genel Performans Değerlendirmesi</button>
-            <button onclick="aoCallGeminiQuick('guclu')"   style="padding:8px 14px;background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;">💪 Güçlü/Zayıf Yönler</button>
+            <button onclick="aoCallGeminiQuick('genel')"   style="padding:8px 14px;background:#EEF7FF;color:#1565C0;border:1px solid #BBDEFB;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;" data-i18n="ai_general">📊 General Performance Evaluation</button>
+            <button onclick="aoCallGeminiQuick('guclu')"   style="padding:8px 14px;background:#E8F5E9;color:#2E7D32;border:1px solid #C8E6C9;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;" data-i18n="ai_strengths">💪 Strengths/Weaknesses</button>
             <button onclick="aoCallGeminiQuick('trend')"   style="padding:8px 14px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;">📈 Zaman &amp; Trend Analizi</button>
-            <button onclick="aoCallGeminiQuick('klasman')" style="padding:8px 14px;background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;">👔 Klasman Bazında Karşılaştırma</button>
-            <button onclick="aoCallGeminiQuick('oneri')"   style="padding:8px 14px;background:#E0F7FA;color:#00695C;border:1px solid #80DEEA;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;">💡 İyileştirme Önerileri</button>
-            <button onclick="aoCallGeminiQuick('mesai')"   style="padding:8px 14px;background:#FCE4EC;color:#AD1457;border:1px solid #F48FB1;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;">🌙 Mesai &amp; Yoğunluk Analizi</button>
+            <button onclick="aoCallGeminiQuick('klasman')" style="padding:8px 14px;background:#F3E5F5;color:#6A1B9A;border:1px solid #CE93D8;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;" data-i18n="ai_klasman_compare">👔 Comparison by Classification</button>
+            <button onclick="aoCallGeminiQuick('oneri')"   style="padding:8px 14px;background:#E0F7FA;color:#00695C;border:1px solid #80DEEA;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;" data-i18n="ai_improve">💡 Improvement Suggestions</button>
+            <button onclick="aoCallGeminiQuick('mesai')"   style="padding:8px 14px;background:#FCE4EC;color:#AD1457;border:1px solid #F48FB1;border-radius:8px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;" data-i18n="ai_overtime">🌙 Overtime &amp; Intensity Analysis</button>
           </div>
         </div>
 
         <!-- Özel Soru -->
         <div style="padding:16px 20px;border-bottom:1px solid #DDEEFF;background:#fff;">
-          <div style="font-size:11px;font-weight:700;color:#5A7FA8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">💬 Özel Soru Sor</div>
+          <div style="font-size:11px;font-weight:700;color:#5A7FA8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;" data-i18n="ai_custom_q">💬 Ask a Custom Question</div>
           <div style="display:flex;gap:8px;">
             <textarea id="ao-gcustom" placeholder="Bu çalışanın performansını nasıl değerlendirirsin?..." style="flex:1;min-height:70px;padding:10px 14px;border:1px solid #CFE3F7;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:#0B1F3A;background:#FAFCFF;resize:vertical;outline:none;line-height:1.6;" onkeydown="if(event.ctrlKey&&event.key==='Enter'){aoCallGeminiCustom();}"></textarea>
-            <button onclick="aoCallGeminiCustom()" style="padding:10px 18px;background:linear-gradient(135deg,#1565C0,#0d47a1);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;align-self:flex-end;white-space:nowrap;">Gönder ↵</button>
+            <button onclick="aoCallGeminiCustom()" style="padding:10px 18px;background:linear-gradient(135deg,#1565C0,#0d47a1);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;align-self:flex-end;white-space:nowrap;" data-i18n="send_btn">Send ↵</button>
           </div>
-          <div style="font-size:10px;color:#8AAAC8;margin-top:5px;">Ctrl+Enter ile de gönderebilirsiniz</div>
+          <div style="font-size:10px;color:#8AAAC8;margin-top:5px;" data-i18n="send_hint">You can also send with Ctrl+Enter</div>
         </div>
 
         <!-- Sonuç -->
@@ -7395,13 +8157,13 @@ async function pullKlasmanAnalizFromSheets() {
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
             <div style="display:flex;align-items:center;gap:8px;">
               <div style="width:6px;height:6px;border-radius:50%;background:#1565C0;"></div>
-              <div id="ao-gresult-title" style="font-size:12px;font-weight:700;color:#0B1F3A;">Analiz Sonucu</div>
+              <div id="ao-gresult-title" data-i18n="analysis_result" style="font-size:12px;font-weight:700;color:#0B1F3A;">Analiz Sonucu</div>
             </div>
-            <button id="ao-gclear" onclick="aoClearResult()" style="padding:4px 12px;background:#fff;color:#5A7FA8;border:1px solid #CFE3F7;border-radius:6px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;">✕ Temizle</button>
+            <button id="ao-gclear" onclick="aoClearResult()" style="padding:4px 12px;background:#fff;color:#5A7FA8;border:1px solid #CFE3F7;border-radius:6px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;" data-i18n="clear_btn">✕ Temizle</button>
           </div>
           <div id="ao-gloading" style="display:none;text-align:center;padding:30px 0;">
             <div style="width:40px;height:40px;border-radius:50%;margin:0 auto 12px;border:3px solid #BBDEFB;border-top-color:#1565C0;animation:ao-gspin 0.8s linear infinite;"></div>
-            <div style="font-size:13px;color:#5A7FA8;">Gemini analiz ediyor...</div>
+            <div data-i18n="gemini_analyzing" style="font-size:13px;color:#5A7FA8;">Gemini analiz ediyor...</div>
           </div>
           <div id="ao-goutput" style="display:none;background:linear-gradient(135deg,#F4F8FF,#fff);border:1px solid #DDEEFF;border-radius:10px;padding:20px;font-size:13px;color:#0B1F3A;line-height:1.8;white-space:pre-wrap;font-family:'DM Sans',sans-serif;min-height:60px;"></div>
         </div>
@@ -7419,22 +8181,22 @@ async function pullKlasmanAnalizFromSheets() {
 
     <!-- Filtre Çubuğu -->
     <div style="background:#fff;border:1px solid #DDEEFF;border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;" class="no-print">
-      <span style="font-size:11px;font-weight:700;color:#5A7FA8;text-transform:uppercase;letter-spacing:.6px;">🔍 Filtrele</span>
-      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;">Klasman:
-        <select id="ao-f-klasman" onchange="aoApplyFilters()" style="padding:6px 10px;border:1px solid #CFE3F7;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;min-width:130px;"><option value="">Tümü</option></select>
+      <span style="font-size:11px;font-weight:700;color:#5A7FA8;text-transform:uppercase;letter-spacing:.6px;">🔍 <span data-i18n="filter_search">Search Inspector</span></span>
+      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;"><span data-i18n="filter_klasman">Klasman Filtresi:</span>
+        <select id="ao-f-klasman" onchange="aoApplyFilters()" style="padding:6px 10px;border:1px solid #CFE3F7;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;min-width:130px;"><option value="" data-i18n="all_btn">All</option></select>
       </label>
-      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;">Tarih:
+      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;"><span data-i18n="start_date_th">Start</span>:
         <select id="ao-f-tarih" onchange="aoApplyFilters()" style="padding:6px 10px;border:1px solid #CFE3F7;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;">
-          <option value="">Tümü</option><option value="withdate">Tarihi Olanlar</option><option value="nodate">Tarihi Olmayanlar</option>
+          <option value="" data-i18n="all_btn">All</option><option value="withdate" data-i18n="date_filter_with">Tarihi Olanlar</option><option value="nodate" data-i18n="date_filter_without">Tarihi Olmayanlar</option>
         </select>
       </label>
-      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;">Min. Adet:
+      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;"><span data-i18n="total_qty">Total Quantity</span>:
         <input id="ao-f-minadet" type="number" min="0" value="0" oninput="aoApplyFilters()" style="width:65px;padding:6px 10px;border:1px solid #CFE3F7;border-radius:7px;font-size:12px;">
       </label>
-      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;">Sırala:
+      <label style="font-size:11px;color:#5A7FA8;display:flex;align-items:center;gap:6px;"><span data-i18n="sort_label">Sort:</span>
         <select id="ao-f-sort" onchange="aoApplyFilters()" style="padding:6px 10px;border:1px solid #CFE3F7;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;">
-          <option value="">Varsayılan</option><option value="adet-desc">Adet ↓</option><option value="adet-asc">Adet ↑</option>
-          <option value="ort-desc">Ort. Kontrol ↓</option><option value="tarih-asc">Tarihe Göre ↑</option>
+          <option value="" data-i18n="default_opt">Default</option><option value="adet-desc" data-i18n="sort_qty_desc">Quantity (Most→Least)</option><option value="adet-asc" data-i18n="sort_qty_asc">Quantity (Least→Most)</option>
+          <option value="ort-desc" data-i18n="sort_diff_worst">Diff ↓ (Worst)</option><option value="tarih-asc" data-i18n="sort_by_date">By Date ↑</option>
         </select>
       </label>
       <button onclick="aoResetFilters()" style="padding:6px 14px;border:1px solid #CFE3F7;border-radius:7px;font-size:11px;background:#fff;cursor:pointer;color:#5A7FA8;">↺ Sıfırla</button>
@@ -7451,11 +8213,11 @@ async function pullKlasmanAnalizFromSheets() {
               <th style="padding:10px 12px;text-align:left;font-size:11px;">Klasman</th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;">Adet</th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;">Kontrol Süresi<br><span style="opacity:.6;font-weight:400">(sn/adet)</span></th>
-              <th style="padding:10px 12px;text-align:right;font-size:11px;">Standart Süre</th>
-              <th style="padding:10px 12px;text-align:right;font-size:11px;">Gerçekleşen Süre</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;" data-i18n="std_duration_th">Standard Duration</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;" data-i18n="actual_duration_th">Actual Duration</th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;">Ort. Kontrol<br><span style="opacity:.6;font-weight:400">(sn/adet)</span></th>
-              <th style="padding:10px 12px;text-align:center;font-size:11px;">Başlangıç</th>
-              <th style="padding:10px 12px;text-align:center;font-size:11px;">Bitiş</th>
+              <th style="padding:10px 12px;text-align:center;font-size:11px;" data-i18n="start_date_th">Start</th>
+              <th style="padding:10px 12px;text-align:center;font-size:11px;" data-i18n="end_date_th">End</th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;">Oran<br><span style="opacity:.6;font-weight:400">(Std./Ger.)</span></th>
             </tr>
           </thead>
@@ -7502,14 +8264,14 @@ function openAnalizOverlay(inspData, inspObj, hedef) {
   _aoHedef     = hedef || 100;
 
   // Başlık
-  document.getElementById('analiz-overlay-title').textContent = '📊 ' + inspObj.ins + ' — Detaylı Performans';
+  document.getElementById('analiz-overlay-title').textContent = '📊 ' + inspObj.ins + ' — ' + (translations[currentLang]||translations.tr).detailed_perf;
 
   // Stats
   _aoRenderStats();
 
   // Klasman filtre doldur
   var klSel = document.getElementById('ao-f-klasman');
-  klSel.innerHTML = '<option value="">Tümü</option>';
+  klSel.innerHTML = '<option value="">' + (translations[currentLang]||translations.tr).all_btn + '</option>';
   var klList = [...new Set(_aoData.map(function(k){ return k.klasman; }))];
   klList.forEach(function(k) {
     var o = document.createElement('option'); o.value = k; o.textContent = k; klSel.appendChild(o);
@@ -7532,7 +8294,7 @@ function openAnalizOverlay(inspData, inspObj, hedef) {
   document.getElementById('ao-gerror').style.display   = 'none';
   document.getElementById('ao-goutput').textContent    = '';
   document.getElementById('ao-gemini-panel').style.display = 'none';
-  document.getElementById('ao-gemini-badge').textContent   = 'Kapalı';
+  document.getElementById('ao-gemini-badge').textContent = (translations[currentLang]||translations.tr).closed_label;
   document.getElementById('ao-gemini-chevron').style.transform = '';
 
   // Tabloyu render et
@@ -7564,11 +8326,11 @@ function _aoRenderStats() {
   function perfColor(p){ return p >= 95 ? '#00897B' : p >= 85 ? '#1565C0' : p >= 70 ? '#F57F17' : '#C62828'; }
 
   var cards = [
-    ['📦','TOPLAM ADET',   String(totalAdet), 'var(--navy)'],
-    ['⏱','STANDART SÜRE',  _aoFmtSn(totalStd), 'var(--navy)'],
+    ['📦',(translations[currentLang]||translations.tr).stat_total_product,   String(totalAdet), 'var(--navy)'],
+    ['⏱',(translations[currentLang]||translations.tr).std_duration_label,  _aoFmtSn(totalStd), 'var(--navy)'],
     ['🕐','GERÇEKLEŞEN',   totalFiili > 0 ? _aoFmtSn(totalFiili) : '—', totalFiili > 0 ? '#00897B' : '#5A7FA8'],
     ['📅','MESAİ SÜRESİ',  _aoFmtSn(_aoInspector.mesaiSure||0) + (overtimeDk > 0 ? ' (+'+overtimeDk+'dk 🌙)' : ''), overtimeDk > 0 ? '#E65100' : 'var(--navy)'],
-    ['📊','DÜZ. PERFORMANS', duzPerf + '%', perfColor(duzPerf)]
+    ['📊',(translations[currentLang]||translations.tr).adj_perf_label_upper, duzPerf + '%', perfColor(duzPerf)]
   ];
   document.getElementById('ao-stats-grid').innerHTML = cards.map(function(c){
     return '<div style="background:#fff;border:1px solid #DDEEFF;border-radius:10px;padding:14px 8px;text-align:center;">'
@@ -7615,7 +8377,7 @@ function aoApplyFilters() {
 
   var fAdet = list.reduce(function(s,k){ return s+k.adet; }, 0);
   var fStd  = list.reduce(function(s,k){ return s+k.standartSure; }, 0);
-  document.getElementById('ao-f-summary').textContent = list.length + ' kayıt · ' + fAdet + ' adet · ' + _aoFmtSn(fStd);
+  document.getElementById('ao-f-summary').textContent = list.length + ' ' + (translations[currentLang]||translations.tr).records_summary + fAdet + ' ' + (translations[currentLang]||translations.tr).units_summary + _aoFmtSn(fStd);
 
   // Gruplama
   var gruplar = {};
@@ -7631,7 +8393,7 @@ function aoApplyFilters() {
 
     html += '<tr style="background:#0B1F3A;color:#fff;"><td colspan="10" style="padding:8px 14px;font-size:12px;font-weight:700;">'
       + '📦 ' + kAd + ' <span style="font-weight:400;opacity:.7;font-size:11px;">'
-      + kayitlar.length + ' kayıt · ' + gAdet + ' adet · ' + _aoFmtSn(gStd)
+      + kayitlar.length + ' ' + (translations[currentLang]||translations.tr).records_word + ' · ' + gAdet + ' ' + (translations[currentLang]||translations.tr).units_short + ' · ' + _aoFmtSn(gStd)
       + (gFiili > 0 ? ' · ' + _aoFmtSn(gFiili) + ' gerçekleşen' : '')
       + (gOrt ? ' · <strong style="color:#FFD700">ort. ' + gOrt + 'sn/adet</strong>' : '')
       + '</span></td></tr>';
@@ -7657,13 +8419,14 @@ function aoApplyFilters() {
         + '<td style="font-size:11px;color:#5A7FA8;text-align:center;">' + (k.tarihGecerli && k.baslangic ? _aoFmtTarih(k.baslangic) : '—') + '</td>'
         + '<td style="font-size:11px;color:#5A7FA8;text-align:center;">' + (k.tarihGecerli && k.bitis ? _aoFmtTarih(k.bitis) : '—') + '</td>'
         + '<td style="font-family:monospace;font-weight:700;text-align:center;">'
-          + (oran !== null ? '<span style="color:' + _aoPerfClass(oran) + ';">' + oran + '%</span><div style="font-size:9px;font-weight:400;color:' + _aoPerfClass(oran) + ';">' + (oran >= 100 ? '✓ hedef içi' : '↓ hedef altı') + '</div>' : '<span style="color:#5A7FA8;">—</span>')
+          + (oran !== null ? '<span style="color:' + _aoPerfClass(oran) + ';">' + oran + '%</span><div style="font-size:9px;font-weight:400;color:' + _aoPerfClass(oran) + ';">' + (oran >= 100 ? '✓ ' + (translations[currentLang]||translations.tr).on_target : '↓ ' + (translations[currentLang]||translations.tr).below_target) + '</div>' : '<span style="color:#5A7FA8;">—</span>')
           + '</td>'
         + '</tr>';
     });
   });
 
-  document.getElementById('ao-tablo-body').innerHTML = html || '<tr><td colspan="10" style="padding:24px;text-align:center;color:#5A7FA8;">Filtreye uyan kayıt bulunamadı.</td></tr>';
+  var _noRec = (translations[currentLang]||translations.tr).no_records_found;
+  document.getElementById('ao-tablo-body').innerHTML = html || '<tr><td colspan="10" style="padding:24px;text-align:center;color:#5A7FA8;">' + _noRec + '</td></tr>';
 }
 
 function aoResetFilters() {
@@ -7680,7 +8443,7 @@ function aoGeminiToggle() {
   var isOpen  = panel.style.display !== 'none';
   panel.style.display = isOpen ? 'none' : 'block';
   document.getElementById('ao-gemini-chevron').style.transform = isOpen ? '' : 'rotate(90deg)';
-  document.getElementById('ao-gemini-badge').textContent       = isOpen ? 'Kapalı' : 'Açık';
+  document.getElementById('ao-gemini-badge').textContent       = isOpen ? (translations[currentLang]||translations.tr).closed_label : (translations[currentLang]||translations.tr).open_label;
   document.getElementById('ao-gemini-bar').style.borderRadius  = isOpen ? '12px' : '12px 12px 0 0';
 }
 
@@ -7691,24 +8454,24 @@ function aoGkeyToggleEye() {
 }
 function aoGkeySave() {
   var val = document.getElementById('ao-gkey').value.trim();
-  if (!val) { aoSetKeyStatus('⚠️ Boş bırakmayın.', '#E65100'); return; }
-  if (val.length < 10) { aoSetKeyStatus('⚠️ Geçersiz format. API anahtarı çok kısa.', '#E65100'); return; }
+  if (!val) { aoSetKeyStatus((translations[currentLang]||translations.tr).gkey_empty, '#E65100'); return; }
+  if (val.length < 10) { aoSetKeyStatus((translations[currentLang]||translations.tr).gkey_invalid, '#E65100'); return; }
   try {
     localStorage.setItem(AO_LS_KEY, val);
-    aoSetKeyStatus('✅ Kaydedildi! Sheets\'e gönderiliyor...', '#00897B');
+    aoSetKeyStatus((translations[currentLang]||translations.tr).gkey_saving, '#00897B');
     // Sheets'e de push et — diğer bilgisayarlar pull'da otomatik alacak
     pushConfigToSheets().then(function() {
-      aoSetKeyStatus('✅ Anahtar kaydedildi ve Sheets\'e gönderildi!', '#00897B');
+      aoSetKeyStatus((translations[currentLang]||translations.tr).gkey_saved_sheets, '#00897B');
     }).catch(function() {
-      aoSetKeyStatus('✅ Yerel kaydedildi (Sheets bağlantısı yok).', '#F57F17');
+      aoSetKeyStatus((translations[currentLang]||translations.tr).gkey_saved_local, '#F57F17');
     });
   }
-  catch(e) { aoSetKeyStatus('❌ Kayıt başarısız: ' + e.message, '#C62828'); }
+  catch(e) { aoSetKeyStatus((translations[currentLang]||translations.tr).gkey_save_fail + e.message, '#C62828'); }
 }
 function aoGkeyDelete() {
   try { localStorage.removeItem(AO_LS_KEY); } catch(e) {}
   document.getElementById('ao-gkey').value = '';
-  aoSetKeyStatus('🗑 Anahtar silindi. Sheets\'ten temizleniyor...', '#5A7FA8');
+  aoSetKeyStatus((translations[currentLang]||translations.tr).gkey_deleted, '#5A7FA8');
   pushConfigToSheets().catch(function(){});
 }
 function aoSetKeyStatus(msg, color) {
@@ -7718,27 +8481,47 @@ function aoSetKeyStatus(msg, color) {
 }
 
 // ── Gemini Hızlı Butonlar ──
-var _AO_Q_PROMPTS = {
-  genel:   'Bu çalışanın genel performansını değerlendir. Güçlü yönleri, zayıf yönleri ve dikkat çeken noktaları belirt.',
-  guclu:   'Bu çalışanın güçlü ve zayıf yönlerini analiz et. Hangi klasmanlarda iyi, hangilerinde daha düşük performans gösteriyor?',
-  trend:   'Zaman bazlı bir analiz yap. Kayıt tarihlerine göre performans eğilimi var mı? Mesai kullanımı nasıl?',
-  klasman: 'Klasman bazında karşılaştırmalı analiz yap. Hangi klasmanlarda standart süreye uyuluyor, hangilerinde hedefin üstüne çıkılıyor?',
-  oneri:   'Bu çalışan için somut iyileştirme önerileri sun. Hangi alanlara odaklanması gerekiyor?',
-  mesai:   'Mesai süresi ve mesai üstü durumunu analiz et. Yoğunluk ne zaman en yüksek? Mesai yönetimi nasıl?'
-};
-var _AO_Q_TITLES = {
-  genel:'📊 Genel Performans', guclu:'💪 Güçlü/Zayıf Yönler', trend:'📈 Trend Analizi',
-  klasman:'👔 Klasman Karşılaştırma', oneri:'💡 İyileştirme Önerileri', mesai:'🌙 Mesai Analizi'
-};
+function _getAoQPrompts() {
+  var t = translations[currentLang]||translations.tr;
+  return {
+    genel:   t.currentLang === 'en'
+      ? 'Evaluate this employee\'s overall performance. Identify strengths, weaknesses, and notable points.'
+      : 'Bu çalışanın genel performansını değerlendir. Güçlü yönleri, zayıf yönleri ve dikkat çeken noktaları belirt.',
+    guclu:   currentLang === 'en'
+      ? 'Analyze this employee\'s strengths and weaknesses. In which classifications do they perform well, and where do they fall short?'
+      : 'Bu çalışanın güçlü ve zayıf yönlerini analiz et. Hangi klasmanlarda iyi, hangilerinde daha düşük performans gösteriyor?',
+    trend:   currentLang === 'en'
+      ? 'Perform a time-based analysis. Is there a performance trend based on record dates? How is overtime usage?'
+      : 'Zaman bazlı bir analiz yap. Kayıt tarihlerine göre performans eğilimi var mı? Mesai kullanımı nasıl?',
+    klasman: currentLang === 'en'
+      ? 'Perform a comparative analysis by classification. Which classifications meet standard duration, and which exceed the target?'
+      : 'Klasman bazında karşılaştırmalı analiz yap. Hangi klasmanlarda standart süreye uyuluyor, hangilerinde hedefin üstüne çıkılıyor?',
+    oneri:   currentLang === 'en'
+      ? 'Provide concrete improvement suggestions for this employee. Which areas should they focus on?'
+      : 'Bu çalışan için somut iyileştirme önerileri sun. Hangi alanlara odaklanması gerekiyor?',
+    mesai:   t.ai_overtime_prompt
+  };
+}
+function _getAoQTitles() {
+  var t = translations[currentLang]||translations.tr;
+  return {
+    genel:   t.ai_general,
+    guclu:   t.ai_strengths,
+    trend:   currentLang === 'en' ? '📈 Trend Analysis' : '📈 Trend Analizi',
+    klasman: t.ai_klasman_compare,
+    oneri:   t.ai_improve,
+    mesai:   t.ai_overtime
+  };
+}
 
 function aoCallGeminiQuick(tip) {
-  aoCallGemini(_AO_Q_PROMPTS[tip], _AO_Q_TITLES[tip]);
+  aoCallGemini(_getAoQPrompts()[tip], _getAoQTitles()[tip]);
 }
 function aoCallGeminiCustom() {
   var q = document.getElementById('ao-gcustom').value.trim();
-  if (!q) { alert('Lütfen bir soru girin.'); return; }
+  if (!q) { alert((translations[currentLang]||translations.tr).gkey_ask_question); return; }
   document.getElementById('ao-gcustom').value = '';
-  aoCallGemini(q, '💬 Özel Analiz');
+  aoCallGemini(q, (translations[currentLang]||translations.tr).custom_analysis);
 }
 function aoClearResult() {
   document.getElementById('ao-gresult').style.display = 'none';
@@ -7766,7 +8549,7 @@ function _aoDataSummary() {
     var v = gruplar[k];
     var oran = v.kayitFiiliSure > 0 ? Math.round((v.standartSure/v.kayitFiiliSure)*100) : null;
     var ortSn = v.ortSums.length > 0 ? Math.round(v.ortSums.reduce(function(a,b){return a+b;},0)/v.ortSums.length) : null;
-    kLines += '  - '+k+': '+v.adet+' adet, '+v.count+' kayıt, standart '+_aoFmtSn(v.standartSure)
+    kLines += '  - '+k+': '+v.adet+' '+(translations[currentLang]||translations.tr).units_short+', '+v.count+' '+(translations[currentLang]||translations.tr).records_word+', std: '+_aoFmtSn(v.standartSure)
       +', gerçekleşen '+_aoFmtSn(v.kayitFiiliSure)
       +(oran ? ' oran:'+oran+'%' : '')+(ortSn ? ' ort.kontrol:'+ortSn+'sn/adet' : '')+'\n';
   });
@@ -7787,7 +8570,7 @@ function aoCallGemini(userPrompt, title) {
   var key = '';
   try { key = localStorage.getItem(AO_LS_KEY) || ''; } catch(e) {}
   if (!key) key = (document.getElementById('ao-gkey').value || '').trim();
-  if (!key) { aoShowErr('Lütfen önce Gemini API anahtarınızı girin ve kaydedin.'); return; }
+  if (!key) { aoShowErr((translations[currentLang]||translations.tr).gkey_no_key); return; }
 
   var fullPrompt = 'Sen bir üretim performans analisti asistanısın. Aşağıdaki inspection/kalite kontrol çalışanına ait performans verileri sana verilmiştir. Bu verileri analiz et ve kullanıcının sorusuna yanıt ver.\n\n'
     + 'PERFORMANS VERİLERİ:\n' + _aoDataSummary() + '\n\n'
@@ -7800,7 +8583,7 @@ function aoCallGemini(userPrompt, title) {
 
   // Loading göster
   document.getElementById('ao-gresult').style.display = 'block';
-  document.getElementById('ao-gresult-title').textContent = title || 'Analiz ediliyor...';
+  document.getElementById('ao-gresult-title').textContent = title || (translations[currentLang]||translations.tr).analyzing;
   document.getElementById('ao-gloading').style.display = 'block';
   document.getElementById('ao-goutput').style.display = 'none';
   document.getElementById('ao-goutput').textContent = '';
@@ -7828,7 +8611,7 @@ function aoCallGemini(userPrompt, title) {
   })
   .then(function(data) {
     var text = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;
-    if (!text) throw new Error('Gemini boş yanıt döndürdü.');
+    if (!text) throw new Error((translations[currentLang]||translations.tr).gkey_empty_response);
     document.getElementById('ao-gloading').style.display = 'none';
     document.getElementById('ao-goutput').style.display = 'block';
     document.getElementById('ao-goutput').textContent = text;
@@ -7836,7 +8619,7 @@ function aoCallGemini(userPrompt, title) {
   .catch(function(e) {
     document.getElementById('ao-gloading').style.display = 'none';
     document.getElementById('ao-gresult').style.display = 'none';
-    aoShowErr('API Hatası: ' + e.message + (e.message.indexOf('API_KEY') > -1 ? ' — API anahtarınızı kontrol edin.' : ''));
+    aoShowErr((translations[currentLang]||translations.tr).gkey_api_error + e.message + (e.message.indexOf('API_KEY') > -1 ? (translations[currentLang]||translations.tr).gkey_check_key : ''));
   });
 }
 
@@ -7849,7 +8632,7 @@ function aoShowErr(msg) {
 function exportInspectorDetailFromOverlay() {
   if (typeof exportInspectorDetail === 'function') exportInspectorDetail();
 }
-</script>
 
+</script>
 </body>
 </html>
