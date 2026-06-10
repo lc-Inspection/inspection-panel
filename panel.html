@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Inspection">
 <meta name="msapplication-TileColor" content="#0B1F3A">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" id="pwa-manifest-link">
 <!-- inline SVG icon as data URI for apple-touch-icon -->
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='38' fill='%230B1F3A'/%3E%3Crect x='20' y='20' width='152' height='152' rx='24' fill='%231565C0'/%3E%3Ctext x='96' y='118' text-anchor='middle' font-family='Arial,sans-serif' font-size='72' font-weight='700' fill='white'%3ELC%3C/text%3E%3C/svg%3E">
 <!-- ─── END PWA META ─── -->
@@ -1255,6 +1255,72 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
         </div>
       </div>
 
+      <!-- Google Sheets Banner -->
+      <div class="sheets-banner">
+        <div class="sheets-banner-icon">📊</div>
+        <div class="sheets-banner-text">
+          <strong data-i18n="sheets_conn_title">Google Sheets Connection</strong>
+          <small data-i18n="sheets_conn_sub">Sync classification data with Google Sheets — access from different computers</small>
+        </div>
+        <div class="sheets-banner-actions">
+          <span class="sheets-btn sheets-btn-push" onclick="pushToSheets()" data-i18n="send">📤 Send</span>
+          <span class="sheets-btn sheets-btn-pull" onclick="pullFromSheets()" data-i18n="pull">📥 Pull</span>
+        </div>
+      </div>
+
+      <!-- Sheets URL Ayarı -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header"><h2 data-i18n="sheets_settings_title">🔗 Google Sheets Connection Settings</h2></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_url_label">Google Apps Script Web App URL (Send/Receive Data)</label>
+              <div class="sheets-url-row">
+                <input type="text" id="sheets-webapp-url" class="sheets-url-input" placeholder="https://script.google.com/macros/s/…/exec" oninput="saveConfig()">
+              </div>
+              <div style="font-size:10px;color:var(--muted);line-height:1.6">
+                Google Sheets → Uzantılar → Apps Script menüsünden bir Web App deploy edin. 
+                <a href="#" onclick="showSheetsHelp();return false" style="color:var(--blue)" data-i18n="how_to_setup">How to set up? ℹ️</a>
+              </div>
+            </div>
+            <div>
+              <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_table_label">Google Sheets Table Link (View)</label>
+              <div class="sheets-url-row">
+                <input type="text" id="sheets-view-url" class="sheets-url-input" placeholder="https://docs.google.com/spreadsheets/d/…" oninput="saveConfig()">
+                <a id="sheets-view-link" href="#" target="_blank" style="padding:8px 12px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;text-decoration:none;font-weight:500;white-space:nowrap" data-i18n="open_link">🔗 Open</a>
+              </div>
+              <div style="font-size:10px;color:var(--muted)" data-i18n="open_link_hint">Used to open the table in a browser</div>
+            </div>
+          </div>
+          <!-- API Token satırı -->
+          <div style="margin-top:12px;display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--lamber);border:1px solid #FFE082;border-radius:8px">
+            <span style="font-size:18px">🔑</span>
+            <div style="flex:1">
+              <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block">API Token <span style="font-weight:400;color:var(--muted)" data-i18n="api_token_hint">(Must match the API_TOKEN in Apps Script)</span></label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input type="password" id="sheets-api-token" placeholder="lcw-secret-2024" oninput="saveConfig()" style="width:280px;font-family:'DM Mono',monospace;letter-spacing:2px">
+                <button onclick="toggleTokenVisibility()" style="padding:6px 10px;border:1px solid var(--border);background:var(--white);border-radius:6px;cursor:pointer;font-size:12px" id="token-eye-btn">👁️</button>
+                <span style="font-size:11px;color:var(--muted)" data-i18n="apiscript_match_hint">Must match value in Apps Script file <code style="background:var(--border2);padding:1px 5px;border-radius:3px">API_TOKEN</code> değeriyle eşleşmeli</span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;padding:10px 14px;background:var(--lblue3);border-radius:8px;border:1px solid var(--lblue);font-size:11px;color:var(--navy)">
+            <strong data-i18n="pw_settings">🔒 Password Settings:</strong> 
+            <span style="color:var(--muted)" data-i18n="current_pw">Current password: </span>
+            <code id="pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
+            <button onclick="changePwPrompt()" style="margin-left:10px;padding:3px 10px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_pw">✏️ Change Password</button>
+            <span id="pw-sheets-sync-status" style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
+          </div>
+          <div style="margin-top:8px;padding:10px 14px;background:#FFF3E0;border-radius:8px;border:1px solid #FFB74D;font-size:11px;color:var(--navy)">
+            <strong data-i18n="klasman_pw_label">🔑 Classification Management Password:</strong>
+            <span style="color:var(--muted)" data-i18n="klasman_pw_hint"> Access password for this page: </span>
+            <code id="klasman-pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
+            <button onclick="changeKlasmanPwPrompt()" style="margin-left:10px;padding:3px 10px;background:#E65100;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_klasman_pw">✏️ Change Classification Password</button>
+            <span style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
+          </div>
+        </div>
+      </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start" id="klasman-layout">
         <!-- Sol: Klasman Grid -->
         <div class="card" style="overflow:hidden">
@@ -1299,90 +1365,6 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
           </div>
         </div>
       </div>
-
-      <!-- ─── Google Sheets Bağlantısı (açılır-kapanır, default kapalı) ─── -->
-      <div class="sheets-banner" onclick="toggleSheetsBannerSection()" style="cursor:pointer;user-select:none" id="sheets-banner-toggle">
-        <div class="sheets-banner-icon">📊</div>
-        <div class="sheets-banner-text">
-          <strong data-i18n="sheets_conn_title">Google Sheets Bağlantısı</strong>
-          <small data-i18n="sheets_conn_sub">Klasman verilerini Google Sheets ile senkronize edin — farklı bilgisayarlardan erişin</small>
-        </div>
-        <div class="sheets-banner-actions" onclick="event.stopPropagation()">
-          <span class="sheets-btn sheets-btn-push" onclick="pushToSheets()" data-i18n="send">📤 Gönder</span>
-          <span class="sheets-btn sheets-btn-pull" onclick="pullFromSheets()" data-i18n="pull">📥 Çek</span>
-        </div>
-        <span id="sheets-banner-toggle-icon" style="font-size:14px;color:rgba(255,255,255,.6);margin-left:14px;transition:transform .25s;display:inline-block">▼</span>
-      </div>
-
-      <!-- Sheets Ayarları Kartı (gizli, banner'a tıklayınca açılır) -->
-      <div id="sheets-settings-section" style="display:none">
-        <div class="card" style="margin-bottom:16px">
-          <div class="card-header"><h2 data-i18n="sheets_settings_title">🔗 Google Sheets Bağlantı Ayarları</h2></div>
-          <div class="card-body">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-              <div>
-                <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_url_label">Google Apps Script Web App URL'si (Veri Gönder/Al)</label>
-                <div class="sheets-url-row">
-                  <input type="text" id="sheets-webapp-url" class="sheets-url-input" placeholder="https://script.google.com/macros/s/…/exec" oninput="saveConfig()">
-                </div>
-                <div style="font-size:10px;color:var(--muted);line-height:1.6">
-                  Google Sheets → Uzantılar → Apps Script menüsünden bir Web App deploy edin.
-                  <a href="#" onclick="showSheetsHelp();return false" style="color:var(--blue)" data-i18n="how_to_setup">Nasıl kurulur? ℹ️</a>
-                </div>
-              </div>
-              <div>
-                <label style="margin-bottom:6px;display:block;font-weight:600" data-i18n="sheets_table_label">Google Sheets Tablo Bağlantısı (Görüntüle)</label>
-                <div class="sheets-url-row">
-                  <input type="text" id="sheets-view-url" class="sheets-url-input" placeholder="https://docs.google.com/spreadsheets/d/…" oninput="saveConfig()">
-                  <a id="sheets-view-link" href="#" target="_blank" style="padding:8px 12px;background:var(--green);color:#fff;border-radius:6px;font-size:12px;text-decoration:none;font-weight:500;white-space:nowrap" data-i18n="open_link">🔗 Aç</a>
-                </div>
-                <div style="font-size:10px;color:var(--muted)" data-i18n="open_link_hint">Tabloyu tarayıcıda açmak için kullanılır</div>
-              </div>
-            </div>
-            <!-- API Token satırı -->
-            <div style="margin-top:12px;display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--lamber);border:1px solid #FFE082;border-radius:8px">
-              <span style="font-size:18px">🔑</span>
-              <div style="flex:1">
-                <label style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:4px;display:block">API Token <span style="font-weight:400;color:var(--muted)" data-i18n="api_token_hint">(Apps Script'teki API_TOKEN değeriyle eşleşmeli)</span></label>
-                <div style="display:flex;gap:8px;align-items:center">
-                  <input type="password" id="sheets-api-token" placeholder="lcw-secret-2024" oninput="saveConfig()" style="width:280px;font-family:'DM Mono',monospace;letter-spacing:2px">
-                  <button onclick="toggleTokenVisibility()" style="padding:6px 10px;border:1px solid var(--border);background:var(--white);border-radius:6px;cursor:pointer;font-size:12px" id="token-eye-btn">👁️</button>
-                  <span style="font-size:11px;color:var(--muted)" data-i18n="apiscript_match_hint">Apps Script dosyasındaki değerle eşleşmeli</span>
-                </div>
-              </div>
-            </div>
-            <div style="margin-top:12px;padding:10px 14px;background:var(--lblue3);border-radius:8px;border:1px solid var(--lblue);font-size:11px;color:var(--navy)">
-              <strong data-i18n="pw_settings">🔒 Şifre Ayarları:</strong>
-              <span style="color:var(--muted)" data-i18n="current_pw">Mevcut şifre: </span>
-              <code id="pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
-              <button onclick="changePwPrompt()" style="margin-left:10px;padding:3px 10px;background:var(--amber);color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_pw">✏️ Şifreyi Değiştir</button>
-              <span id="pw-sheets-sync-status" style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ─── Klasman Yönetimi Şifresi (açılır-kapanır, default kapalı) ─── -->
-      <div class="card" style="margin-top:16px">
-        <div class="card-header" onclick="toggleKlasmanPwSection()" style="cursor:pointer;user-select:none;background:linear-gradient(135deg,#FFF3E0 0%,#fff 60%)">
-          <h2 style="color:var(--navy)">
-            <span data-i18n="klasman_pw_label">🔑 Klasman Yönetimi Şifresi</span>
-          </h2>
-          <span id="klasman-pw-toggle-icon" style="font-size:14px;color:var(--muted);transition:transform .25s;display:inline-block">▼</span>
-        </div>
-        <div id="klasman-pw-section" style="display:none">
-          <div class="card-body">
-            <div style="padding:10px 14px;background:#FFF3E0;border-radius:8px;border:1px solid #FFB74D;font-size:11px;color:var(--navy)">
-              <strong data-i18n="klasman_pw_label">🔑 Klasman Yönetimi Şifresi:</strong>
-              <span style="color:var(--muted)" data-i18n="klasman_pw_hint"> Bu sayfa için erişim şifresi: </span>
-              <code id="klasman-pw-display" style="background:var(--border2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">****</code>
-              <button onclick="changeKlasmanPwPrompt()" style="margin-left:10px;padding:3px 10px;background:#E65100;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer" data-i18n="change_klasman_pw">✏️ Klasman Şifresini Değiştir</button>
-              <span style="margin-left:10px;font-size:10px;color:var(--muted)">📊 Sheets Config'e otomatik senkronize edilir</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 <!-- ══════════ KLASMAN ANALİZİ ══════════ -->
 <div id="page-klasman-analiz" class="page">
@@ -2947,24 +2929,6 @@ function checkKlasmanPassword() {
   }
 }
 
-function toggleSheetsBannerSection() {
-  var section = document.getElementById('sheets-settings-section');
-  var icon    = document.getElementById('sheets-banner-toggle-icon');
-  if (!section) return;
-  var isOpen = section.style.display !== 'none';
-  section.style.display = isOpen ? 'none' : 'block';
-  if (icon) icon.style.transform = isOpen ? '' : 'rotate(180deg)';
-}
-
-function toggleKlasmanPwSection() {
-  var section = document.getElementById('klasman-pw-section');
-  var icon    = document.getElementById('klasman-pw-toggle-icon');
-  if (!section) return;
-  var isOpen = section.style.display !== 'none';
-  section.style.display = isOpen ? 'none' : 'block';
-  if (icon) icon.style.transform = isOpen ? '' : 'rotate(180deg)';
-}
-
 function changeKlasmanPwPrompt() {
   const current = prompt('Mevcut Klasman Yönetimi şifresini girin:');
   if (!appConfig.klasmanPassword || current !== appConfig.klasmanPassword) { alert('Yanlış şifre!'); return; }
@@ -4501,12 +4465,12 @@ function hesaplaGerceklesenSure(baslangicTarih, bitisTarih) {
   if (gercekBitis <= gercekBaslangic) return null;
   let toplamSn = (gercekBitis - gercekBaslangic) / 1000;
 
-const ogleBaslangic = new Date(baslangic); ogleBaslangic.setHours(11, 45, 0, 0);
-const ogleBitis = new Date(baslangic); ogleBitis.setHours(12, 25, 0, 0);
-const cay1B = new Date(baslangic); cay1B.setHours(9, 20, 0, 0);
-const cay1E = new Date(baslangic); cay1E.setHours(9, 35, 0, 0);
-const cay2B = new Date(baslangic); cay2B.setHours(14, 0, 0, 0);
-const cay2E = new Date(baslangic); cay2E.setHours(14, 10, 0, 0);
+  const ogleBaslangic = new Date(baslangic); ogleBaslangic.setHours(12, 0, 0, 0);
+  const ogleBitis = new Date(baslangic); ogleBitis.setHours(13, 0, 0, 0);
+  const cay1B = new Date(baslangic); cay1B.setHours(10, 0, 0, 0);
+  const cay1E = new Date(baslangic); cay1E.setHours(10, 15, 0, 0);
+  const cay2B = new Date(baslangic); cay2B.setHours(15, 0, 0, 0);
+  const cay2E = new Date(baslangic); cay2E.setHours(15, 15, 0, 0);
 
   function kesisimSn(mB, mE, cB, cE) {
     const start = Math.max(mB.getTime(), cB.getTime());
@@ -4606,9 +4570,9 @@ function hesaplaGunlukMesaiSuresi(kayitListesi) {
       return Math.max(0, (end - start) / 1000);
     }
 
-    sureSn -= molaDus(11, 45, 12, 25);  // öğle molası
-sureSn -= molaDus(9, 20, 9, 35);    // sabah çayı
-sureSn -= molaDus(14, 0, 14, 10);   // öğleden sonra çayı
+    sureSn -= molaDus(12, 0, 13, 0);   // öğle molası
+    sureSn -= molaDus(10, 0, 10, 15);  // sabah çayı
+    sureSn -= molaDus(15, 0, 15, 15);  // öğleden sonra çayı
 
     toplamMesaiSaniye += Math.max(sureSn, 0);
     toplamMesaistiSaniye += Math.max(overtimeSn, 0);
@@ -4653,25 +4617,9 @@ function parseMesaiSuresi(val) {
 // YARDIMCILAR
 // ────────────────────────────
 function birAdet(k){ 
-  // Sabit istasyonlar: adet ne olursa 1 kez
-  // Adet başına istasyonlar: 1 adet için göster
-const istasyonSuresi = k.istasyonlar.reduce((s,i)=>s+(parseFloat(i.sure)||0),0);
-const urunKontrolSuresi = parseFloat(k.urunKontrolSuresi) || 0;
-const toplamSure = istasyonSuresi + urunKontrolSuresi;
-const sabitIst = k.istasyonlar.filter(i=>(i.tip||'sabit')==='sabit').reduce((s,i)=>s+(parseFloat(i.sure)||0),0);
-const adetIst  = k.istasyonlar.filter(i=>i.tip==='adet').reduce((s,i)=>s+(parseFloat(i.sure)||0),0);
-}
-
-// Adet bazlı standart süre hesabı (asıl hesaplama için)
-function hesaplaStandartSure(k, adet) {
-  const urunKontrol = parseFloat(k.urunKontrolSuresi) || 0;
-  const sabitSure = k.istasyonlar
-    .filter(i => (i.tip || 'sabit') === 'sabit')
-    .reduce((s,i) => s + (parseFloat(i.sure)||0), 0);
-  const adetBazliSure = k.istasyonlar
-    .filter(i => i.tip === 'adet')
-    .reduce((s,i) => s + (parseFloat(i.sure)||0), 0);
-  return (urunKontrol * adet) + sabitSure + (adetBazliSure * adet);
+  const istasyonSuresi = k.istasyonlar.reduce((s,i)=>s+(parseFloat(i.sure)||0),0);
+  const urunKontrolSuresi = parseFloat(k.urunKontrolSuresi) || 0;
+  return istasyonSuresi + urunKontrolSuresi;
 }
 
 function updateSidebar(){
@@ -5177,11 +5125,7 @@ function showInspectorDetail(inspectorName) {
           istasyonSuresi: k.istasyonSuresi || 0, standartSure: k.standartSure || 0,
           kayitFiiliSure: k.kayitFiiliSure || 0, baslangic: k.baslangic,
           bitis: k.bitis, tarihGecerli: k.tarihGecerli,
-          ortalamaKontrolSn: k.adet > 0 && k.tarihGecerli && k.baslangic && k.bitis
-  ? Math.round(Math.max(0, (new Date(k.bitis) - new Date(k.baslangic)) / 1000 / k.adet))
-  : (k.adet > 0 && k.kayitFiiliSure > 0 
-    ? Math.round(k.kayitFiiliSure / k.adet) 
-    : null)
+          ortalamaKontrolSn: k.adet > 0 && k.kayitFiiliSure > 0 ? Math.round(k.kayitFiiliSure / k.adet) : null
         });
       });
     });
@@ -5726,35 +5670,20 @@ function renderEditor(){
             <p style="font-size:11px;color:var(--muted2)" data-i18n="add_first_station">Add the first station to start defining this classification</p>
           </div>
         `:''}
-       ${k.istasyonlar.map((ist,i)=>{
-  const istTip = ist.tip || 'sabit';
-  const isSabit = istTip === 'sabit';
-  return `
-  <div style="display:grid;grid-template-columns:40px 1fr auto auto auto auto;gap:10px;align-items:center;padding:12px;background:var(--white);border:1px solid ${isSabit?'var(--border2)':'#CE93D8'};border-radius:8px;margin-bottom:8px;transition:border-color .15s">
-    <div style="width:28px;height:28px;border-radius:50%;background:${isSabit?'var(--lblue2)':'#F3E5F5'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:${isSabit?'var(--blue)':'#6A1B9A'}">${i+1}</div>
-    <input value="${ist.ad}" onchange="updateIst(${k.id},${ist.id},'ad',this.value)" placeholder="İstasyon adı" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px">
-    <div style="display:flex;align-items:center;gap:6px">
-      <input type="number" value="${ist.sure}" min="0" step="1"
-        onchange="updateIst(${k.id},${ist.id},'sure',this.value)" style="width:75px;text-align:right;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px">
-      <span style="font-size:11px;color:var(--muted);white-space:nowrap">sn</span>
-    </div>
-    <!-- TİP TOGGLE -->
-    <div style="display:flex;border-radius:7px;overflow:hidden;border:1px solid ${isSabit?'var(--border)':'#CE93D8'};flex-shrink:0;">
-      <button onclick="updateIst(${k.id},${ist.id},'tip','sabit')"
-        style="padding:5px 9px;font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;
-        background:${isSabit?'var(--navy)':'var(--white)'};color:${isSabit?'#fff':'var(--muted)'};"
-        title="Sabit: parti başına 1 kez">📌 Sabit</button>
-      <button onclick="updateIst(${k.id},${ist.id},'tip','adet')"
-        style="padding:5px 9px;font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;
-        background:${!isSabit?'#6A1B9A':'var(--white)'};color:${!isSabit?'#fff':'var(--muted)'};"
-        title="Adet Başına: her ürün için">⚡ Adet/Adet</button>
-    </div>
-    <div style="font-size:10px;color:var(--muted2);text-align:right;min-width:36px">
-      ${toplamSure > 0 ? ((parseFloat(ist.sure)||0)/toplamSure*100).toFixed(0) : 0}%
-    </div>
-    <button onclick="deleteIst(${k.id},${ist.id})" style="width:28px;height:28px;border:none;background:var(--lred);color:var(--red);border-radius:6px;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center" title="İstasyonu Sil">🗑</button>
-  </div>`;
-}).join('')}
+        ${k.istasyonlar.map((ist,i)=>`
+          <div style="display:grid;grid-template-columns:40px 1fr auto auto auto;gap:12px;align-items:center;padding:12px;background:var(--white);border:1px solid var(--border2);border-radius:8px;margin-bottom:8px">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--lblue2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--blue)">${i+1}</div>
+            <input value="${ist.ad}" onchange="updateIst(${k.id},${ist.id},'ad',this.value)" placeholder="İstasyon adı" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px">
+            <div style="display:flex;align-items:center;gap:6px">
+              <input type="number" value="${ist.sure}" min="0" step="1"
+                onchange="updateIst(${k.id},${ist.id},'sure',this.value)" style="width:80px;text-align:right;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px">
+              <span style="font-size:11px;color:var(--muted);white-space:nowrap">sn</span>
+            </div>
+            <div style="font-size:10px;color:var(--muted2);text-align:right;min-width:40px">
+              ${toplamSure > 0 ? ((parseFloat(ist.sure)||0)/toplamSure*100).toFixed(0) : 0}%
+            </div>
+            <button onclick="deleteIst(${k.id},${ist.id})" style="width:28px;height:28px;border:none;background:var(--lred);color:var(--red);border-radius:6px;cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center" title="İstasyonu Sil">🗑</button>
+          </div>`).join('')}
       </div>
       
       ${k.istasyonlar.length>0 || urunKontrolSuresi>0?`
@@ -5769,20 +5698,8 @@ function renderEditor(){
               <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px" data-i18n="station_count">Station Count</div>
             </div>
             <div>
-              <div style="font-size:18px;font-weight:700;color:var(--navy);font-family:'DM Mono',monospace">${toplamSure.toFixed(0)}</div>
-<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px" data-i18n="total_duration_label">Total Duration (s)</div>
-</div>
-<div>
-<div style="font-size:18px;font-weight:700;color:var(--blue);font-family:'DM Mono',monospace">${k.istasyonlar.length}</div>
-<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px" data-i18n="station_count">Station Count</div>
-</div>
-<div>
-<div style="font-size:13px;font-weight:700;color:var(--navy);font-family:'DM Mono',monospace;line-height:1.4">
-  ${sabitIst > 0 ? `<div style="color:#1565C0">📌 ${sabitIst}sn sabit</div>` : ''}
-  ${adetIst  > 0 ? `<div style="color:#6A1B9A">⚡ ${adetIst}sn/adet</div>` : ''}
-  ${sabitIst === 0 && adetIst === 0 ? `<div style="color:var(--muted2)">—</div>` : ''}
-</div>
-<div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">İstasyon Tipi</div>
+              <div style="font-size:18px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace">${(toplamSure/60).toFixed(1)}</div>
+              <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Dakika/Adet</div>
             </div>
           </div>
         </div>`:''}
@@ -5802,9 +5719,7 @@ function updateIst(kId,iId,alan,val){
   const k=klasmanlar.find(x=>x.id===kId);
   const ist=k&&k.istasyonlar.find(i=>i.id===iId);
   if(!ist) return;
-  if(alan==='sure') ist.sure=parseFloat(val)||0;
-  else if(alan==='tip') ist.tip=val;
-  else ist.ad=val;
+  if(alan==='sure') ist.sure=parseFloat(val)||0; else ist.ad=val;
   autoSaveAndPushKlasmanlar();
   renderEditor(); renderListe();
 }
@@ -5893,7 +5808,7 @@ function addIstasyon(kId){
   const k=klasmanlar.find(x=>x.id===kId);
   if(!k) return;
   const nid=Math.max(0,...k.istasyonlar.map(i=>i.id))+1;
-  k.istasyonlar.push({id:nid, ad:'Yeni İstasyon', sure:60, tip:'sabit'});
+  k.istasyonlar.push({id:nid,ad:'Yeni İstasyon',sure:60});
   autoSaveAndPushKlasmanlar();
   renderEditor(); renderListe();
 }
@@ -6364,21 +6279,13 @@ function performansHesapla(){
   function normalize(str) { return String(str).toLowerCase().trim().replace(/[^\w]/g,''); }
   const klasmanMap = {};
   klasmanlar.forEach(k => {
-  const normalKey = normalize(k.ad);
-  const sabitIstasyonSuresi = k.istasyonlar
-    .filter(i => (i.tip || 'sabit') === 'sabit')
-    .reduce((s,i) => s + (parseFloat(i.sure)||0), 0);
-  const adetBazliIstasyonSuresi = k.istasyonlar
-    .filter(i => i.tip === 'adet')
-    .reduce((s,i) => s + (parseFloat(i.sure)||0), 0);
-  klasmanMap[normalKey] = {
-    urunKontrolSuresi: parseFloat(k.urunKontrolSuresi) || 0,
-    sabitIstasyonSuresi,
-    adetBazliIstasyonSuresi,
-    istasyonSuresi: k.istasyonlar.reduce((s,i)=>s+(parseFloat(i.sure)||0),0), // geriye dönük uyumluluk
-    istasyonDetay: k.istasyonlar.map(i => ({ ad: i.ad, sure: parseFloat(i.sure)||0, tip: i.tip||'sabit' }))
-  };
-});
+    const normalKey = normalize(k.ad);
+    klasmanMap[normalKey] = {
+      urunKontrolSuresi: parseFloat(k.urunKontrolSuresi) || 0,
+      istasyonSuresi: k.istasyonlar.reduce((s,i)=>s+(parseFloat(i.sure)||0),0),
+      istasyonDetay: k.istasyonlar.map(i => ({ ad: i.ad, sure: parseFloat(i.sure)||0 }))
+    };
+  });
 
   const inspectorMap = {};
   const eslesmeyenKlasmanlar = new Set();
@@ -6448,10 +6355,8 @@ function performansHesapla(){
       tarihHataliKayitlar++;
     }
 
-    // Standart süre = (ürün kontrol süresi × adet) + sabit istasyonlar + (adet bazlı istasyonlar × adet)
-const standartSure = (klasmanInfo.urunKontrolSuresi * adet) 
-  + klasmanInfo.sabitIstasyonSuresi 
-  + (klasmanInfo.adetBazliIstasyonSuresi * adet);
+    // Standart süre = (1 adet kontrol süresi × adet) + sabit istasyon süresi
+    const standartSure = (klasmanInfo.urunKontrolSuresi * adet) + klasmanInfo.istasyonSuresi;
 
     // Bu kaydın fiili süresi = başlangıç-bitiş farkı (mola düşümlü)
     const kayitFiiliSure = tarihGecerli
@@ -8567,9 +8472,7 @@ function aoApplyFilters() {
           + '<div style="font-weight:700;">' + _aoFmtSn(k.standartSure) + '</div></td>'
         + '<td style="font-family:monospace;color:' + (k.kayitFiiliSure > 0 ? '#00897B' : '#5A7FA8') + ';text-align:right;">' + _aoFmtSn(k.kayitFiiliSure) + '</td>'
         + '<td style="font-family:monospace;font-weight:700;color:' + ortColor + ';text-align:center;">'
-          + (ortSn !== null ? ortSn + 'sn<div style="font-size:9px;font-weight:400;">' + (ortSn <= k.kontrolAdetSuresi ? '✓ hedef' : '↑ hedefin üstü') + '</div>' : (k.tarihGecerli 
-    ? '—<div style="font-size:9px;color:#F57F17;">kısa süre</div>'
-    : '—<div style="font-size:9px;color:#5A7FA8;">tarih yok</div>'))
+          + (ortSn !== null ? ortSn + 'sn<div style="font-size:9px;font-weight:400;">' + (ortSn <= k.kontrolAdetSuresi ? '✓ hedef' : '↑ hedefin üstü') + '</div>' : '—<div style="font-size:9px;color:#5A7FA8;">tarih yok</div>')
           + '</td>'
         + '<td style="font-size:11px;color:#5A7FA8;text-align:center;">' + (k.tarihGecerli && k.baslangic ? _aoFmtTarih(k.baslangic) : '—') + '</td>'
         + '<td style="font-size:11px;color:#5A7FA8;text-align:center;">' + (k.tarihGecerli && k.bitis ? _aoFmtTarih(k.bitis) : '—') + '</td>'
@@ -8792,7 +8695,32 @@ function exportInspectorDetailFromOverlay() {
 // ─── PWA — PROGRESSIVE WEB APP ───────────────────────────────────────────────
 // ════════════════════════════════════════════════════════════════════════════════
 
-// ─── PWA ─────────────────────────────────────────────────────────────────────
+// 1) Inline Web App Manifest — Blob URL ile inject (manifest için Blob izinlidir)
+(function injectManifest() {
+  var pageUrl = window.location.href.split('#')[0].split('?')[0];
+  var manifest = {
+    name: 'Inspection Performans Paneli',
+    short_name: 'Inspection',
+    description: 'Inspector performans takip ve analiz paneli',
+    start_url: pageUrl,
+    scope: pageUrl,
+    display: 'standalone',
+    orientation: 'landscape-primary',
+    background_color: '#0B1F3A',
+    theme_color: '#0B1F3A',
+    lang: 'tr',
+    icons: [
+      { src: _pwaIcon(192), sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+      { src: _pwaIcon(512), sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+    ]
+  };
+  try {
+    var blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+    var url  = URL.createObjectURL(blob);
+    var link = document.getElementById('pwa-manifest-link');
+    if (link) link.href = url;
+  } catch(e) { console.warn('[PWA] manifest inject failed:', e); }
+})();
 
 // PNG icon — canvas ile çiz (SVG data URI yerine gerçek PNG — Chrome bunu kabul eder)
 function _pwaIcon(size) {
