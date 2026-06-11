@@ -4115,7 +4115,7 @@ async function pushPerformansManual(ev) {
       verimlilikPerf: row.genelHizPerf != null ? Math.round(row.genelHizPerf * (100 / _rowsHedef)) : row.verimlilikPerf,
       hedefVerimlilik: _rowsHedef,
       klasmanOzet: Object.entries(row.klasmanlar || {})
-        .map(([k,v]) => `${k}: ${v.adet} adet (${v.hizPerf}%)`)
+        .map(([k,v]) => `${k}:${v.adet || 0}adet(${Math.round(v.hizPerf) || 0}%)`)
         .join(' | ')
     }));
 
