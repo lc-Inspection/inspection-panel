@@ -4698,7 +4698,8 @@ function hesaplaGerceklesenSure(baslangicTarih, bitisTarih) {
     toplamSn += hesaplaTekilGun(d[0], d[1]);
   });
 
-  return toplamSn > 0 ? toplamSn : null;
+  return toplamSn > 0 ? toplamSn : (bitis > baslangic ? 1 : null);
+
 }
 
 function hesaplaInspectorFiiliSure(kayitlar) {
