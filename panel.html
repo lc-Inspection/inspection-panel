@@ -3185,6 +3185,7 @@ async function checkPassword() {
   const token = appConfig.sheetsApiToken;
 
   function _unlock() {
+    console.log('🔓 UNLOCK TEST - checkbox:', document.getElementById('pw-remember'), 'checked:', document.getElementById('pw-remember')?.checked, 'val:', val);
     klasmanUnlocked = true;
     sessionStorage.setItem(SESSION_KEY, '1');
     try {
