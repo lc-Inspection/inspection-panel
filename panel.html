@@ -8518,7 +8518,8 @@ async function pullKlasmanAnalizFromSheets() {
     <div style="background:#1565C0;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;">
       <div style="display:flex;align-items:center;gap:8px;color:#fff;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Günlük Üretim & Mesai Detayı
+         Günlük Üretim & Mesai Detayı
+        <span id="gunluk-gun-sayisi" style="font-size:11px;font-weight:500;background:rgba(255,255,255,.18);padding:2px 9px;border-radius:99px;margin-left:6px;">—</span>
       </div>
       <button onclick="toggleGunlukPopup()" style="background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;">✕</button>
     </div>
@@ -9724,8 +9725,11 @@ function toggleGunlukPopup() {
 
 function _renderGunlukTablo() {
   var tbody = document.getElementById('gunluk-tablo-body');
+  var gunSayisiEl = document.getElementById('gunluk-gun-sayisi');
+
   if (!_aoInspector || !_aoData.length) {
     tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;text-align:center;color:#9ca3af;">Veri yok</td></tr>';
+    if (gunSayisiEl) gunSayisiEl.textContent = '0 gün';
     return;
   }
 
@@ -9780,8 +9784,11 @@ function _renderGunlukTablo() {
 
   if (!gunler.length) {
     tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;text-align:center;color:#9ca3af;">Veri yok</td></tr>';
+    if (gunSayisiEl) gunSayisiEl.textContent = '0 gün';
     return;
   }
+
+  if (gunSayisiEl) gunSayisiEl.textContent = gunler.length + ' gün çalışıldı';
 
   function fmtSaat(dk) {
     if (!dk) return '—';
