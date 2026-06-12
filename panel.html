@@ -1628,6 +1628,12 @@ label { font-size: 12px; font-weight: 500; color: var(--muted); display: block; 
             <select id="col-bitis" onchange="performansHesapla()"></select>
           </div>
           <div>
+            <label>TalepNumarası</label>
+            <select id="col-talep" onchange="performansHesapla()">
+              <option value="">— Kullanma —</option>
+            </select>
+          </div>
+          <div>
             <label data-i18n="col_overtime_label">⏰ Overtime Duration <span style="color:var(--muted2);font-weight:400">(dk veya s:d) <span style="color:var(--amber);font-weight:600">K/L seçiliyse otomatik</span></span></label>
             <select id="col-mesai" onchange="performansHesapla()">
               <option value="" data-i18n="col_auto_derive">— Auto-derive from K/L columns —</option>
@@ -3966,6 +3972,7 @@ async function pushInspectorKayitlarToSheets(liste, url, token) {
         if (Array.isArray(v.kayitlar) && v.kayitlar.length > 0) {
           kayitlar[k] = v.kayitlar.map(r => ({
             adet: r.adet,
+            talepNo: r.talepNo || '',
             kontrolAdetSuresi: r.kontrolAdetSuresi,
             istasyonSuresi: r.istasyonSuresi,
             standartSure: r.standartSure,
@@ -5396,7 +5403,8 @@ function showInspectorDetail(inspectorName) {
           istasyonSuresi: k.istasyonSuresi || 0, standartSure: k.standartSure || 0,
           kayitFiiliSure: k.kayitFiiliSure || 0, baslangic: k.baslangic,
           bitis: k.bitis, tarihGecerli: k.tarihGecerli,
-          ortalamaKontrolSn: k.adet > 0 && k.kayitFiiliSure > 0 ? Math.round(k.kayitFiiliSure / k.adet) : null
+          ortalamaKontrolSn: k.adet > 0 && k.kayitFiiliSure > 0 ? Math.round(k.kayitFiiliSure / k.adet) : null,
+          talepNo: k.talepNo || ''
         });
       });
     });
@@ -5613,6 +5621,7 @@ function exportInspectorDetail() {
       kayitRows.push({
         '#':                    kayitRows.length + 1,
         'Klasman':              klasman,
+        'Talep No':             k.talepNo || '—',
         'Adet':                 k.adet || 0,
         'Kontrol Süresi (sn)':  k.kontrolAdetSuresi || 0,
         'İstasyon Süresi':      fmtSnExcel(k.istasyonSuresi),
@@ -6198,7 +6207,7 @@ function showFileStatus(msg,color){
 
 function fillColSelects(){
   const opts='<option value="">— seçin —</option>'+excelCols.map(c=>`<option value="${c}">${c}</option>`).join('');
-  ['col-klasman','col-inspector','col-adet','col-baslangic','col-bitis'].forEach(id=>{ 
+  ['col-klasman','col-inspector','col-adet','col-baslangic','col-bitis','col-talep'].forEach(id=>{ 
     const el = document.getElementById(id);
     if (el) el.innerHTML = opts; 
   });
@@ -6591,6 +6600,7 @@ function performansHesapla(){
   const baslangicCol = document.getElementById('col-baslangic')?.value || '';
   const bitisCol = document.getElementById('col-bitis')?.value || '';
   const mesaiCol = document.getElementById('col-mesai')?.value || '';
+  const talepCol = document.getElementById('col-talep')?.value || '';
   const yapilanDepoCol = document.getElementById('col-yapilan-depo')?.value || '';
   const sonucCol = document.getElementById('col-sonuc')?.value || '';
   const orneklemeMod = document.querySelector('input[name="ornekleme-mod"]:checked')?.value || 'kapali';
@@ -6760,7 +6770,7 @@ function performansHesapla(){
     if (kayitFiiliSure && kayitFiiliSure > 0) {
       kl.toplamKayitFiiliSure += kayitFiiliSure;
     }
-    kl.kayitlar.push({ no: kl.kayitlar.length + 1, klasman: excelKlasman, adet, standartSure, kayitFiiliSure, kontrolAdetSuresi: klasmanInfo.urunKontrolSuresi, istasyonSuresi: klasmanInfo.istasyonSuresi, istasyonDetay: klasmanInfo.istasyonDetay || [], baslangic: parsedBaslangic, bitis: parsedBitis, tarihGecerli });
+    kl.kayitlar.push({ no: kl.kayitlar.length + 1, klasman: excelKlasman, adet, standartSure, kayitFiiliSure, kontrolAdetSuresi: klasmanInfo.urunKontrolSuresi, istasyonSuresi: klasmanInfo.istasyonSuresi, istasyonDetay: klasmanInfo.istasyonDetay || [], baslangic: parsedBaslangic, bitis: parsedBitis, tarihGecerli, talepNo: talepCol ? String(row[talepCol]||'').trim() : '' });
 
     inspectorMap[ins].toplamAdet += adet;
   });
@@ -8773,6 +8783,7 @@ async function pullKlasmanAnalizFromSheets() {
           <thead style="position:sticky;top:0;z-index:10;">
             <tr style="background:#0B1F3A;color:#fff;">
               <th style="padding:10px 12px;text-align:center;font-size:11px;width:40px;">#</th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;">Talep No</th>
               <th style="padding:10px 12px;text-align:left;font-size:11px;">Klasman</th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;">Adet</th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;">Kontrol Süresi<br><span style="opacity:.6;font-weight:400">(sn/adet)</span></th>
@@ -8923,7 +8934,8 @@ function aoRefreshSheetsData() {
           istasyonSuresi: k.istasyonSuresi || 0, standartSure: k.standartSure || 0,
           kayitFiiliSure: k.kayitFiiliSure || 0, baslangic: k.baslangic,
           bitis: k.bitis, tarihGecerli: k.tarihGecerli,
-          ortalamaKontrolSn: k.adet > 0 && k.kayitFiiliSure > 0 ? Math.round(k.kayitFiiliSure / k.adet) : null
+          ortalamaKontrolSn: k.adet > 0 && k.kayitFiiliSure > 0 ? Math.round(k.kayitFiiliSure / k.adet) : null,
+          talepNo: k.talepNo || ''
         });
       });
     });
@@ -9157,7 +9169,7 @@ function aoApplyFilters() {
     var gFiili = kayitlar.reduce(function(s,k){ return s+k.kayitFiiliSure; }, 0);
     var gOrt   = gAdet > 0 && gFiili > 0 ? Math.round(gFiili / gAdet) : null;
 
-    html += '<tr style="background:#0B1F3A;color:#fff;"><td colspan="10" style="padding:8px 14px;font-size:12px;font-weight:700;">'
+    html += '<tr style="background:#0B1F3A;color:#fff;"><td colspan="11" style="padding:8px 14px;font-size:12px;font-weight:700;">'
       + '📦 ' + kAd + ' <span style="font-weight:400;opacity:.7;font-size:11px;">'
       + kayitlar.length + ' ' + (translations[currentLang]||translations.tr).records_word + ' · ' + gAdet + ' ' + (translations[currentLang]||translations.tr).units_short + ' · ' + _aoFmtSn(gStd)
       + (gFiili > 0 ? ' · ' + _aoFmtSn(gFiili) + ' gerçekleşen' : '')
@@ -9174,6 +9186,7 @@ function aoApplyFilters() {
       var bg = i % 2 === 0 ? '#F9FBFF' : '#fff';
       html += '<tr style="background:' + bg + ';">'
         + '<td style="color:#5A7FA8;font-family:monospace;text-align:center;">' + idx + '</td>'
+        + '<td style="font-size:11px;color:#5A7FA8;font-family:monospace;text-align:center;">' + (k.talepNo || '—') + '</td>'
         + '<td style="font-weight:600;color:#0B1F3A;">' + k.klasman + '</td>'
         + '<td style="font-weight:700;font-size:14px;text-align:center;">' + k.adet + '</td>'
         + '<td style="color:#1565C0;font-family:monospace;text-align:center;">' + k.kontrolAdetSuresi + 'sn</td>'
@@ -9194,7 +9207,7 @@ function aoApplyFilters() {
   });
 
   var _noRec = (translations[currentLang]||translations.tr).no_records_found;
-  document.getElementById('ao-tablo-body').innerHTML = html || '<tr><td colspan="10" style="padding:24px;text-align:center;color:#5A7FA8;">' + _noRec + '</td></tr>';
+  document.getElementById('ao-tablo-body').innerHTML = html || '<tr><td colspan="11" style="padding:24px;text-align:center;color:#5A7FA8;">' + _noRec + '</td></tr>';
 }
 
 function aoResetFilters() {
